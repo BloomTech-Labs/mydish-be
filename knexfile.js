@@ -8,6 +8,13 @@
         user: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD
       },
+      useNullAsDefault: true,
+      pool: {
+        afterCreate: (conn, done) => {
+          //runs after connecting to postgreSQL
+          conn.run('PRAGMA foreign_keys = ON', done) // turn on foreign key enforcement
+        },
+      },
       migrations: {
         directory: "./data/migrations"
       },
