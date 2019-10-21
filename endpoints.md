@@ -1,5 +1,7 @@
 #Data Design
 
+(a conceptual summary of what properties things have, not precisely descriptive of the database or API or anything else)
+
 ## Recipes
 ```js
 recipe = {
@@ -24,6 +26,7 @@ recipe = {
   timestamp: "the time that this recipe was created"
 };
 ```
+
 ## Cooks
 ```js
 cook = {
@@ -60,6 +63,7 @@ res = {
   message: "registration successful"
 };
 ```
+
 POST `/cooks/login`
 ```js
 body = {
@@ -71,12 +75,38 @@ res = {
   token: "authentication token for the session"
 };
 ```
+
 PUT `/cooks/self` modify account details e.g. password (auth)
 ```js
-body = {};
+body = {
+  username: "(optional string)",
+  password: "(optional string)",
+  email: "(optional string)"
+};
+res = {
+  message: "account updated"
+};
 ```
+
 DELETE `/cooks/self` delete account (auth)
+```js
+res = {
+  message: "account deleted"
+};
+```
+
 GET `/cooks` get brief info on all cooks
+```js
+res = {
+  cooks: [
+    {
+      id,
+      username
+    }
+  ]
+};
+```
+
 GET `/cooks/:id` get detailed info about one cook
 
 ## Recipes
@@ -92,6 +122,7 @@ res = {
   ]
 };
 ```
+
 POST `/recipes` add a new recipe (auth)
 ```js
 body = {
@@ -113,24 +144,28 @@ body = {
   ancestor: "(optional number) the ID of the previous version of this recipe"
 };
 ```
+
 GET `/recipes/:id` get detailed info about one recipe
 
 ## Cookbook
 
 GET `/cookbook` (auth)
+
 POST `/cookbook/:id` (auth)
+
 DELETE `/cookbook/:id` (auth)
 
 ## Likes
 
 POST `/likes/:id` like a recipe (auth)
+
 DELETE `/likes/:id` unlike a recipe (auth)
 
 ## Info
 
-<!-- GET `/info` get list of units of measure -->
 GET `/units`
 
 # Notes
 
-- 
+- no images handled yet 
+- Should any cook data be publicly accessible?
