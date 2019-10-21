@@ -7,6 +7,7 @@ exports.up = function(knex) {
     tbl.text('title', 128).unique().notNullable();
     tbl.integer('minutes').notNullable();
     tbl.text('notes', 2000);
+    tbl.b
   })
   //creates ingredients table referrencing the recipe id as a foreign key
   .createTable('ingredients', tbl => {
