@@ -11,20 +11,23 @@ exports.up = function(knex) {
   //creates ingredients table referrencing the recipe id as a foreign key
   .createTable('ingredients', tbl => {
     tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
-    tbl.text('name', 128).primary().unique().notNullable();
-    tbl.text('unit', 128).notNullable();
+    tbl.text('name', 128).notNullable();
+    tbl.primary(['recipe_id', 'name']);
+    tbl.text('unit', 128).unsigned().notNullable().reference('name').inTable('units');
     tbl.float('quantity');
   })
   //creates steps table also referrencing the recipe id as a foreign key
   .createTable('steps', tbl => {
     tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
-    tbl.decimal('ordinal').unique().notNullable();
+    tbl.decimal('ordinal').notNullable();
+    tbl.primary(['ordinal', 'recipe_id']);
     tbl.text('body', 1000).notNullable();
   })
-  //creates a catagories table, each catagory can reference multiple recipe IDs as foreign keys
-  .createTable('catagories', tbl => {
+  //creates a catagories table, each category can reference multiple recipe IDs as foreign keys
+  .createTable('categories', tbl => {
     tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
     tbl.text('name', 128).primary().unique().notNullable();
+    tbl.primary(['name', 'recipe_id']);
   })
   //cooks table is basically a user table
   .createTable('cooks', tbl => {
@@ -49,11 +52,17 @@ exports.up = function(knex) {
     tbl.integer('cook_id').unsigned().notNullable().references('id').inTable('cooks');
     tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
   })
+  //unit table.
+  .createTable('units', tbl => {
+    tbl.integer('number');
+    tbl.text('name');
+  })
 };
 
 //for dropping all tables
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists('saves')
+    return knex.schema.dropTableIfExists('units')
+        .dropTableIfExists('saves')
         .dropTableIfExists('likes')
         .dropTableIfExists('edits')
         .dropTableIfExists('cooks')
