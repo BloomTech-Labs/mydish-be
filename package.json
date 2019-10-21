@@ -24,6 +24,9 @@
     "nodemon": "^1.19.4"
   },
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.19.5"
   }
 }
