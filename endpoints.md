@@ -6,8 +6,8 @@ recipe = {
   title,
   minutes: "(optional number) preparation time in minutes",
   notes: "(optional) free-form notes about the recipe",
-  categories: [
-    "string"
+  "(optional) categories": [
+    "(string) category/tag name"
   ],
   ingredients: {
     name: {
@@ -42,7 +42,7 @@ cook = {
   saved: [
     recipe_id
   ]
-}
+};
 ```
 
 # Endpoints
@@ -54,29 +54,66 @@ POST `/cooks/register`
 body = {
   username,
   password
-}
+};
 res = {
-  id: "(number) the ID of the user/cook"
-  token: "authentication token for the session"
-}
+  id: "(number) the ID of the user/cook",
+  message: "registration successful"
+};
 ```
 POST `/cooks/login`
+```js
+body = {
+  username,
+  password
+};
+res = {
+  id: "(number) the ID of the user/cook",
+  token: "authentication token for the session"
+};
+```
 PUT `/cooks/self` modify account details e.g. password (auth)
+```js
+body = {};
+```
 DELETE `/cooks/self` delete account (auth)
 GET `/cooks` get brief info on all cooks
 GET `/cooks/:id` get detailed info about one cook
 
 ## Recipes
 
-maybe this way:
 GET `/recipes?.....` get brief info on all recipes, filtered if given query string
+```js
+res = {
+  recipes: [
+    {
+      title,
+      innovator
+    }
+  ]
+};
+```
 POST `/recipes` add a new recipe (auth)
+```js
+body = {
+  title,
+  minutes: "(optional number) preparation time in minutes",
+  notes: "(optional) free-form notes about the recipe",
+  "(optional) categories": [
+    "(string) category/tag name"
+  ],
+  ingredients: {
+    name: {
+      quantity: "(number)",
+      unit
+    }
+  },
+  steps: [
+    "string"
+  ],
+  ancestor: "(optional number) the ID of the previous version of this recipe"
+};
+```
 GET `/recipes/:id` get detailed info about one recipe
-
-<!-- or maybe this instead: -->
-<!-- GET `/categories` get a list of available categories -->
-<!-- GET `/categories/:category` -->
-<!-- POST `/categories/:category` (auth) -->
 
 ## Cookbook
 
@@ -94,3 +131,6 @@ DELETE `/likes/:id` unlike a recipe (auth)
 <!-- GET `/info` get list of units of measure -->
 GET `/units`
 
+# Notes
+
+- 
