@@ -23,7 +23,10 @@
     "nodemon": "^1.19.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "pg": "^7.12.1",
     "psql": "0.0.1"
