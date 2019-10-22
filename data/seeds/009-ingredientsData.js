@@ -8,7 +8,7 @@ exports.seed = function(knex) {
         {recipe_id: 1, name: 'eggplant', quantity: 2},
         {recipe_id: 2, name: 'cheerios', unit: 'cup', quantity: 2},
         {recipe_id: 2, name: 'milk', unit: 'cup', quantity: 1},
-        {recipe_id: 3, name: 'egg', quantity: 'cup'},
+        {recipe_id: 3, name: 'egg', quantity: 4},
         {recipe_id: 3, name: 'milk', unit: 'cup', quantity: .25},
         {recipe_id: 3, name: 'butter', unit: 'tsp', quantity: 1},
         {recipe_id: 3, name: 'cheddar', unit: 'cup', quantity: .25},

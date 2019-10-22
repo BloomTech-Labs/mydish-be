@@ -10,15 +10,15 @@ exports.up = function(knex) {
   })
   //creates steps table also referrencing the recipe id as a foreign key
   .createTable('steps', tbl => {
-    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
+    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
     tbl.decimal('ordinal').notNullable();
     tbl.primary(['ordinal', 'recipe_id']);
     tbl.text('body', 1000).notNullable();
   })
   //creates a catagories table, each category can reference multiple recipe IDs as foreign keys
   .createTable('categories', tbl => {
-    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
-    tbl.text('name', 128).unique().notNullable();
+    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
+    tbl.text('name', 128).notNullable();
     tbl.primary(['name', 'recipe_id']);
   })
   //cooks table is basically a user table
@@ -30,19 +30,19 @@ exports.up = function(knex) {
   //edits table for later functionality, will be used to track edits in future migrations
   .createTable('edits', tbl => {
     tbl.increments('id');
-    tbl.integer('old_recipe').unsigned().notNullable().references('id').inTable('recipes');
-    tbl.integer('new_recipe').unsigned().notNullable().references('id').inTable('recipes');
-    tbl.integer('cook_id').references('id').inTable('cooks').notNullable();
+    tbl.integer('old_recipe').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
+    tbl.integer('new_recipe').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
+    tbl.integer('cook_id').references('id').inTable('cooks').notNullable().onDelete('cascade');
   })
   //likes table to track which user has liked which recipes
   .createTable('likes', tbl => {
-    tbl.integer('cook_id').unsigned().notNullable().references('id').inTable('cooks');
-    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
+    tbl.integer('cook_id').unsigned().notNullable().references('id').inTable('cooks').onDelete('cascade');
+    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
   })
   //saves table to track which recipes are saved to which user's cookbook
   .createTable('saves', tbl => {
-    tbl.integer('cook_id').unsigned().notNullable().references('id').inTable('cooks');
-    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
+    tbl.integer('cook_id').unsigned().notNullable().references('id').inTable('cooks').onDelete('cascade');
+    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
   })
   //unit table.
   .createTable('units', tbl => {
@@ -51,10 +51,10 @@ exports.up = function(knex) {
   })
   //creates ingredients table referrencing the recipe id as a foreign key
   .createTable('ingredients', tbl => {
-    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes');
+    tbl.integer('recipe_id').unsigned().notNullable().references('id').inTable('recipes').onDelete('cascade');
     tbl.text('name', 128).notNullable();
     tbl.primary(['recipe_id', 'name']);
-    tbl.text('unit', 128).unsigned().notNullable().references('name').inTable('units');
+    tbl.text('unit', 128).unsigned().references('name').inTable('units').onDelete('cascade');
     tbl.float('quantity');
   })
 };
