@@ -4,7 +4,10 @@
     development: {
       client: "pg",
       connection: {
-        database: process.env.DB_NAME
+        host : '127.0.0.1',
+        user : 'postgres',
+        password : 'admin',
+        database: 'postgres'
       },
       useNullAsDefault: true,
       migrations: {
