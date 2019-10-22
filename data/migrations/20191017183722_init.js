@@ -7,7 +7,6 @@ exports.up = function(knex) {
     tbl.text('title', 128).unique().notNullable();
     tbl.integer('minutes').notNullable();
     tbl.text('notes', 2000);
-    tbl.b
   })
   //creates steps table also referrencing the recipe id as a foreign key
   .createTable('steps', tbl => {
@@ -68,7 +67,7 @@ exports.down = function(knex) {
         .dropTableIfExists('likes')
         .dropTableIfExists('edits')
         .dropTableIfExists('cooks')
-        .dropTableIfExists('catagories')
+        .dropTableIfExists('categories')
         .dropTableIfExists('steps')
         .dropTableIfExists('recipes');
 };
