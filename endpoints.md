@@ -60,7 +60,7 @@ body = {
 };
 res = {
   id: "(number) the ID of the user/cook",
-  message: "registration successful"
+  message: `registration successful`
 };
 ```
 
@@ -84,7 +84,7 @@ body = {
   email: "(optional string)"
 };
 res = {
-  message: "account updated"
+  message: `account updated`
 };
 ```
 
