@@ -146,6 +146,29 @@ body = {
 ```
 
 GET `/recipes/:id` get detailed info about one recipe
+```js
+res = {
+  title,
+  minutes: "(optional number) preparation time in minutes",
+  notes: "(optional) free-form notes about the recipe",
+  "(optional) categories": [
+    "(string) category/tag name"
+  ],
+  ingredients: {
+    name: {
+      quantity: "(number)",
+      unit
+    }
+  },
+  likes: "(number) total likes",
+  steps: [
+    "string"
+  ],
+  innovator: "(number) ID of innovator who created or last edited this recipe",
+  ancestor: "(optional number) the ID of the previous version of this recipe",
+  timestamp: "the time that this recipe was created"
+};
+```
 
 ## Cookbook
 
