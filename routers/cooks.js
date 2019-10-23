@@ -18,6 +18,20 @@ router.get("/", (req, res) => {
   const x = Cooks.all().then(x => res.status(200).json(x));
 });
 
+router.get("/cookID/:id", (req, res) => {
+  const { id } = req.params;
+  console.log("id", id);
+  Cooks.findById(id)
+    .then(cooks => {
+      console.log("cooks", cooks);
+      res.status(200).json(cooks);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "Error retriving cook" });
+    });
+});
+
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
   console.log(req.body);
@@ -25,10 +39,15 @@ router.post("/register", (req, res) => {
     username,
     password: bcrypt.hashSync(password, 8)
   })
-    .then(id => {
-      console.log("id", id);
+    .then(cook => {
+      console.log("cook", cook);
 
-      res.status(201).json({ message: "Cook registered", id });
+      const token = generateToken(cook);
+      const cook_id = cook.id;
+
+      res
+        .status(201)
+        .json({ message: "registration successful", cook_id, token });
     })
     .catch(err => {
       console.log(err);
@@ -42,10 +61,10 @@ router.post("/login", (req, res) => {
     .then(cook => {
       if (cook && bcrypt.compareSync(password, cook.password)) {
         const token = generateToken(cook);
+
         res.status(200).json({
           message: "You have logged in",
-          token,
-          cook
+          token
         });
       } else {
         res.status(401).json({ message: "Invalid password" });
