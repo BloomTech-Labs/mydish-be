@@ -178,14 +178,29 @@ GET `/cookbook` (auth)
 ```js
 res = {
   recipes: [
-    "(number) ID of saved recipe"
+    {
+      id,
+      title,
+      innovator_id: "(number) the ID of the cook who created or modified the recipe",
+      innovator_name
+    }
   ]
 };
 ```
 
 POST `/cookbook/:id` (auth)
+```js
+res = {
+  message: `recipe ${id} added to your cookbook`
+};
+```
 
 DELETE `/cookbook/:id` (auth)
+```js
+res = {
+  message: `recipe ${id} removed`
+};
+```
 
 ## Likes
 
