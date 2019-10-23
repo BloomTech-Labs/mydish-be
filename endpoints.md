@@ -205,8 +205,18 @@ res = {
 ## Likes
 
 POST `/likes/:id` like a recipe (auth)
+```js
+res = {
+  message: `recipe ${id} liked`
+};
+```
 
 DELETE `/likes/:id` unlike a recipe (auth)
+```js
+res = {
+  message: `you no longer like recipe ${id}`
+};
+```
 
 ## Info
 
