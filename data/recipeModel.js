@@ -21,7 +21,9 @@ function insertRecipe(recipe) {
      return db("recipes as r")
         .where({ 'r.id': id })
         .join('steps as s', 's.recipe_id', "r.id" )
-        .select('*').from('steps')
+        .select('s.ordinal', 's.body', 
+              'r.title', 'r.minutes', 'r.id', 'r.notes')
+        .first();
   }
   
   function findByTitle(title) {
