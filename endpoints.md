@@ -221,8 +221,16 @@ res = {
 ## Info
 
 GET `/units`
+```js
+res = {
+  units: [
+    "(string) name of legal unit, without regard to synonyms, abbreviations, or use cases"
+  ]
+};
+```
 
 # Notes
 
-- no images handled yet 
-- Should any cook data be publicly accessible?
+- Images aren't handled at all yet. 
+- Should any cook data be publicly accessible? Currently there's no getting detailed information about a particular cook by ID because there isn't more information to give.
+- Is there any benefit to being able to get one's own information? The user's ID is supplied on login, and the username and password must be known on the front end to log in successfully in the first place.
