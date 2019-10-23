@@ -3,9 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Cooks = require("../data/cookModel.js");
 
-console.log("secret", process.env.SESSION_SECRET);
-
 function generateToken(cook) {
+  console.log("cook in generateToken", cook);
   const payload = {
     username: cook.username,
     id: cook.id
@@ -16,19 +15,20 @@ function generateToken(cook) {
   return jwt.sign(payload, process.env.SESSION_SECRET, options);
 }
 router.get("/", (req, res) => {
-  res.status(200).json("router");
+  const x = Cooks.all().then(x => res.status(200).json(x));
 });
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body);
   Cooks.insert({
     username,
     password: bcrypt.hashSync(password, 8)
   })
-    .then(cook => {
-      const token = generateToken(cook);
+    .then(id => {
+      console.log("id", id);
 
-      res.status(201).json({ message: "Cook registered", cook, token });
+      res.status(201).json({ message: "Cook registered", id });
     })
     .catch(err => {
       console.log(err);

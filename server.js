@@ -6,8 +6,8 @@ const server = express();
 
 server.use(express.json());
 //server.use('/foos', fooRouter);
-const AuthRouter = require("./routers/auth.js");
-server.use("/auth", AuthRouter);
+const CooksRouter = require("./routers/cooks.js");
+server.use("/cooks", CooksRouter);
 
 server.get("/", (req, res) => {
   res.status(200).json({ hello: "world", recieved: req.body });
