@@ -116,8 +116,10 @@ GET `/recipes?.....` get brief info on all recipes, filtered if given query stri
 res = {
   recipes: [
     {
+      id,
       title,
-      innovator
+      innovator_id: "(number) the ID of the cook who created or modified the recipe",
+      innovator_name
     }
   ]
 };
@@ -162,7 +164,7 @@ res = {
   },
   likes: "(number) total likes",
   steps: [
-    "string"
+    "(string) list of steps in order"
   ],
   innovator: "(number) ID of innovator who created or last edited this recipe",
   ancestor: "(optional number) the ID of the previous version of this recipe",
@@ -173,6 +175,13 @@ res = {
 ## Cookbook
 
 GET `/cookbook` (auth)
+```js
+res = {
+  recipes: [
+    "(number) ID of saved recipe"
+  ]
+};
+```
 
 POST `/cookbook/:id` (auth)
 
