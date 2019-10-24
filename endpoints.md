@@ -135,10 +135,9 @@ body = {
     "(string) category/tag name"
   ],
   ingredients: {
-    name: {
-      quantity: "(number)",
-      unit
-    }
+    name,
+    quantity: "(number)",
+    unit
   },
   steps: [
     "string"

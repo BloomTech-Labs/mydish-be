@@ -9,7 +9,41 @@ module.exports = {
 
 
   function insertRecipe(recipe) {
-    return db("recipes").insert(recipe);
+      const { 
+              title,
+              minutes,
+              notes,
+              ingredients,
+              steps,
+              innovator,
+              ancestor 
+            } = recipe;
+
+      const newRecipe = { 
+          title, 
+          minutes, 
+          notes 
+        };
+
+      const newIngredients = { ingredients };
+      const newSteps = { steps };
+      const newAncestor = { ancestor, innovator };
+
+    return db("recipes")
+        .insert([newRecipe])
+        .then(()=>{
+            db("ingredients").insert(newIngredients)
+        })
+        .then(() => {
+            db('steps').insert(newSteps)
+        })
+        .then(() => {
+            db('edits').insert(
+                {
+                    
+                }
+            )
+        });
   }
   
   async function findRecipeById(id) {
@@ -39,7 +73,6 @@ module.exports = {
       .pluck('l.cook_id').whereIn('l.recipe_id', [id]);
 
       // resolves to the id of whichever cook created or modified this recipe.
-      // will need to write innovator.cook_id when spreading into the final return object.
     const recipeInnovator = await db('recipes as r')
       .where({ 'r.id': id })
       .join('edits as e', 'e.new_recipe', 'r.id')
@@ -76,21 +109,11 @@ module.exports = {
     return newRecipe;
   }
 
-  async function allRecipes() {
-    
-    let recipeIds = await db('recipes as r').pluck('r.id');
-
-    async function getEm (array) {
-        let recipeArray = [];
-        array.forEach(id => {
-            recipe = findRecipeById(id);
-        recipeArray.push(recipe)
-        });
-        return recipeArray;
-    }
-    return getEm(recipeIds);
+  function allRecipes() {
+        return db('*').from('recipes as r')
+        .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
+        .select(['r.id', 'r.title', 'r.minutes', 'e.cook_id']);
   }
-
 
   function findByTitle(title) {
     return db("recipes").where({ title }).first();

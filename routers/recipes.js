@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Recipes = require("../data/recipeModel.js");
+const mid = require("../middleware/cookMiddleware.js");
 
 //all recipes
 router.get("/all", (req, res) => {
@@ -16,24 +17,27 @@ router.get("/:id", (req, res) => {
   });
 
 //post a new recipe
-router.post("/new", (req, res) => {
+router.post("/new", mid.restrict, (req, res) => {
     const { title, 
         minutes, 
         notes, 
         ingredients,
-        steps, 
-        innovator } = req.body;
+        steps,
+        innovator,
+        ancestor } = req.body;
 
-    Recipes.insertRecipe({title, 
+    Recipes.insertRecipe(
+        {title, 
         minutes, 
         notes, 
-        ingredients, 
+        ingredients, //must be added into ingredients table
         steps, //must be added to steps table
-        innovator //must be added to edits table
+        innovator, //must be added to edits table
+        ancestor //also must be added to edits table
     })
-            .then(
+            .then(res => {
                 res.status(201).json({ message: "Recipe created"})
-            )
+            })
             .catch( err => {
                 res.status(500).json({message: "Error creating recipe", err})
             });
