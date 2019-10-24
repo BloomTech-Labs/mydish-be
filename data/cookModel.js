@@ -4,7 +4,9 @@ module.exports = {
   insert,
   findByUsername,
   findById,
-  all
+  all,
+  remove,
+  update
 };
 
 function insert(cook) {
@@ -28,4 +30,12 @@ function findById(id) {
 
 function findByUsername(username) {
   return findBy({ username }).first();
+}
+
+function remove(id) {
+  return findBy({ id }).del();
+}
+
+function update(id, changes) {
+  return findBy({ id }).update(changes);
 }

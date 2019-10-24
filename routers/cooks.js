@@ -61,9 +61,43 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/", mid.restrict, (req, res) => {
-  // const cook = req.cook;
-  // console.log("decodedToken cook", cook);
+  const cook = req.cook;
+  console.log("decodedToken cook", cook);
   Cooks.all().then(cooks => res.status(200).json(cooks));
+});
+
+router.delete("/self", mid.restrict, (req, res) => {
+  const { id } = req.cook;
+  Cooks.remove(id)
+    .then(() => res.status(204).end())
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Error deleting cook" });
+    });
+});
+
+router.put("/self", mid.restrict, (req, res) => {
+  const { id } = req.cook;
+  const { username, password } = req.body;
+
+  Cooks.update(id, {
+    username,
+    password: bcrypt.hashSync(password, 8)
+  })
+    .then(() => {
+      Cooks.findById(id)
+        .then(cook => res.status(200).json(cook))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: "Error finding cook" });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: "Error updating"
+      });
+    });
 });
 
 router.get("/cookID/:id", mid.validateId, (req, res) => {
