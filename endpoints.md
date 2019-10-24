@@ -118,8 +118,9 @@ res = {
     {
       id,
       title,
-      innovator_id: "(number) the ID of the cook who created or modified the recipe",
-      innovator_name
+      minutes,
+      notes,
+      innovator_id: "(number) the ID of the cook who created or modified the recipe"
     }
   ]
 };
