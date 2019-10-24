@@ -11,7 +11,6 @@ function insert(cook) {
   return db("cooks")
     .insert(cook, "id")
     .then(([id]) => {
-      console.log("id in database", id);
       return findById(id);
     });
 }
