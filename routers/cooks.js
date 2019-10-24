@@ -2,9 +2,10 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Cooks = require("../data/cookModel.js");
+const mid = require("../middleware/cookMiddleware.js");
 
 function generateToken(cook) {
-  console.log("cook in generateToken", cook);
+  // console.log("cook in generateToken", cook);
   const payload = {
     username: cook.username,
     id: cook.id
@@ -14,21 +15,21 @@ function generateToken(cook) {
   };
   return jwt.sign(payload, process.env.SESSION_SECRET, options);
 }
-router.get("/", (req, res) => {
-  const x = Cooks.all().then(x => res.status(200).json(x));
-});
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
+
   Cooks.insert({
     username,
     password: bcrypt.hashSync(password, 8)
   })
-    .then(id => {
-      console.log("id", id);
+    .then(cook => {
+      const token = generateToken(cook);
+      const cook_id = cook.id;
 
-      res.status(201).json({ message: "Cook registered", id });
+      res
+        .status(201)
+        .json({ message: "registration successful", cook_id, token });
     })
     .catch(err => {
       console.log(err);
@@ -42,10 +43,12 @@ router.post("/login", (req, res) => {
     .then(cook => {
       if (cook && bcrypt.compareSync(password, cook.password)) {
         const token = generateToken(cook);
+        const cook_id = cook.id;
+
         res.status(200).json({
           message: "You have logged in",
-          token,
-          cook
+          cook_id,
+          token
         });
       } else {
         res.status(401).json({ message: "Invalid password" });
@@ -54,6 +57,60 @@ router.post("/login", (req, res) => {
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: "Error logging in user" });
+    });
+});
+
+router.get("/", mid.restrict, (req, res) => {
+  const cook = req.cook;
+  console.log("decodedToken cook", cook);
+  Cooks.all().then(cooks => res.status(200).json(cooks));
+});
+
+router.delete("/self", mid.restrict, (req, res) => {
+  const { id } = req.cook;
+  Cooks.remove(id)
+    .then(() => res.status(204).end())
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Error deleting cook" });
+    });
+});
+
+router.put("/self", mid.restrict, (req, res) => {
+  const { id } = req.cook;
+  const { username, password } = req.body;
+
+  Cooks.update(id, {
+    username,
+    password: bcrypt.hashSync(password, 8)
+  })
+    .then(() => {
+      Cooks.findById(id)
+        .then(cook => res.status(200).json(cook))
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: "Error finding cook" });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: "Error updating"
+      });
+    });
+});
+
+router.get("/cookID/:id", mid.validateId, (req, res) => {
+  const { id } = req.params;
+  console.log("id", id);
+  Cooks.findById(id)
+    .then(cooks => {
+      //console.log("cooks", cooks);
+      res.status(200).json(cooks);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: "Error retriving cook" });
     });
 });
 
