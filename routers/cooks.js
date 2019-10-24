@@ -5,7 +5,7 @@ const Cooks = require("../data/cookModel.js");
 const mid = require("../middleware/cookMiddleware.js");
 
 function generateToken(cook) {
-  console.log("cook in generateToken", cook);
+  // console.log("cook in generateToken", cook);
   const payload = {
     username: cook.username,
     id: cook.id
@@ -15,9 +15,6 @@ function generateToken(cook) {
   };
   return jwt.sign(payload, process.env.SESSION_SECRET, options);
 }
-router.get("/", (req, res) => {
-  const x = Cooks.all().then(x => res.status(200).json(x));
-});
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
@@ -61,6 +58,12 @@ router.post("/login", (req, res) => {
       console.log(err);
       res.status(500).json({ message: "Error logging in user" });
     });
+});
+
+router.get("/", mid.restrict, (req, res) => {
+  // const cook = req.cook;
+  // console.log("decodedToken cook", cook);
+  Cooks.all().then(cooks => res.status(200).json(cooks));
 });
 
 router.get("/cookID/:id", mid.validateId, (req, res) => {
