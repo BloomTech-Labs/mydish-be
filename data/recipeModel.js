@@ -28,10 +28,11 @@ module.exports = {
       const newIngredients = { ingredients };
       const newSteps = { steps };
       const newAncestor = { ancestor, innovator };
-
+        
+    //use async and await instead of chaining calls
     return db("recipes")
         .insert([newRecipe])
-        .then(()=>{
+        .then(()=> {
             db("ingredients").insert(newIngredients)
         })
         .then(() => {
@@ -40,7 +41,7 @@ module.exports = {
         .then(() => {
             db('edits').insert(
                 {
-                    
+
                 }
             )
         });
@@ -110,7 +111,7 @@ module.exports = {
   }
 
   function allRecipes() {
-        return db('*').from('recipes as r')
+    return db('*').from('recipes as r')
         .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
         .select(['r.id', 'r.title', 'r.minutes', 'e.cook_id']);
   }

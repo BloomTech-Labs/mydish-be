@@ -20,11 +20,12 @@ router.get("/:id", (req, res) => {
 router.post("/new", mid.restrict, (req, res) => {
     const { title, 
         minutes, 
-        notes, 
+        notes,  //optional
         ingredients,
         steps,
-        innovator,
-        ancestor } = req.body;
+        innovator, //req.cook.id,
+        ancestor
+         } = req.body;
 
     Recipes.insertRecipe(
         {title, 
