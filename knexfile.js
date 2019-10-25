@@ -6,7 +6,7 @@ module.exports = {
     client: "pg",
     connection: {
       database: "postgres",
-      user: "postgres",
+      user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD
     },
     migrations: {
@@ -18,7 +18,7 @@ module.exports = {
   },
   production: {
     client: "pg",
-    connection: process.env.DATABASE_URL,
+    connection: process.env.HEROKU_POSTGRESQL_BRONZW_URL,
     migrations: {
       directory: "./data/migrations"
     },
