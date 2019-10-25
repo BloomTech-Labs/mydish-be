@@ -6,24 +6,35 @@
 ```js
 recipe = {
   title,
-  minutes: "(optional number) preparation time in minutes",
+  minutes: {
+    prepTime, 
+	  cookTime,
+	  totalTime, 
+    },
+  
   notes: "(optional) free-form notes about the recipe",
-  "(optional) categories": [
+  categories: [
     "(string) category/tag name"
   ],
   ingredients: {
-    name: {
-      quantity: "(number)",
-      unit
-    }
+    name: 
+    quantity: "(number)",
+    unit: "string: example- mL or g or cups"
   },
   likes: "(number) total likes",
   steps: [
-    "string"
+    {
+	    ordinal: 1,
+	    body: "a string- step 1 blah blah blah"
+	  },
+	  {
+      ordinal: 2,
+	    body: "a string- step 2 blah blah blah"
+	  }
   ],
   innovator: "(number) ID of innovator who created or last edited this recipe",
   ancestor: "(optional number) the ID of the previous version of this recipe",
-  timestamp: "the time that this recipe was created"
+  timestamp: "this will be created on the backend. does not need to exist in the req body."
 };
 ```
 
@@ -111,15 +122,16 @@ GET `/cooks/:id` get detailed info about one cook
 
 ## Recipes
 
-GET `/recipes?.....` get brief info on all recipes, filtered if given query string
+GET `/recipes/all` get brief info on all recipes, filtered if given query string
 ```js
 res = {
   recipes: [
     {
       id,
       title,
-      innovator_id: "(number) the ID of the cook who created or modified the recipe",
-      innovator_name
+      minutes,
+      notes,
+      innovator_id: "(number) the ID of the cook who created or modified the recipe"
     }
   ]
 };
@@ -127,25 +139,36 @@ res = {
 
 POST `/recipes` add a new recipe (auth)
 ```js
-body = {
-  title,
-  minutes: "(optional number) preparation time in minutes",
-  notes: "(optional) free-form notes about the recipe",
-  "(optional) categories": [
-    "(string) category/tag name"
-  ],
-  ingredients: {
-    name: {
+  body = {
+    title,
+    minutes: {
+      prepTime, 
+      cookTime,
+      totalTime, 
+    },
+    notes: "(optional) free-form notes about the recipe",
+    categories: [
+      "(string) category/tag name"
+    ],
+    ingredients: {
+      name: 
       quantity: "(number)",
-      unit
-    }
-  },
-  steps: [
-    "string"
-  ],
-  ancestor: "(optional number) the ID of the previous version of this recipe"
-};
-```
+      unit: "string: example- mL or g or cups"
+    },
+    likes: "(number) total likes",
+    steps: [
+      {
+        ordinal: 1,
+        body: "a string- step 1 blah blah blah"
+      },
+      {
+        ordinal: 2,
+        body: "a string- step 2 blah blah blah"
+      }
+    ],
+    ancestor: "(optional number) the ID of the previous version of this recipe"
+  };
+``` 
 
 GET `/recipes/:id` get detailed info about one recipe
 ```js
