@@ -14,7 +14,7 @@ router.post("/save/:recipe_id", mid.restrict, (req, res) => {
 
 //delete a saved recipe from the cookbook
 router.delete("/delete/:recipe_id", mid.restrict, (req, res) => {
-    Cookbook.remove(req.params.recipe_id)
+    Cookbook.cookbookRecipeDelete(req.params.recipe_id, req.cook.id)
     .then(() => res.status(204).end())
     .catch(err => {
       console.log(err);
