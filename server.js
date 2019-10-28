@@ -1,11 +1,11 @@
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const server = express();
 
-//const fooRouter = require("./routers/fooRouter");
-
 server.use(express.json());
-//server.use('/foos', fooRouter);
+
 const CooksRouter = require("./routers/cooks.js");
 const RecipeRouter = require("./routers/recipes.js");
 const CookbookRouter = require("./routers/cookbook.js")

@@ -3,11 +3,13 @@ const db = require("./dbConfig.js");
 module.exports = {
     cookbookInsert,
     cookbookRecipeDelete,
-    cookbookFindBy
+    cookbookFindById
 }
 
-function cookbookFindBy(any) {
-    return db("saves").where(any);
+function cookbookFindById(id) {
+    return db("saves")
+    .pluck('saves.recipe_id')
+    .whereIn({'saves.cook_id': id});
   }
 
 function cookbookInsert(recipeId, cookId) {
