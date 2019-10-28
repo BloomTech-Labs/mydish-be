@@ -6,8 +6,8 @@ module.exports = {
     cookbookFindBy
 }
 
-function cookbookFindBy(where) {
-    return db("cooks").where(where);
+function cookbookFindBy(any) {
+    return db("saves").where(any);
   }
 
 function cookbookInsert(recipeId, cookId) {
