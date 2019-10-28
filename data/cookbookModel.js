@@ -6,10 +6,10 @@ module.exports = {
     cookbookFindById
 }
 
-function cookbookFindById(id) {
+function cookbookFindById(cookId) {
     return db("saves")
     .pluck('saves.recipe_id')
-    .whereIn({'saves.cook_id': id});
+    .whereIn({'saves.cook_id': cookId});
   }
 
 function cookbookInsert(recipeId, cookId) {
@@ -17,6 +17,11 @@ function cookbookInsert(recipeId, cookId) {
       .insert(recipeId, cookId);
   };
   
-function cookbookRecipeDelete(recipeId) {
-    return findBy({ recipeId }).del();
+
+  //find the first recipe in the logged in cook's cookbook that matches the ID passed in and delete that.
+
+function cookbookRecipeDelete(recipeId, cookId) {
+    return db("saves")
+    .where({'saves.cook_id': cookId, 'saves.recipe_id': recipeId})
+    .del()
   };
