@@ -5,8 +5,8 @@ const mid = require("../middleware/cookMiddleware.js");
 //save a recipe
 router.post("/save/:recipe_id", mid.restrict, (req, res) => {
     Cookbook.insert({
-        cook_id: req.cook.id,
-        recipe_id: req.params.recipe_id
+        cook_id: req.cook.id,  //grabs id from the cook object in the restriction middlewear.
+        recipe_id: req.params.recipe_id 
       })
     .then(() => res.status(200).json( {message: "Recipe Successfully Saved to Cookbook."}))
     .catch(() => res.status(500).json({message: "could not save recipe to cookbook. please try again."}))
