@@ -17,32 +17,38 @@ router.get("/:id", (req, res) => {
   });
 
 //post a new recipe
-router.post("/new", mid.restrict, (req, res) => {
-    const { title, 
-        minutes, 
-        notes,  //optional
-        ingredients,
-        steps,
-        innovator, //req.cook.id,
-        ancestor
-         } = req.body;
+router.post("", mid.restrict, async (req, res) => {
+    const missing = [];
+    const validRecipe = { innovator: req.cook.id };
 
-    Recipes.insertRecipe(
-        {title, 
-        minutes, 
-        notes, 
-        ingredients, //must be added into ingredients table
-        steps, //must be added to steps table
-        innovator, //must be added to edits table
-        ancestor //also must be added to edits table
-    })
-            .then(res => {
-                res.status(201).json({ message: "Recipe created"})
-            })
-            .catch( err => {
-                res.status(500).json({message: "Error creating recipe", err})
-            });
-})
+    // required fields
+    ["title", "ingredients", "steps"].forEach(field => {
+        if (field in req.body) {
+            validRecipe[field] = req.body[field];
+        } else {
+            missing.push(field);
+        }
+    });
+
+    if (missing.length > 0) { // abort if required fields missing
+        res.status(400).json({ message: `missing required ${field} field`});
+    } else {
+        // optional fields
+        ["notes", "ancestor", "minutes"].forEach(field => {
+            if (field in req.body) {
+                validRecipe[field] = req.body[field];
+            }
+        });
+
+        try {
+            await Recipes.insertRecipe(validRecipe);
+            res.status(201).json({ message: "Recipe created"})
+        } catch(err) {
+            console.log(err);
+            res.status(500).json({message: "Error creating recipe", err});
+        }
+    }
+});
 
 
 module.exports = router;
