@@ -25,5 +25,19 @@ module.exports = {
     seeds: {
       directory: "./data/seeds"
     }
+  },
+  testing: {
+    client: "pg",
+    connection: {
+      database: "postgres",
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD
+    },
+    migrations: {
+      directory: "./data/migrations"
+    },
+    seeds: {
+      directory: "./data/seeds"
+    }
   }
 };

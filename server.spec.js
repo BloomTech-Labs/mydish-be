@@ -6,7 +6,7 @@ describe('server.js', () => {
         it('should return an OK status code from the recipes route', () => {
           let expectedStatusCode = 200;
           let response;
-          return request(server).get('/recipes/').then(res => {
+          return request(server).get('/recipes/all').then(res => {
           response = res;
           expect(response.status).toEqual(expectedStatusCode);
           })
