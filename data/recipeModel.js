@@ -8,44 +8,31 @@ module.exports = {
 }
 
 
-  function insertRecipe(recipe) {
-      const { 
-              title,
-              minutes,
-              notes,
-              ingredients,
-              steps,
-              innovator,
-              ancestor 
-            } = recipe;
+async function insertRecipe({
+  steps, ingredients, ancestor, author, categories, ...recipesEntry}) {
 
-      const newRecipe = { 
-          title, 
-          minutes, 
-          notes 
-        };
+  // main entry needed first
+  const [ recipeId ] = await db('recipes').insert(recipesEntry, ['id']);
 
-      const newIngredients = { ingredients };
-      const newSteps = { steps };
-      const newAncestor = { ancestor, innovator };
-        
-    //use async and await instead of chaining calls
-    return db("recipes")
-        .insert([newRecipe])
-        .then(()=> {
-            db("ingredients").insert(newIngredients)
-        })
-        .then(() => {
-            db('steps').insert(newSteps)
-        })
-        .then(() => {
-            db('edits').insert(
-                {
+  const stepsEntries = steps.map((step, i) => {
+    return { ordinal: i, body: step, recipe_id: recipeId };
+  });
 
-                }
-            )
-        });
-  }
+  const ingredientsEntries = ingredients.map(async ({ name, quantity, unit }) => {
+    const unitId = await db('units').where({ name }).first();
+    return {
+      recipe_id: recipeId,
+      name,
+      unit_id: unitId,
+      quantity
+    };
+  });
+
+  await db('ingredients').insert(ingredientsEntries);
+  await db('steps').insert(stepsEntries);
+  await db('categories').insert(categories);
+
+}
   
   async function findRecipeById(id) {
 
@@ -119,4 +106,3 @@ module.exports = {
   function findByTitle(title) {
     return db("recipes").where({ title }).first();
   }
-  
