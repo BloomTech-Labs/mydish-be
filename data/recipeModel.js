@@ -18,6 +18,7 @@ async function insertRecipe({
     return { ordinal: i, body: step, recipe_id: recipeId };
   });
 
+  // ingredients given as array
   const ingredientsEntries = ingredients.map(async ({ name, quantity, unit }) => {
     const unitId = await db('units').where({ name }).first();
     return {
@@ -27,6 +28,18 @@ async function insertRecipe({
       quantity
     };
   });
+
+  // // for ingredients given as object
+  // const ingredientsEntries = Object.entries(ingredients).map(async ([name, props]) => {
+  //   const { quantity, unit } = props;
+  //   const unitId = await db('units').where({ name }).first();
+  //   return {
+  //     recipe_id: recipeId,
+  //     name,
+  //     unit_id: unitId,
+  //     quantity
+  //   };
+  // });
 
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);

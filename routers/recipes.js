@@ -31,7 +31,7 @@ router.post("", mid.restrict, async (req, res) => {
     });
 
     if (missing.length > 0) { // abort if required fields missing
-        res.status(400).json({ message: `missing required ${field} field`});
+        res.status(400).json({ message: `missing required fields: ${missing}`});
     } else {
         // optional fields
         ["notes", "ancestor", "minutes"].forEach(field => {
