@@ -9,6 +9,18 @@ router.get("/all", (req, res) => {
     .catch(err => {res.status(500).json(err)});
 });
 
+//search by title
+router.get("/", (req, res) => {
+    Recipes.findByTitle(req.query.title)
+        .then(dbRes => {
+            res.status(200).json(dbRes);
+        })
+        .catch(err => res.status(500).json(err));
+    // Recipes.allRecipes()
+    // .then(x => {res.status(200).json(x)})
+    // .catch(err => {res.status(500).json(err)});
+});
+
 //single recipe
 router.get("/:id", (req, res) => {
     Recipes.findRecipeById(req.params.id)
@@ -17,7 +29,7 @@ router.get("/:id", (req, res) => {
   });
 
 //post a new recipe
-router.post("", mid.restrict, async (req, res) => {
+router.post("/", mid.restrict, async (req, res) => {
     const missing = [];
     const validRecipe = { innovator: req.cook.id };
 

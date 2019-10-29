@@ -124,5 +124,5 @@ async function insertRecipe({
   }
 
   function findByTitle(title) {
-    return db("recipes").where({ title }).first();
+    return db("recipes").where('title', 'ilike', `%${title}%`);
   }
