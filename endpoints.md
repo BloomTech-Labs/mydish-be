@@ -16,11 +16,13 @@ recipe = {
   categories: [
     "(string) category/tag name"
   ],
-  ingredients: {
-    name: 
-    quantity: "(number)",
-    unit: "string: example- mL or g or cups"
-  },
+  ingredients: [
+    {
+      name, 
+      quantity: "(number)",
+      unit: "string: example- mL or g or cups"
+    }
+  ],
   likes: "(number) total likes",
   steps: [
     {
@@ -122,7 +124,7 @@ GET `/cooks/:id` get detailed info about one cook
 
 ## Recipes
 
-GET `/recipes/all` get brief info on all recipes, filtered if given query string
+GET `/recipes` get brief info on all recipes, filtered if given query string
 ```js
 res = {
   recipes: [
@@ -150,21 +152,15 @@ POST `/recipes` add a new recipe (auth)
     categories: [
       "(string) category/tag name"
     ],
-    ingredients: {
-      name: 
-      quantity: "(number)",
-      unit: "string: example- mL or g or cups"
-    },
-    likes: "(number) total likes",
-    steps: [
+    ingredients: [
       {
-        ordinal: 1,
-        body: "a string- step 1 blah blah blah"
-      },
-      {
-        ordinal: 2,
-        body: "a string- step 2 blah blah blah"
+        name, 
+        quantity: "(number)",
+        unit: "(string) example- mL or g or cups"
       }
+    ],
+    steps: [
+      body: "(string) step 1 blah blah blah"
     ],
     ancestor: "(optional number) the ID of the previous version of this recipe"
   };
@@ -179,12 +175,13 @@ res = {
   "(optional) categories": [
     "(string) category/tag name"
   ],
-  ingredients: {
-    name: {
+  ingredients: [
+    {
+      name, 
       quantity: "(number)",
-      unit
+      unit: "(string) example- mL or g or cups"
     }
-  },
+  ],
   likes: "(number) total likes",
   steps: [
     "(string) list of steps in order"
