@@ -7,7 +7,7 @@
     "server": "nodemon index.js",
     "start": "node index.js",
     "frontend": "knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "test": "cross-env NODE_ENV=testing jest --watch"
+    "test": "cross-env NODE_ENV=testing jest --watch --verbose"
   },
   "jest": {
     "testEnvironment": "node"
