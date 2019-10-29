@@ -31,7 +31,14 @@ async function insertRecipe({
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);
   await db('categories').insert(categories);
+  await db('edits').insert({
+    cook_id: author,
+    old_recipe: ancestor, // can be null
+    new_recipe: recipeId
+    // timestamp: Date.now() // for the future
+  });
 
+  return recipeId;
 }
   
   async function findRecipeById(id) {
