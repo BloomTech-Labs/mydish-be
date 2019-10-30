@@ -141,7 +141,16 @@ res = {
 
 GET `/recipes?title=foo` search for recipes with given string in the name
 ```js
-
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      minutes,
+      notes
+    }
+  ]
+};
 ```
 
 POST `/recipes` add a new recipe (auth)
