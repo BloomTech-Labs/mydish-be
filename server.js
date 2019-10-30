@@ -17,7 +17,7 @@ server.use("/recipes", RecipeRouter);
 server.use("/cookbook", CookbookRouter);
 
 server.get("/", (req, res) => {
-  res.status(200).json({ hello: "world", recieved: req.body });
+  res.status(200).json({ hello: "world" });
 });
 
 module.exports = server;

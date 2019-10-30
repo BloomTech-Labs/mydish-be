@@ -9,7 +9,7 @@ router.post("/save/:recipe_id", mid.restrict, (req, res) => {
         recipe_id: req.params.recipe_id 
       })
     .then(() => res.status(200).json( {message: "Recipe Successfully Saved to Cookbook."}))
-    .catch(() => res.status(500).json({message: "could not save recipe to cookbook. please try again."}))
+    .catch(() => res.status(500).json( {message: "could not save recipe to cookbook. please try again." }))
 });
 
 //delete a saved recipe from the cookbook
