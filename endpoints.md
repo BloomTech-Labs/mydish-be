@@ -16,11 +16,13 @@ recipe = {
   categories: [
     "(string) category/tag name"
   ],
-  ingredients: {
-    name: 
-    quantity: "(number)",
-    unit: "string: example- mL or g or cups"
-  },
+  ingredients: [
+    {
+      name, 
+      quantity: "(number)",
+      unit: "string: example- mL or g or cups"
+    }
+  ],
   likes: "(number) total likes",
   steps: [
     {
@@ -137,34 +139,38 @@ res = {
 };
 ```
 
+GET `/recipes?title=foo` search for recipes with given string in the name
+```js
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      minutes,
+      notes
+    }
+  ]
+};
+```
+
 POST `/recipes` add a new recipe (auth)
 ```js
   body = {
     title,
-    minutes: {
-      prepTime, 
-      cookTime,
-      totalTime, 
-    },
+    minutes: "(number) time to make, adding more types of minutes in the works"
     notes: "(optional) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
     ],
-    ingredients: {
-      name: 
-      quantity: "(number)",
-      unit: "string: example- mL or g or cups"
-    },
-    likes: "(number) total likes",
-    steps: [
+    ingredients: [
       {
-        ordinal: 1,
-        body: "a string- step 1 blah blah blah"
-      },
-      {
-        ordinal: 2,
-        body: "a string- step 2 blah blah blah"
+        name, 
+        quantity: "(number)",
+        unit: "(string) example- mL or g or cups"
       }
+    ],
+    steps: [
+      body: "(string) step 1 blah blah blah"
     ],
     ancestor: "(optional number) the ID of the previous version of this recipe"
   };
@@ -179,12 +185,13 @@ res = {
   "(optional) categories": [
     "(string) category/tag name"
   ],
-  ingredients: {
-    name: {
+  ingredients: [
+    {
+      name, 
       quantity: "(number)",
-      unit
+      unit: "(string) example- mL or g or cups"
     }
-  },
+  ],
   likes: "(number) total likes",
   steps: [
     "(string) list of steps in order"
