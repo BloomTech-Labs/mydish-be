@@ -124,7 +124,7 @@ GET `/cooks/:id` get detailed info about one cook
 
 ## Recipes
 
-GET `/recipes` get brief info on all recipes, filtered if given query string
+GET `/recipes/all` get brief info on all recipes, filtered if given query string
 ```js
 res = {
   recipes: [
@@ -139,15 +139,16 @@ res = {
 };
 ```
 
+GET `/recipes?title=foo` search for recipes with given string in the name
+```js
+
+```
+
 POST `/recipes` add a new recipe (auth)
 ```js
   body = {
     title,
-    minutes: {
-      prepTime, 
-      cookTime,
-      totalTime, 
-    },
+    minutes: "(number) time to make, adding more types of minutes in the works"
     notes: "(optional) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
