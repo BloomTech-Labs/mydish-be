@@ -7,9 +7,9 @@ module.exports = {
 }
 
 function cookbookFindById(cookId) {
-    return db("saves")
-    .pluck('saves.recipe_id')  //returns every item in specified column as an array
-    .whereIn({'saves.cook_id': cookId});
+    return db("saves")  
+    .where({'saves.cook_id': cookId})
+    .pluck('saves.recipe_id');
   }
 
 function cookbookInsert(recipeId, cookId) {
