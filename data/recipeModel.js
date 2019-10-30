@@ -9,25 +9,35 @@ module.exports = {
 
 
 async function insertRecipe({
-  steps, ingredients, ancestor, author, categories, ...recipesEntry}) {
+  steps, ingredients, ancestor, innovator, categories, ...recipesEntry}) {
 
   // main entry needed first
-  const [ recipeId ] = await db('recipes').insert(recipesEntry, ['id']);
+  const recipeRes = await db('recipes').insert(recipesEntry, ['id']);
+
+  const recipeId = recipeRes[0].id;
+  console.log('first', recipeRes[0])
+  console.log(recipeId) // == 5
 
   const stepsEntries = steps.map((step, i) => {
+    console.log('steps recipeId', recipeId)
     return { ordinal: i, body: step, recipe_id: recipeId };
   });
 
   // ingredients given as array
-  const ingredientsEntries = ingredients.map(async ({ name, quantity, unit }) => {
-    const unitId = await db('units').where({ name }).first();
+  console.log(ingredients)
+  const ingredientsEntries = await Promise.all(
+    ingredients.map(async ({ name, quantity, unit }) => {
+    const unitRes = await db('units').where({ name: unit }).first()
+    const unitId = unitRes.name;
+    console.log('ingredients recipeId', recipeId);
+    console.log('unitId', unitId);
     return {
       recipe_id: recipeId,
       name,
-      unit_id: unitId,
+      unit: unitId,
       quantity
     };
-  });
+  }));
 
   // // for ingredients given as object
   // const ingredientsEntries = Object.entries(ingredients).map(async ([name, props]) => {
@@ -41,11 +51,12 @@ async function insertRecipe({
   //   };
   // });
 
+  console.log('ingredientsEntries', ingredientsEntries)
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);
   await db('categories').insert(categories);
   await db('edits').insert({
-    cook_id: author,
+    cook_id: innovator,
     old_recipe: ancestor, // can be null
     new_recipe: recipeId
     // timestamp: Date.now() // for the future

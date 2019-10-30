@@ -10,15 +10,12 @@ router.get("/all", (req, res) => {
 });
 
 //search by title
-router.get("/", (req, res) => {
+router.get("", (req, res) => {
     Recipes.findByTitle(req.query.title)
         .then(dbRes => {
             res.status(200).json(dbRes);
         })
         .catch(err => res.status(500).json(err));
-    // Recipes.allRecipes()
-    // .then(x => {res.status(200).json(x)})
-    // .catch(err => {res.status(500).json(err)});
 });
 
 //single recipe
