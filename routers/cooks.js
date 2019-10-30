@@ -39,8 +39,10 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
+  console.log("Hello from login", req.body)
   Cooks.findByUsername(username)
     .then(cook => {
+      console.log("login cook", cook)
       if (cook && bcrypt.compareSync(password, cook.password)) {
         const token = generateToken(cook);
         const cook_id = cook.id;

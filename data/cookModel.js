@@ -29,6 +29,7 @@ function findById(id) {
 }
 
 function findByUsername(username) {
+  console.log("I am in cook model", username)
   return findBy({ username }).first();
 }
 
