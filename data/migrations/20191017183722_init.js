@@ -51,7 +51,6 @@ exports.up = function(knex) {
         tbl
           .integer("old_recipe")
           .unsigned()
-          .notNullable()
           .references("id")
           .inTable("recipes")
           .onDelete("cascade");
