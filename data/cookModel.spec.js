@@ -14,7 +14,7 @@ describe("cooks model", () => {
     });
 
     describe("insert()", () => {
-        it("should insert hobbits into the db", async () => {
+        it("should insert cook into the db", async () => {
             //insert a record
             await Cooks.insert({ username: "test", password: "test" });
             //assert the record was inserted
