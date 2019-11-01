@@ -13,8 +13,9 @@ function cookbookFindById(cookId) {
   }
 
 function cookbookInsert(recipeId, cookId) {
+  console.log("cookbookInsert got:", recipeId, cookId)
     return db("saves")
-      .insert(recipeId, cookId);
+    .insert({recipe_id: recipeId, cook_id: cookId});
   };
 
   //find the first recipe in the logged in cook's cookbook that matches the ID passed in and delete that.

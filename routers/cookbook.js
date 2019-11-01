@@ -26,7 +26,7 @@ router.delete("/delete/:recipe_id", mid.restrict, (req, res) => {
 router.get("/", mid.restrict, (req, res) => {
     Cookbook.cookbookFindById(req.cook.id)
     .then(recipeIds => {
-      res.status(200).json({cookbook: recipeIds});
+      res.status(200).json({recipeIds});
     })
     .catch(err => {
       console.log("your error, master", err);
