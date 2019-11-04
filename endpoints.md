@@ -198,7 +198,7 @@ res = {
   ],
   innovator: "(number) ID of innovator who created or last edited this recipe",
   ancestor: "(optional number) the ID of the previous version of this recipe",
-  timestamp: "the time that this recipe was created"
+  innovator_name: "(string) the username of the innovator"
 };
 ```
 
