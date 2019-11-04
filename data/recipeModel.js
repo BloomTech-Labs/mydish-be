@@ -121,6 +121,7 @@ async function findRecipeById(id) {
       id: baseRecipe.id,
       title: baseRecipe.title,
       minutes: baseRecipe.minutes,
+      img: baseRecipe.img,
       ingredients: recipeIngredients,
       steps: recipeSteps,
       notes: baseRecipe.notes ? baseRecipe.notes : null,
@@ -137,9 +138,13 @@ async function findRecipeById(id) {
   function allRecipes() {
     return db('*').from('recipes as r')
         .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
-        .select(['r.id', 'r.title', 'r.minutes', 'e.cook_id']);
+        .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+        .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
   }
 
   function findByTitle(title) {
-    return db("recipes").where('title', 'ilike', `%${title}%`);
+    return db("recipes as r").where('title', 'ilike', `%${title}%`)
+        .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
+        .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+        .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
   }
