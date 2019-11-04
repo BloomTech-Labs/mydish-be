@@ -44,7 +44,7 @@ router.post("/", mid.restrict, async (req, res) => {
         res.status(400).json({ message: `missing required fields: ${missing}`});
     } else {
         // optional fields
-        ["notes", "ancestor", "minutes"].forEach(field => {
+        ["notes", "ancestor", "minutes", "img"].forEach(field => {
             if (field in req.body) {
                 validRecipe[field] = req.body[field];
             }
