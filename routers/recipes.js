@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Recipes = require("../data/recipeModel.js");
 const mid = require("../middleware/cookMiddleware.js");
+const cookbook = require("../data/cookbookModel.js");
 
 //all recipes
 router.get("/all", (req, res) => {
@@ -43,15 +44,20 @@ router.post("/", mid.restrict, async (req, res) => {
         res.status(400).json({ message: `missing required fields: ${missing}`});
     } else {
         // optional fields
-        ["notes", "ancestor", "minutes"].forEach(field => {
+        ["notes", "ancestor", "minutes", "img"].forEach(field => {
             if (field in req.body) {
                 validRecipe[field] = req.body[field];
             }
         });
 
         try {
-            await Recipes.insertRecipe(validRecipe);
-            res.status(201).json({ message: "Recipe created"})
+            const recipeId = await Recipes.insertRecipe(validRecipe);
+            cookbook.cookbookInsert(recipeId, req.cook.id).then(dbRes => {
+                res.status(201).json({ message: "Recipe created"})
+            }).catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            });
         } catch(err) {
             console.log(err);
             res.status(500).json({message: "Error creating recipe", err});

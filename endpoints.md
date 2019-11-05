@@ -131,8 +131,8 @@ res = {
     {
       id,
       title,
+      img: "(string) url of the food photo",
       minutes,
-      notes,
       innovator_id: "(number) the ID of the cook who created or modified the recipe"
     }
   ]
@@ -146,8 +146,9 @@ res = {
     {
       id,
       title,
+      img: "(string) url for a photo of food",
       minutes,
-      notes
+      innovator_id: "(number) the ID of the innovator who created this recipe"
     }
   ]
 };
@@ -157,7 +158,8 @@ POST `/recipes` add a new recipe (auth)
 ```js
   body = {
     title,
-    minutes: "(number) time to make, adding more types of minutes in the works"
+    minutes: "(number) time to make, adding more types of minutes in the works",
+    img: "(string) url of an image of the food"
     notes: "(optional) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
@@ -181,6 +183,7 @@ GET `/recipes/:id` get detailed info about one recipe
 res = {
   title,
   minutes: "(optional number) preparation time in minutes",
+  img: "(string) url of an image of food prepared with the recipe"
   notes: "(optional) free-form notes about the recipe",
   "(optional) categories": [
     "(string) category/tag name"
@@ -198,7 +201,7 @@ res = {
   ],
   innovator: "(number) ID of innovator who created or last edited this recipe",
   ancestor: "(optional number) the ID of the previous version of this recipe",
-  timestamp: "the time that this recipe was created"
+  innovator_name: "(string) the username of the innovator"
 };
 ```
 
