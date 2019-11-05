@@ -158,9 +158,9 @@ POST `/recipes` add a new recipe (auth)
 ```js
   body = {
     title,
-    minutes: "(number) time to make, adding more types of minutes in the works",
-    img: "(string) url of an image of the food"
-    notes: "(optional) free-form notes about the recipe",
+    minutes: "(optional number) time to make, adding more types of minutes in the works",
+    img: "(optional string) url of an image of the food"
+    notes: "(optional string) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
     ],
@@ -264,6 +264,5 @@ res = {
 
 # Notes
 
-- Images aren't handled at all yet. 
 - Should any cook data be publicly accessible? Currently there's no getting detailed information about a particular cook by ID because there isn't more information to give.
 - Is there any benefit to being able to get one's own information? The user's ID is supplied on login, and the username and password must be known on the front end to log in successfully in the first place.
