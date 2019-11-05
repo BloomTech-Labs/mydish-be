@@ -1,4 +1,4 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
   return (
     knex.schema
       //creates recipes table and necessary columns
@@ -6,7 +6,6 @@ exports.up = function(knex) {
         tbl.increments("id");
         tbl
           .text("title")
-          .unique()
           .notNullable();
         tbl.integer("minutes");
         tbl.text("notes");
@@ -132,7 +131,7 @@ exports.up = function(knex) {
 };
 
 //for dropping all tables
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists("ingredients")
     .dropTableIfExists("units")

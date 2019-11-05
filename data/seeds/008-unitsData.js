@@ -8,13 +8,22 @@ exports.seed = function(knex) {
         {name: 'tsp'},
         {name: 'tbsp'},
         {name: 'cup'},
+        {name: 'cups'},
         {name: 'g'},
         {name: 'oz'},
         {name: 'pinch'},
-        {name: 'L'},
-        {name: 'mL'},
+        {name: 'pinches'},
+        {name: 'l'},
+        {name: 'ml'},
         {name: 'can'},
-        {name: 'package'}
+        {name: 'cans'},
+        {name: 'whole'},
+        {name: 'wholes'},
+        {name: 'pint'},
+        {name: 'pints'},
+        {name: 'mg'},
+        {name: 'package'},
+        {name: 'packages'}
       ]);
     });
 };
