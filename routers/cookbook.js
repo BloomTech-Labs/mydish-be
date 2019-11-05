@@ -5,9 +5,6 @@ const mid = require("../middleware/cookMiddleware.js");
 //save a recipe to a cookbook
 router.post("/save/:recipe_id", mid.restrict, (req, res) => {
   const recipeId = parseInt(req.params.recipe_id);
-  console.log("recipe_id", recipeId)
-  console.log("cookbok cookId", req.cook.id)
-  console.log("cookbook type of recipe_id", typeof recipeId)
 
   Cookbook.cookbookInsert(
     req.cook.id, recipeId
