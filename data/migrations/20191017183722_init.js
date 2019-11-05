@@ -6,7 +6,6 @@ exports.up = function(knex) {
         tbl.increments("id");
         tbl
           .text("title")
-          .unique()
           .notNullable();
         tbl.integer("minutes");
         tbl.text("notes");
