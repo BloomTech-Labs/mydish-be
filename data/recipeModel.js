@@ -117,18 +117,12 @@ async function findRecipeById(id) {
   return newRecipe;
 }
 
-function allRecipes() {
-  return db('*').from('recipes as r')
-    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
-    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
-}
-
 function searchByTitle(title) {
   return db("recipes as r").where('title', 'ilike', `%${title}%`)
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
+    .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username'])
+
 }
 
 function findByTitle(title) {
@@ -137,3 +131,23 @@ function findByTitle(title) {
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
 }
+
+function allRecipes() {
+  return db.with('tmpSaves', (qb) => {
+      qb
+        .select('r.*')
+        .count('r.id as total_saves')
+        .from('recipes as r')
+        .join('saves as s', 'r.id', 's.recipe_id')
+        .groupBy('r.id');
+  })
+    .select(['r.id', 'r.title', 'r.minutes',
+              'r.img', 'e.cook_id', 'c.username',
+              't.total_saves'])
+    .from('recipes as r')
+    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
+    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+    .leftJoin('tmpSaves as t', 'r.id', 't.id')
+    .orderBy('r.id');
+}
+
