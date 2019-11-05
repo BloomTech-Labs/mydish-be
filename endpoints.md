@@ -131,8 +131,8 @@ res = {
     {
       id,
       title,
+      img: "(string) url of the food photo",
       minutes,
-      notes,
       innovator_id: "(number) the ID of the cook who created or modified the recipe"
     }
   ]
@@ -146,8 +146,9 @@ res = {
     {
       id,
       title,
+      img: "(string) url for a photo of food",
       minutes,
-      notes
+      innovator_id: "(number) the ID of the innovator who created this recipe"
     }
   ]
 };
@@ -157,8 +158,9 @@ POST `/recipes` add a new recipe (auth)
 ```js
   body = {
     title,
-    minutes: "(number) time to make, adding more types of minutes in the works"
-    notes: "(optional) free-form notes about the recipe",
+    minutes: "(optional number) time to make, adding more types of minutes in the works",
+    img: "(optional string) url of an image of the food"
+    notes: "(optional string) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
     ],
@@ -181,6 +183,7 @@ GET `/recipes/:id` get detailed info about one recipe
 res = {
   title,
   minutes: "(optional number) preparation time in minutes",
+  img: "(string) url of an image of food prepared with the recipe"
   notes: "(optional) free-form notes about the recipe",
   "(optional) categories": [
     "(string) category/tag name"
@@ -198,7 +201,7 @@ res = {
   ],
   innovator: "(number) ID of innovator who created or last edited this recipe",
   ancestor: "(optional number) the ID of the previous version of this recipe",
-  timestamp: "the time that this recipe was created"
+  innovator_name: "(string) the username of the innovator"
 };
 ```
 
@@ -261,6 +264,5 @@ res = {
 
 # Notes
 
-- Images aren't handled at all yet. 
 - Should any cook data be publicly accessible? Currently there's no getting detailed information about a particular cook by ID because there isn't more information to give.
 - Is there any benefit to being able to get one's own information? The user's ID is supplied on login, and the username and password must be known on the front end to log in successfully in the first place.

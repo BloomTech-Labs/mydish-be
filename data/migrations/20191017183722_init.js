@@ -5,11 +5,11 @@ exports.up = function(knex) {
       .createTable("recipes", tbl => {
         tbl.increments("id");
         tbl
-          .text("title", 128)
-          .unique()
+          .text("title")
           .notNullable();
-        tbl.integer("minutes").notNullable();
-        tbl.text("notes", 2000);
+        tbl.integer("minutes");
+        tbl.text("notes");
+        tbl.text("img");
       })
       //creates steps table also referrencing the recipe id as a foreign key
       .createTable("steps", tbl => {
@@ -22,7 +22,7 @@ exports.up = function(knex) {
           .onDelete("cascade");
         tbl.decimal("ordinal").notNullable();
         tbl.primary(["ordinal", "recipe_id"]);
-        tbl.text("body", 1000).notNullable();
+        tbl.text("body").notNullable();
       })
       //creates a catagories table, each category can reference multiple recipe IDs as foreign keys
       .createTable("categories", tbl => {
@@ -33,17 +33,17 @@ exports.up = function(knex) {
           .references("id")
           .inTable("recipes")
           .onDelete("cascade");
-        tbl.text("name", 128).notNullable();
+        tbl.text("name").notNullable();
         tbl.primary(["name", "recipe_id"]);
       })
       //cooks table is basically a user table
       .createTable("cooks", tbl => {
         tbl.increments("id");
         tbl
-          .text("username", 128)
+          .text("username")
           .unique()
           .notNullable();
-        tbl.text("password", 256).notNullable();
+        tbl.text("password").notNullable();
       })
       //edits table for later functionality, will be used to track edits in future migrations
       .createTable("edits", tbl => {
@@ -66,7 +66,7 @@ exports.up = function(knex) {
           .references("id")
           .inTable("cooks")
           .notNullable()
-          .onDelete("cascade");
+          .onDelete("set null");
       })
       //likes table to track which user has liked which recipes
       .createTable("likes", tbl => {
@@ -101,10 +101,11 @@ exports.up = function(knex) {
           .references("id")
           .inTable("recipes")
           .onDelete("cascade");
+        tbl.primary(["cook_id", "recipe_id"]);
       })
       //unit table.
       .createTable("units", tbl => {
-        tbl.integer("number");
+        tbl.increments("id");
         tbl.text("name").unique();
       })
       //creates ingredients table referrencing the recipe id as a foreign key
@@ -116,14 +117,14 @@ exports.up = function(knex) {
           .references("id")
           .inTable("recipes")
           .onDelete("cascade");
-        tbl.text("name", 128).notNullable();
+        tbl.text("name").notNullable();
         tbl.primary(["recipe_id", "name"]);
         tbl
-          .text("unit", 128)
+          .text("unit")
           .unsigned()
           .references("name")
           .inTable("units")
-          .onDelete("cascade");
+          .onDelete("set null");
         tbl.float("quantity");
       })
   );
