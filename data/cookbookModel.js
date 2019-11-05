@@ -13,7 +13,7 @@ function cookbookFindById(cookId) {
 }
 
 function cookbookInsert(recipeId, cookId) {
-  console.log("cookbookInsert got:", recipeId, cookId)
+  console.log("cookbookInsert got:", recipeId)
   return db("saves")
     .insert({ recipe_id: recipeId, cook_id: cookId });
 };

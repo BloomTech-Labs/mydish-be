@@ -1,7 +1,7 @@
 const db = require("./dbConfig.js");
 
 module.exports = {
-
+    likesInsert
 }
 
 function likesInsert(recipeId, cookId) {
