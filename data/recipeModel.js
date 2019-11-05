@@ -16,22 +16,16 @@ async function insertRecipe({
   const recipeRes = await db('recipes').insert(recipesEntry, ['id']);
 
   const recipeId = recipeRes[0].id;
-  console.log('first', recipeRes[0])
-  console.log(recipeId) // == 5
 
   const stepsEntries = steps.map((step, i) => {
-    console.log('steps recipeId', recipeId)
     return { ordinal: i, body: step, recipe_id: recipeId };
   });
 
   // ingredients given as array
-  console.log(ingredients)
   const ingredientsEntries = await Promise.all(
     ingredients.map(async ({ name, quantity, unit }) => {
-    const unitRes = await db('units').where({ name: unit }).first()
+      const unitRes = await db('units').where({ name: unit.toLowerCase() }).first()
     const unitId = unitRes.name;
-    console.log('ingredients recipeId', recipeId);
-    console.log('unitId', unitId);
     return {
       recipe_id: recipeId,
       name,
@@ -40,19 +34,6 @@ async function insertRecipe({
     };
   }));
 
-  // // for ingredients given as object
-  // const ingredientsEntries = Object.entries(ingredients).map(async ([name, props]) => {
-  //   const { quantity, unit } = props;
-  //   const unitId = await db('units').where({ name }).first();
-  //   return {
-  //     recipe_id: recipeId,
-  //     name,
-  //     unit_id: unitId,
-  //     quantity
-  //   };
-  // });
-
-  console.log('ingredientsEntries', ingredientsEntries)
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);
   await db('categories').insert(categories);
