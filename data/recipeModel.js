@@ -4,7 +4,8 @@ module.exports = {
     insertRecipe,
     allRecipes,
     findRecipeById,
-    findByTitle    
+    findByTitle,
+    searchByTitle
 }
 
 
@@ -142,9 +143,16 @@ async function findRecipeById(id) {
         .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
   }
 
-  function findByTitle(title) {
+  function searchByTitle(title) {
     return db("recipes as r").where('title', 'ilike', `%${title}%`)
         .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
         .leftJoin('cooks as c', 'e.cook_id', 'c.id')
         .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
   }
+
+function findByTitle(title) {
+  return db('recipes as r').where({ title })
+        .leftJoin('edits as e', {'e.new_recipe': 'r.id'})
+        .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+        .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
+}

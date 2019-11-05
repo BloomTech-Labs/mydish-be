@@ -12,7 +12,7 @@ router.get("/all", (req, res) => {
 
 //search by title
 router.get("", (req, res) => {
-    Recipes.findByTitle(req.query.title)
+    Recipes.searchByTitle(req.query.title)
         .then(dbRes => {
             res.status(200).json(dbRes);
         })
