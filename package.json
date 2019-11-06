@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Lambda-School-Labs/cooking-recipe-source-control-be#readme",
   "devDependencies": {
     "cross-env": "^6.0.3",
+    "eslint": "^6.6.0",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
