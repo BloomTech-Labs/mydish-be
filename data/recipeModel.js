@@ -4,8 +4,8 @@ module.exports = {
   insertRecipe,
   allRecipes,
   findRecipeById,
-  findByTitle,
-  searchByTitle
+  searchByTitle,
+  findByTitle
 }
 
 
@@ -18,7 +18,7 @@ async function insertRecipe({
   const recipeId = recipeRes[0].id;
 
   const stepsEntries = steps.map((step, i) => {
-    return { ordinal: i, body: step, recipe_id: recipeId };
+    return { ordinal: i + 1, body: step, recipe_id: recipeId };
   });
 
   // ingredients given as array
@@ -36,7 +36,7 @@ async function insertRecipe({
 
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);
-  await db('categories').insert(categories);
+  await db('categories').insert(categories.map(name => ({ name, recipe_id: recipeId })));
   await db('edits').insert({
     cook_id: innovator,
     old_recipe: ancestor, // can be null
@@ -117,23 +117,48 @@ async function findRecipeById(id) {
   return newRecipe;
 }
 
-function allRecipes() {
-  return db('*').from('recipes as r')
-    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
-    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
-}
-
-function searchByTitle(title) {
-  return db("recipes as r").where('title', 'ilike', `%${title}%`)
-    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
-    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
-}
-
 function findByTitle(title) {
   return db('recipes as r').where({ title })
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
+}
+
+function allRecipes() {
+  return db.with('tmpSaves', (qb) => {
+      qb
+        .select('r.*')
+        .count('r.id as total_saves')
+        .from('recipes as r')
+        .join('saves as s', 'r.id', 's.recipe_id')
+        .groupBy('r.id');
+  })
+    .select(['r.id', 'r.title', 'r.minutes',
+              'r.img', 'e.cook_id', 'c.username',
+              't.total_saves'])
+    .from('recipes as r')
+    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
+    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+    .leftJoin('tmpSaves as t', 'r.id', 't.id')
+    .orderBy('r.id');
+}
+
+function searchByTitle(title) {
+  return db.with('tmpSaves', (qb) => {
+      qb
+        .select('r.*')
+        .count('r.id as total_saves')
+        .from('recipes as r')
+        .join('saves as s', 'r.id', 's.recipe_id')
+        .groupBy('r.id');
+  })
+    .select(['r.id', 'r.title', 'r.minutes',
+              'r.img', 'e.cook_id', 'c.username',
+              't.total_saves'])
+    .from('recipes as r')
+    .where('r.title', 'ilike', `%${title}%`)
+    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
+    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+    .leftJoin('tmpSaves as t', 'r.id', 't.id')
+    .orderBy('r.id');
 }
