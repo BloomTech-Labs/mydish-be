@@ -10,9 +10,16 @@ router.get("/all", (req, res) => {
     .catch(err => {res.status(500).json(err)});
 });
 
+router.get("/test", (req, res) => {
+    Recipes.totalLikesC(1)
+    .then(x => {res.status(200).json(x)})
+    .catch(err => {res.status(500).json(err)});
+});
+
 //search by title
 router.get("", (req, res) => {
-    Recipes.searchByTitle(req.query.title)
+    const getFun = req.query.title ? Recipes.searchByTitle : Recipes.allRecipes;
+    getFun(req.query.title)
         .then(dbRes => {
             res.status(200).json(dbRes);
         })
@@ -32,7 +39,7 @@ router.post("/", mid.restrict, async (req, res) => {
     const validRecipe = { innovator: req.cook.id };
 
     // required fields
-    ["title", "ingredients", "steps"].forEach(field => {
+    ["title", "ingredients", "steps", "categories"].forEach(field => {
         if (field in req.body) {
             validRecipe[field] = req.body[field];
         } else {
