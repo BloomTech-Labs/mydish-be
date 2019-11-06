@@ -66,7 +66,7 @@ router.get('/', mid.restrict, (req, res) => {
   const cook = req.cook;
   //console.log("decodedToken cook", cook);
   Cooks.all().then(cooks => {
-    res.status(200).json({ message: "registered cooks:", cooks })
+    res.status(200).json(cooks)
   });
 });
 
