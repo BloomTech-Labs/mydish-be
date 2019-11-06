@@ -1,4 +1,4 @@
-const db = require("./dbConfig.js");
+const db = require('./dbConfig.js');
 
 module.exports = {
   insertRecipe,
@@ -6,7 +6,7 @@ module.exports = {
   findRecipeById,
   searchByTitle,
   findByTitle
-}
+};
 
 
 async function insertRecipe({
@@ -24,7 +24,7 @@ async function insertRecipe({
   // ingredients given as array
   const ingredientsEntries = await Promise.all(
     ingredients.map(async ({ name, quantity, unit }) => {
-      const unitRes = await db('units').where({ name: unit.toLowerCase() }).first()
+      const unitRes = await db('units').where({ name: unit.toLowerCase() }).first();
       const unitId = unitRes.name;
       return {
         recipe_id: recipeId,
@@ -112,7 +112,7 @@ async function findRecipeById(id) {
     innovator: recipeInnovator ? recipeInnovator.cook_id : null,
     ancestor: recipeAncestor ? recipeAncestor.old_recipe : null,
     innovator_name: innovatorEntry.username ? innovatorEntry.username : null
-  }
+  };
 
   return newRecipe;
 }
@@ -126,16 +126,16 @@ function findByTitle(title) {
 
 function allRecipes() {
   return db.with('tmpSaves', (qb) => {
-      qb
-        .select('r.*')
-        .count('r.id as total_saves')
-        .from('recipes as r')
-        .join('saves as s', 'r.id', 's.recipe_id')
-        .groupBy('r.id');
+    qb
+      .select('r.*')
+      .count('r.id as total_saves')
+      .from('recipes as r')
+      .join('saves as s', 'r.id', 's.recipe_id')
+      .groupBy('r.id');
   })
     .select(['r.id', 'r.title', 'r.minutes',
-              'r.img', 'e.cook_id', 'c.username',
-              't.total_saves'])
+      'r.img', 'e.cook_id', 'c.username',
+      't.total_saves'])
     .from('recipes as r')
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
@@ -145,16 +145,16 @@ function allRecipes() {
 
 function searchByTitle(title) {
   return db.with('tmpSaves', (qb) => {
-      qb
-        .select('r.*')
-        .count('r.id as total_saves')
-        .from('recipes as r')
-        .join('saves as s', 'r.id', 's.recipe_id')
-        .groupBy('r.id');
+    qb
+      .select('r.*')
+      .count('r.id as total_saves')
+      .from('recipes as r')
+      .join('saves as s', 'r.id', 's.recipe_id')
+      .groupBy('r.id');
   })
     .select(['r.id', 'r.title', 'r.minutes',
-              'r.img', 'e.cook_id', 'c.username',
-              't.total_saves'])
+      'r.img', 'e.cook_id', 'c.username',
+      't.total_saves'])
     .from('recipes as r')
     .where('r.title', 'ilike', `%${title}%`)
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })

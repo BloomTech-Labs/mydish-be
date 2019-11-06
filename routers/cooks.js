@@ -1,8 +1,8 @@
-const router = require("express").Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const Cooks = require("../data/cookModel.js");
-const mid = require("../middleware/cookMiddleware.js");
+const router = require('express').Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Cooks = require('../data/cookModel.js');
+const mid = require('../middleware/cookMiddleware.js');
 
 function generateToken(cook) {
   // console.log("cook in generateToken", cook);
@@ -11,12 +11,12 @@ function generateToken(cook) {
     id: cook.id
   };
   const options = {
-    expiresIn: "1d"
+    expiresIn: '1d'
   };
   return jwt.sign(payload, process.env.SESSION_SECRET, options);
 }
 
-router.post("/register", (req, res) => {
+router.post('/register', (req, res) => {
   const { username, password } = req.body;
 
   Cooks.insert({
@@ -29,56 +29,56 @@ router.post("/register", (req, res) => {
 
       res
         .status(201)
-        .json({ message: "registration successful", cook_id, token });
+        .json({ message: 'registration successful', cook_id, token });
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ message: "Error registering user" });
+      res.status(500).json({ message: 'Error registering user' });
     });
 });
 
-router.post("/login", (req, res) => {
+router.post('/login', (req, res) => {
   const { username, password } = req.body;
-  console.log("Hello from login", req.body)
+  console.log('Hello from login', req.body);
   Cooks.findByUsername(username)
     .then(cook => {
-      console.log("login cook", cook)
+      console.log('login cook', cook);
       if (cook && bcrypt.compareSync(password, cook.password)) {
         const token = generateToken(cook);
         const cook_id = cook.id;
 
         res.status(200).json({
-          message: "You have logged in",
+          message: 'You have logged in',
           cook_id,
           token
         });
       } else {
-        res.status(401).json({ message: "Invalid password" });
+        res.status(401).json({ message: 'Invalid password' });
       }
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ message: "Error logging in user" });
+      res.status(500).json({ message: 'Error logging in user' });
     });
 });
 
-router.get("/", mid.restrict, (req, res) => {
+router.get('/', mid.restrict, (req, res) => {
   const cook = req.cook;
-  console.log("decodedToken cook", cook);
+  console.log('decodedToken cook', cook);
   Cooks.all().then(cooks => res.status(200).json(cooks));
 });
 
-router.delete("/self", mid.restrict, (req, res) => {
+router.delete('/self', mid.restrict, (req, res) => {
   const { id } = req.cook;
   Cooks.remove(id)
     .then(() => res.status(204).end())
     .catch(err => {
       console.log(err);
-      res.status(500).json({ error: "Error deleting cook" });
+      res.status(500).json({ error: 'Error deleting cook' });
     });
 });
 
-router.put("/self", mid.restrict, (req, res) => {
+router.put('/self', mid.restrict, (req, res) => {
   const { id } = req.cook;
   const { username, password } = req.body;
 
@@ -91,20 +91,20 @@ router.put("/self", mid.restrict, (req, res) => {
         .then(cook => res.status(200).json(cook))
         .catch(err => {
           console.log(err);
-          res.status(500).json({ error: "Error finding cook" });
+          res.status(500).json({ error: 'Error finding cook' });
         });
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({
-        error: "Error updating"
+        error: 'Error updating'
       });
     });
 });
 
-router.get("/cookID/:id", mid.validateId, (req, res) => {
+router.get('/cookID/:id', mid.validateId, (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
+  console.log('id', id);
   Cooks.findById(id)
     .then(cooks => {
       //console.log("cooks", cooks);
@@ -112,7 +112,7 @@ router.get("/cookID/:id", mid.validateId, (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ message: "Error retriving cook" });
+      res.status(500).json({ message: 'Error retriving cook' });
     });
 });
 
