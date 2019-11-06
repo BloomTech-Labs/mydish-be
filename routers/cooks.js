@@ -88,7 +88,7 @@ router.put("/self", mid.restrict, (req, res) => {
   })
     .then(() => {
       Cooks.findById(id)
-        .then(cook => res.status(200).json(cook))
+        .then(cook => res.status(201).json({message: "cook updated"}))
         .catch(err => {
           console.log(err);
           res.status(500).json({ error: "Error finding cook" });
