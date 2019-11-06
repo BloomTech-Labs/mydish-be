@@ -18,7 +18,7 @@ async function insertRecipe({
   const recipeId = recipeRes[0].id;
 
   const stepsEntries = steps.map((step, i) => {
-    return { ordinal: i, body: step, recipe_id: recipeId };
+    return { ordinal: i + 1, body: step, recipe_id: recipeId };
   });
 
   // ingredients given as array
@@ -36,7 +36,7 @@ async function insertRecipe({
 
   await db('ingredients').insert(ingredientsEntries);
   await db('steps').insert(stepsEntries);
-  await db('categories').insert(categories);
+  await db('categories').insert(categories.map(name => ({ name, recipe_id: recipeId })));
   await db('edits').insert({
     cook_id: innovator,
     old_recipe: ancestor, // can be null
@@ -142,7 +142,6 @@ function allRecipes() {
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
     .orderBy('r.id');
 }
-
 
 function searchByTitle(title) {
   return db.with('tmpSaves', (qb) => {

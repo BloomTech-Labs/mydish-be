@@ -39,7 +39,7 @@ router.post("/", mid.restrict, async (req, res) => {
     const validRecipe = { innovator: req.cook.id };
 
     // required fields
-    ["title", "ingredients", "steps"].forEach(field => {
+    ["title", "ingredients", "steps", "categories"].forEach(field => {
         if (field in req.body) {
             validRecipe[field] = req.body[field];
         } else {
