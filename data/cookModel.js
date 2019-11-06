@@ -21,7 +21,7 @@ function findBy(where) {
   return db("cooks").where(where);
 }
 function all() {
-  return db("cooks");
+  return db("cooks").select('cooks.id', 'cooks.username');
 }
 
 function findById(id) {

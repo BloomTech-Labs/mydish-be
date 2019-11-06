@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 module.exports = { validateId, restrict };
 
 function validateId(req, res, next) {
-  console.log("validating Id now");
 
   const { id } = req.params;
   Cooks.findById(id).then(cook => {

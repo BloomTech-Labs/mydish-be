@@ -39,10 +39,10 @@ router.post("/register", (req, res) => {
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  console.log("Hello from login", req.body)
+
   Cooks.findByUsername(username)
     .then(cook => {
-      console.log("login cook", cook)
+
       if (cook && bcrypt.compareSync(password, cook.password)) {
         const token = generateToken(cook);
         const cook_id = cook.id;
@@ -64,8 +64,10 @@ router.post("/login", (req, res) => {
 
 router.get("/", mid.restrict, (req, res) => {
   const cook = req.cook;
-  console.log("decodedToken cook", cook);
-  Cooks.all().then(cooks => res.status(200).json(cooks));
+  //console.log("decodedToken cook", cook);
+  Cooks.all().then(cooks => {
+    res.status(200).json({ message: "registered cooks:", cooks })
+  });
 });
 
 router.delete("/self", mid.restrict, (req, res) => {
@@ -88,7 +90,10 @@ router.put("/self", mid.restrict, (req, res) => {
   })
     .then(() => {
       Cooks.findById(id)
-        .then(cook => res.status(200).json(cook))
+        .then(cook => {
+          const { id, username } = cook
+          res.status(200).json({ message: `${username} has been updated `, id })
+        })
         .catch(err => {
           console.log(err);
           res.status(500).json({ error: "Error finding cook" });
@@ -104,7 +109,7 @@ router.put("/self", mid.restrict, (req, res) => {
 
 router.get("/cookID/:id", mid.validateId, (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
+  //console.log("id", id);
   Cooks.findById(id)
     .then(cooks => {
       //console.log("cooks", cooks);
