@@ -70,7 +70,7 @@ async function findRecipeById(id) {
   //resolves to array of cook_ids.  will have to call likes.length in final return object.
   const recipeLikes = await db('recipes as r')
     .where({ 'r.id': id })
-    .join('likes as l', 'l.recipe_id', 'r.id')
+    .join('saves as l', 'l.recipe_id', 'r.id')
     .pluck('l.cook_id').whereIn('l.recipe_id', [id]);
 
   // resolves to the id of whichever cook created or modified this recipe.
@@ -108,7 +108,7 @@ async function findRecipeById(id) {
     steps: recipeSteps,
     notes: baseRecipe.notes ? baseRecipe.notes : null,
     categories: recipeCategories ? recipeCategories : null,
-    likes: recipeLikes ? recipeLikes.length : null,
+    total_saves: recipeLikes ? recipeLikes.length : null,
     innovator: recipeInnovator ? recipeInnovator.cook_id : null,
     ancestor: recipeAncestor ? recipeAncestor.old_recipe : null,
     innovator_name: innovatorEntry.username ? innovatorEntry.username : null
