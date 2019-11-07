@@ -6,129 +6,238 @@
 
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+#### 1️⃣ Backend delpoyed at Heroku (https://recipeshare-development.herokuapp.com/) <br>
 
 ## 1️⃣ Getting started
 
 To get the server running locally:
 
-🚫 adjust these scripts to match your project
-
 - Clone this repo
-- **yarn install** to install all required dependencies
-- **yarn server** to start the local server
-- **yarn test** to start server using testing environment
+- **npm i** to install all required dependencies
+- **npm run server** to start the local server
+- **npm run test** to start server using testing environment
 
 ### Backend framework goes here
 
-🚫 Why did you choose this framework?
+ NodeJs/Express/knex
 
--    Point One
--    Point Two
--    Point Three
--    Point Four
+-    at the beginning of the project about hald the devs knew Node/express and half knew Java/spring. Team concensus was that Node would be easier to learn for the Java folk
+-    Sticking to a Javascript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
 
-## 2️⃣ Endpoints
+# Endpoints
 
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
+## Account
 
-#### Organization Routes
+POST `/cooks/register`
 
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+```js
+body = {
+  username,
+  password
+};
+res = {
+  id: "(number) the ID of the user/cook",
+  token: "authentication token for the session"
+};
+```
 
-#### User Routes
+POST `/cooks/login`
 
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+```js
+body = {
+  username,
+  password
+};
+res = {
+  id: "(number) the ID of the user/cook",
+  token: "authentication token for the session"
+};
+```
+
+PUT `/cooks/self` modify account details e.g. password (auth)
+
+```js
+body = {
+  username: "(optional string)",
+  password: "(optional string)"
+};
+res = {
+  message: `cook updated`
+};
+```
+
+DELETE `/cooks/self` delete account (auth)
+
+```js
+res = {
+  message: "account deleted"
+};
+```
+
+GET `/cooks` get brief info on all cooks
+
+```js
+res = {
+  cooks: [
+    {
+      id,
+      username
+    }
+  ]
+};
+```
+
+GET `/cooks/:id` get detailed info about one cook
+
+## Recipes
+
+GET `/recipes/all` get brief info on all recipes, filtered if given query string
+
+```js
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      img: "(string) url of the food photo",
+      minutes,
+      innovator_id:
+        "(number) the ID of the cook who created or modified the recipe",
+      total_saves,
+      username
+    }
+  ]
+};
+```
+
+GET `/recipes?title=foo` search for recipes with given string in the name
+
+```js
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      img: "(string) url for a photo of food",
+      minutes,
+      innovator_id: "(number) the ID of the innovator who created this recipe",
+      total_saves,
+      username
+    }
+  ]
+};
+```
+
+POST `/recipes` add a new recipe (auth)
+
+```js
+  body = {
+    title,
+    minutes: "(optional number) time to make, adding more types of minutes in the works",
+    img: "(optional string) url of an image of the food"
+    notes: "(optional string) free-form notes about the recipe",
+    categories: [
+      "(string) category/tag name"
+    ],
+    ingredients: [
+      {
+        name,
+        quantity: "(number)",
+        unit: "(string) example- mL or g or cups"
+      }
+    ],
+    steps: [
+      body: "(string) step 1 blah blah blah"
+    ],
+    ancestor: "(optional number) the ID of the previous version of this recipe"
+  };
+```
+
+GET `/recipes/:id` get detailed info about one recipe
+
+```js
+res = {
+  title,
+  minutes: "(optional number) preparation time in minutes",
+  img: "(string) url of an image of food prepared with the recipe"
+  notes: "(optional) free-form notes about the recipe",
+  "(optional) categories": [
+    "(string) category/tag name"
+  ],
+  ingredients: [
+    {
+      name,
+      quantity: "(number)",
+      unit: "(string) example- mL or g or cups"
+    }
+  ],
+  total_saves: "(number) total saves",
+  steps: [
+    "(string) list of steps in order"
+  ],
+  innovator: "(number) ID of innovator who created or last edited this recipe",
+  ancestor: "(optional number) the ID of the previous version of this recipe",
+  innovator_name: "(string) the username of the innovator"
+};
+```
 
 # Data Model
 
 🚫This is just an example. Replace this with your data model
 
-#### 2️⃣ ORGANIZATIONS
-
----
-
-```
-{
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
-}
-```
-
-#### USERS
-
----
-
-```
-{
-  id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
-}
-```
 
 ## 2️⃣ Actions
 
-🚫 This is an example, replace this with the actions that pertain to your backend
+# cooks
 
-`getOrgs()` -> Returns all organizations
+`insert(cook)` -> adds a cook to cooks table
 
-`getOrg(orgId)` -> Returns a single organization by ID
+`findByUsername(username) ` -> Returns a single cook by username
 
-`addOrg(org)` -> Returns the created org
+`all()` -> Returns the all cooks
 
-`updateOrg(orgId)` -> Update an organization by ID
+`findById(id)` -> returns a single cook by ID
 
-`deleteOrg(orgId)` -> Delete an organization by ID
+`remove(id)` -> Delete a cook by ID
+
+`update(id, changes)` -> Find a user by ID and update by specified changes
 <br>
 <br>
 <br>
-`getUsers(orgId)` -> if no param all users
 
-`getUser(userId)` -> Returns a single user by user ID
+# recipes
 
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
+`insertRecipe({ steps, ingredients, ancestor, innovator, categories, ...recipesEntry })` -> adds recipe to the appropriate tables on the DB
 
-`updateUser(userId, changes object)` -> Updates a single user by ID.
+`findRecipeById(id)` -> Returns a single recipe by recipe ID
 
-`deleteUser(userId)` -> deletes everything dependent on the user
+`findByTitle(title)` -> returns a recipe by exact title match
+
+`searchByTitle(title)` -> returns all recipes that match a fuzzy search
+<br>
+<br>
+<br>
+
+# cookbook
+
+`cookbookFindById(cookId)` -> returns an array of recipeIDs for recipes saved by cook id
+
+`cookbookInsert(recipeId, cookId)` -> adds recipe_id and cook_id to saves table
+
+`cookbookRecipeDelete(recipeId, cookId)` -> deletes entry from the saves table
 
 ## 3️⃣ Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables.
 
 create a .env file that includes the following:
-
-🚫 These are just examples, replace them with the specifics for your app
     
-    *  STAGING_DB - optional development db for using functionality not available in SQLite
+    *  PORT - local port for development
     *  NODE_ENV - set to "development" until ready for "production"
-    *  JWT_SECRET - you can generate this by using a python shell and running import random''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&amp;*(-*=+)') for i in range(50)])
-    *  SENDGRID_API_KEY - this is generated in your Sendgrid account
-    *  stripe_secret - this is generated in the Stripe dashboard
+    *  DB_NAME - set this to the name of your local development database
+    *  DB_USERNAME - set this to the name of your local development database username, in production this is set in heroku settings. 
+    *  DB_PASSWORD - set this to the name of your local development database password, in production this is set in heroku settings. 
+    *  DATABASE_URL - set to your localhost and port number in development and deployment URL in production
     
 ## Contributing
 
@@ -160,7 +269,7 @@ Remember that this project is licensed under the MIT license, and by submitting 
 - Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
 - Ensure that your code conforms to our existing code conventions and test coverage.
 - Include the relevant issue number, if applicable.
-- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.     
 
 ### Attribution
 
@@ -168,5 +277,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
+See [Frontend Documentation](https://github.com/Lambda-School-Labs/cooking-recipe-source-control-fe/blob/master/README.md) for details on the fronend of our project.
