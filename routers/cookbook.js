@@ -24,6 +24,13 @@ router.delete('/delete/:recipe_id', mid.restrict, (req, res) => {
 });
 
 //gets a cook's saved recipes, grabs recipes for logged in cook.
+router.get('', mid.restrict, (req, res) => {
+  Cookbook.cookbookSearch(req.query.category)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    }).catch(err => res.status(500).json(err));
+});
+
 router.get('/', mid.restrict, (req, res) => {
   Cookbook.cookbookFindById(req.cook.id)
     .then(recipeIds => {
@@ -34,5 +41,7 @@ router.get('/', mid.restrict, (req, res) => {
       res.status(501).json({ error: 'could not retrieve cookbook' });
     });
 });
+
+
 
 module.exports = router;
