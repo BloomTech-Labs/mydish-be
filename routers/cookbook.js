@@ -41,6 +41,7 @@ router.get('/', mid.restrict, (req, res) => {
       res.status(501).json({ error: 'could not retrieve cookbook' });
     });
 });
+//endpoints
 
 
 
