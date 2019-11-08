@@ -53,7 +53,7 @@ router.post('/login', (req, res) => {
           token
         });
       } else {
-        res.status(401).json({ message: 'Invalid password' });
+        res.status(401).json({ message: 'Invalid username or password' });
       }
     })
     .catch(err => {
