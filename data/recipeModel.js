@@ -125,6 +125,7 @@ function findByTitle(title) {
 }
 
 function allRecipes() {
+
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')

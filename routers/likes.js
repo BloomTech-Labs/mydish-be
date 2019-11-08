@@ -7,6 +7,7 @@ const mid = require('../middleware/cookMiddleware.js');
 router.get('/', (req, res) => {
   Likes.likesTableDisplay().then(response => res.status(200).json(response));
 });
+
 router.post('/:recipe_id', mid.restrict, (req, res) => {
   const recipeId = parseInt(req.params.recipe_id);
   Likes.likesInsert(recipeId,
