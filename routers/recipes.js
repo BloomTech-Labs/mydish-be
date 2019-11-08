@@ -32,12 +32,14 @@ router.get('/:id', (req, res) => {
     .then(x => {res.status(200).json(x);})
     .catch(err => {res.status(501).json(err);});
 });
+
 //delete a recipe (removes from cookbook if recipe is saved by another user)
 router.delete('/:id', mid.restrict, (req, res) => {
+  console.log(req.cook)
   Recipes.deleteById(req.params.id, req.cook.id)
-    .then(resp => {res.status(200).json(resp);})
-    .catch(err => {res.status(501).json(err);});
-})
+    .then(() => {res.status(204).end()})
+    .catch(err => {res.status(501);});
+});
 
 
 //post a new recipe

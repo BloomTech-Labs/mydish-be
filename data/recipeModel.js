@@ -163,63 +163,29 @@ function searchByTitle(title) {
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
     .orderBy('r.id');
 }
+
 //if the saves table only has one cook_id associated with this recipe ID, fully delete the recipe from the DB.
-function deleteById(recipeId, cookId) {
+async function deleteById(recipeId, cookId) {
    
   //returns the saves table entries where the recipe ID matches the clicked recipe ID and returns an array of associated cook Ids. 
-  const saves = db('saves')
+  const saves = await db('saves')
     .where({ 'saves.recipe_id': recipeId })
     .pluck('saves.cook_id');
 
   //if the array only has 1 entry, then the logged in user must be the cook within the entry, because they can only delete from their cookbook. which populates directly from the saves table.
   if (saves.length <= 1) {
-    //erases recipe items in reverse order, assuming i didn't confuse my cascading delete in the migration data.
-
-    //deletes ingredients with matchign recipe Id.
-    db('ingredients as i')
-      .where({'i.recipe_id': recipeId})
-      .del();
-
-    //deletes the target recipe from saves table.
-    db('saves')
-      .where({ 'saves.recipe_id': recipeId, 'saves.cook_id': cookId })
-      .del();
-
-    //targets all existing recipes in the edits table that match selected ID and deletes
-    db('edits as e')
-      .select('e.old_recipe')
-      .where({'e.new_recipe': recipeId, 'e.cook_id': cookId})
-      .del();
-
-    //removes the recipe ID from the categories where the id matches clicked recipe.
-    db('categories as c')
-      .select('c.recipe_id')
-      .where({'c.recipe_id': recipeId })
-      .del();
-
-    //deletes associated steps
-    db('steps as s')
-      .select('s.ordinal', 's.body')
-      .where('s.recipe_id', [recipeId])
-      .del();
-
-    //erase base recipe where the recipe id matches clicked recipe.
-    db('recipes as r') 
+    console.log('on delete the if statement ran')
+    
+    //erases recipe items in reverse order where the recipe id matches clicked recipe. 
+    return db('recipes as r') 
       .where({ 'r.id': recipeId })
       .del();
 
   } else {
-    //targets all existing recipes in the edits table that match selected ID and updates the ID to null.
-    db('edits as e')
-      .select('e.old_recipe')
-      .where({'e.old_recipe': recipeId})
-      .update({
-        old_recipe: null
-      })
-
-    //remove the cook_id/recipe_id pair from the saves table and call it a day.
-    db('saves')
-      .where({ 'saves.recipe_id': recipeId, 'saves.cook_id': cookId })
+    console.log('on delete the else statement ran')
+    //remove the cook_id/recipe_id pair from the saves table and call it a day.    
+    return db('saves')
+      .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
       .del();
   }
 }
