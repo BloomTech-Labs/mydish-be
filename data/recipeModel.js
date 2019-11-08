@@ -175,7 +175,6 @@ function deleteById(recipeId, cookId) {
   if (saves.length <= 1) {
     //erases recipe items in reverse order, assuming i didn't confuse my cascading delete in the migration data.
 
-
     //deletes ingredients with matchign recipe Id.
     db('ingredients as i')
       .where({'i.recipe_id': recipeId})
@@ -189,8 +188,7 @@ function deleteById(recipeId, cookId) {
     //targets all existing recipes in the edits table that match selected ID and deletes
     db('edits as e')
       .select('e.old_recipe')
-      .where({'e.old_recipe': recipeId, 'e.cook_id': cookId})
-      .orWhere({'e.new_recipe': recipeId, 'e.cook_id': cookId})
+      .where({'e.new_recipe': recipeId, 'e.cook_id': cookId})
       .del();
 
     //removes the recipe ID from the categories where the id matches clicked recipe.
@@ -218,6 +216,7 @@ function deleteById(recipeId, cookId) {
       .update({
         old_recipe: null
       })
+
     //remove the cook_id/recipe_id pair from the saves table and call it a day.
     db('saves')
       .where({ 'saves.recipe_id': recipeId, 'saves.cook_id': cookId })
