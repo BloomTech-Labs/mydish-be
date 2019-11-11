@@ -28,45 +28,45 @@ function cookbookRecipeDelete(recipeId, cookId) {
     .del();
 }
 
-function cookbookSearch(category) {
+function cookbookSearch(userId, category) {
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')
       .count('r.id as total_saves')
       .from('recipes as r')
       .join('saves as s', 'r.id', 's.recipe_id')
+      .where('s.cook_id', userId)
       .groupBy('r.id');
   })
     .select(['r.id', 'r.title', 'r.minutes',
-      'r.img', 'e.cook_id', 'c.username',
+      'r.img', 'e.cook_id', 'c.username as author',
       't.total_saves'])
     .from('recipes as r')
+    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
+    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+    .rightJoin('categories as cat', 'r.id', 'cat.recipe_id')
+    .rightJoin('tmpSaves as t', 'r.id', 't.id')
     .where('cat.name', category)
-    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
-    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .leftJoin('categories as cat', 'r.id', 'cat.recipe_id')
     .orderBy('r.id');
 }
 
-function cookbookSearchAll() {
+function cookbookSearchAll(userId) {
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')
       .count('r.id as total_saves')
       .from('recipes as r')
       .join('saves as s', 'r.id', 's.recipe_id')
+      .where('s.cook_id', userId)
       .groupBy('r.id');
   })
     .select(['r.id', 'r.title', 'r.minutes',
-      'r.img', 'e.cook_id', 'c.username',
+      'r.img', 'e.cook_id', 'c.username as author',
       't.total_saves'])
     .from('recipes as r')
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
-    .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .leftJoin('categories as cat', 'r.id', 'cat.recipe_id')
+    .rightJoin('tmpSaves as t', 'r.id', 't.id')
     .orderBy('r.id');
 }
-
 

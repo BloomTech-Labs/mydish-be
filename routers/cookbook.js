@@ -3,7 +3,7 @@ const Cookbook = require('../data/cookbookModel.js');
 const mid = require('../middleware/cookMiddleware.js');
 
 //save a recipe to a cookbook
-router.post('/save/:recipe_id', mid.restrict, (req, res) => {
+router.post('/:recipe_id', mid.restrict, (req, res) => {
   const recipeId = parseInt(req.params.recipe_id);
 
   Cookbook.cookbookInsert(
@@ -14,7 +14,7 @@ router.post('/save/:recipe_id', mid.restrict, (req, res) => {
 });
 
 //delete a saved recipe from the cookbook
-router.delete('/delete/:recipe_id', mid.restrict, (req, res) => {
+router.delete('/:recipe_id', mid.restrict, (req, res) => {
   Cookbook.cookbookRecipeDelete(req.params.recipe_id, req.cook.id)
     .then(() => res.status(204).end())
     .catch(err => {
@@ -25,27 +25,23 @@ router.delete('/delete/:recipe_id', mid.restrict, (req, res) => {
 
 //gets a cook's saved recipes, grabs recipes for logged in cook.
 router.get('', mid.restrict, (req, res) => {
-
   const getFun = req.query.category ?
     Cookbook.cookbookSearch : Cookbook.cookbookSearchAll;
-  getFun(req.query.category).then(dbRes => {
+  getFun(req.cook.id, req.query.category).then(dbRes => {
     res.status(200).json(dbRes);
   }).catch(err => { console.log(err); res.status(500).json(err); });
 });
 
-router.get('/all', mid.restrict, (req, res) => {
-  console.log("I am here");
-  Cookbook.cookbookFindById(req.cook.id)
-    .then(recipeIds => {
-      res.status(200).json({ recipeIds });
-    })
-    .catch(err => {
-      console.log('your error, master', err);
-      res.status(501).json({ error: 'could not retrieve cookbook' });
-    });
-});
-//endpoints
-
-
+// router.get('/all', mid.restrict, (req, res) => {
+//   console.log("I am here");
+//   Cookbook.cookbookFindById(req.cook.id)
+//     .then(recipeIds => {
+//       res.status(200).json({ recipeIds });
+//     })
+//     .catch(err => {
+//       console.log('your error, master', err);
+//       res.status(501).json({ error: 'could not retrieve cookbook' });
+//     });
+// });
 
 module.exports = router;
