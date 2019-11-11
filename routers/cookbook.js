@@ -7,9 +7,12 @@ router.post('/:recipe_id', mid.restrict, (req, res) => {
   const recipeId = parseInt(req.params.recipe_id);
 
   Cookbook.cookbookInsert(
-    req.cook.id, recipeId
+    recipeId, req.cook.id
   )
-    .then(() => res.status(200).json({ message: 'Recipe Successfully Saved to Cookbook.' }))
+    .then(total_saves => res.status(200).json({
+      message: 'Recipe Successfully Saved to Cookbook.',
+      total_saves
+    }))
     .catch(() => res.status(500).json({ message: 'could not save recipe to cookbook. please try again.' }));
 });
 
