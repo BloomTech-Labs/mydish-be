@@ -4,7 +4,8 @@ module.exports = {
   cookbookInsert,
   cookbookRecipeDelete,
   cookbookFindById,
-  cookbookSearch
+  cookbookSearch,
+  cookbookSearchAll
 };
 
 function cookbookFindById(cookId) {
@@ -27,7 +28,7 @@ function cookbookRecipeDelete(recipeId, cookId) {
     .del();
 }
 
-function cookbookSearch(categories) {
+function cookbookSearch(category) {
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')
@@ -40,10 +41,32 @@ function cookbookSearch(categories) {
       'r.img', 'e.cook_id', 'c.username',
       't.total_saves'])
     .from('recipes as r')
-    .where('cat.name', categories)
+    .where('cat.name', category)
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
     .leftJoin('categories as cat', 'r.id', 'cat.recipe_id')
     .orderBy('r.id');
 }
+
+function cookbookSearchAll() {
+  return db.with('tmpSaves', (qb) => {
+    qb
+      .select('r.*')
+      .count('r.id as total_saves')
+      .from('recipes as r')
+      .join('saves as s', 'r.id', 's.recipe_id')
+      .groupBy('r.id');
+  })
+    .select(['r.id', 'r.title', 'r.minutes',
+      'r.img', 'e.cook_id', 'c.username',
+      't.total_saves'])
+    .from('recipes as r')
+    .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
+    .leftJoin('cooks as c', 'e.cook_id', 'c.id')
+    .leftJoin('tmpSaves as t', 'r.id', 't.id')
+    .leftJoin('categories as cat', 'r.id', 'cat.recipe_id')
+    .orderBy('r.id');
+}
+
+
