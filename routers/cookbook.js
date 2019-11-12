@@ -9,7 +9,7 @@ router.post('/:recipe_id', mid.restrict, (req, res) => {
   Cookbook.cookbookInsert(
     recipeId, req.cook.id
   )
-    .then(total_saves => res.status(200).json({
+    .then(({ count: total_saves }) => res.status(200).json({
       message: 'Recipe Successfully Saved to Cookbook.',
       total_saves
     }))
@@ -18,8 +18,11 @@ router.post('/:recipe_id', mid.restrict, (req, res) => {
 
 //delete a saved recipe from the cookbook
 router.delete('/:recipe_id', mid.restrict, (req, res) => {
-  Cookbook.cookbookRecipeDelete(req.params.recipe_id, req.cook.id)
-    .then(() => res.status(204).end())
+  Cookbook.deleteById(req.params.recipe_id, req.cook.id)
+    .then(({ count: total_saves }) => {
+
+      res.status(200).json({ total_saves })
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json({ error: 'Error deleting recipe from cookbook' });
