@@ -105,7 +105,7 @@ router.put('/self', mid.restrict, (req, res) => {
     });
 });
 
-router.get('/cookID/:id', mid.validateId, (req, res) => {
+router.get('/:id', mid.validateId, (req, res) => {
   const { id } = req.params;
   //console.log("id", id);
   Cooks.findById(id)

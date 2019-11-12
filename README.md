@@ -7,7 +7,7 @@
 
 | [Lou](https://github.com/antilou86) | [Catherine](https://github.com/Katerinjo) | [Yurika](https://github.com/yuri77) |
 | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | 
-|  [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/antilou86) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/Katerinjo) |  [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/yuri77) |
+|  [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86) | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) |  [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
 | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77) |
 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | 
 
@@ -39,6 +39,7 @@ body = {
   password
 };
 res = {
+  message: 'registration successful',
   id: "(number) the ID of the user/cook",
   token: "authentication token for the session"
 };
@@ -52,6 +53,7 @@ body = {
   password
 };
 res = {
+  message: 'You have logged in',
   id: "(number) the ID of the user/cook",
   token: "authentication token for the session"
 };
@@ -65,16 +67,16 @@ body = {
   password: "(optional string)"
 };
 res = {
-  message: `cook updated`
+  message: `cook has been updated`,
+  id
 };
 ```
 
 DELETE `/cooks/self` delete account (auth)
 
 ```js
-res = {
-  message: "account deleted"
-};
+res = status code 204 OK
+
 ```
 
 GET `/cooks` get brief info on all cooks
@@ -113,7 +115,7 @@ res = {
 };
 ```
 
-GET `/recipes?title=foo` search for recipes with given string in the name
+GET `/recipes?title=foo` search for recipes with given string in the name. in the above example, replace foo with the recipe title
 
 ```js
 res = {
@@ -154,6 +156,11 @@ POST `/recipes` add a new recipe (auth)
     ],
     ancestor: "(optional number) the ID of the previous version of this recipe"
   };
+
+  res = { 
+    message: 'Recipe created',
+    recipe_id
+  };
 ```
 
 GET `/recipes/:id` get detailed info about one recipe
@@ -183,10 +190,44 @@ res = {
   innovator_name: "(string) the username of the innovator"
 };
 ```
+## Cookbook
 
+POST `/cookbook/:id` saves a recipe to the logged in users cookbook.
+
+```js
+  res = {
+    message: 'Recipe Successfully Saved to Cookbook.',
+    total_saves
+  }
+```
+DELETE `/cookbook/:id` deletes a recipe from the database if the user is the only person who has the recipe in a cookbook. if another user has it saved in a different cookboook, it removes the recipe from the currently logged in user's cookbook.
+
+```js
+  res = {
+    total_saves
+  }
+```
+
+GET `/cookbook/?category=foo` returns recipes saved by the logged in user as long as the category matches a current category tag. in the above example, replace foo with the desired category, if category is left empty it returns users entire cookbook
+
+```js
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      img: "(string) url for a photo of food",
+      minutes,
+      innovator_id: "(number) the ID of the innovator who created this recipe",
+      total_saves,
+      username
+    }
+  ]
+};
+```
 # Data Model
 
-🚫This is just an example. Replace this with your data model
+| [<img src="https://files.slack.com/files-pri/T4JUEB3ME-FQ9AJJRHA/db8.png" width = "350" />] |
 
 
 ## 2️⃣ Actions
