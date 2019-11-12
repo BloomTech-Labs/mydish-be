@@ -20,7 +20,7 @@ exports.up = function (knex) {
           .references('id')
           .inTable('recipes')
           .onDelete('cascade');
-        tbl.decimal('ordinal').notNullable();
+        tbl.integer('ordinal').notNullable();
         tbl.primary(['ordinal', 'recipe_id']);
         tbl.text('body').notNullable();
       })
