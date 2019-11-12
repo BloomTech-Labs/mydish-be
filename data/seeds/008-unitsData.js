@@ -23,7 +23,11 @@ exports.seed = function(knex) {
         {name: 'pints'},
         {name: 'mg'},
         {name: 'package'},
-        {name: 'packages'}
+        {name: 'packages'},
+        {name: 'pound'},
+        {name: 'pounds'},
+        {name: 'lb'},
+        {name: 'lbs'}
       ]);
     });
 };
