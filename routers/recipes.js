@@ -69,7 +69,10 @@ router.post('/', mid.restrict, async (req, res) => {
     try {
       const recipeId = await Recipes.insertRecipe(validRecipe);
       cookbook.cookbookInsert(recipeId, req.cook.id).then(dbRes => {
-        res.status(201).json({ message: 'Recipe created' });
+        res.status(201).json(
+          { message: 'Recipe created',
+            recipe_id: recipeId
+          });
       }).catch(err => {
         console.log(err);
         res.status(501).send(err);
