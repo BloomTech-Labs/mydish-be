@@ -24,8 +24,10 @@ async function insertRecipe({
   // ingredients given as array
   const ingredientsEntries = await Promise.all(
     ingredients.map(async ({ name, quantity, unit }) => {
-      const unitRes = await db('units').where({ name: unit.toLowerCase() }).first();
-      const unitId = unitRes.name;
+      const unitId =
+          unit ?
+          await db('units').where({ name: unit.toLowerCase() }).first().name
+          : null;
       return {
         recipe_id: recipeId,
         name,
