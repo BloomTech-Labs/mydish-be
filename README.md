@@ -227,7 +227,7 @@ res = {
 ```
 # Data Model
 
-| [<img src="https://files.slack.com/files-pri/T4JUEB3ME-FQ9AJJRHA/db8.png" width = "350" />] |
+| <img src="https://imgur.com/y2SPCnL" width = "350" /> |
 
 
 ## 2️⃣ Actions
