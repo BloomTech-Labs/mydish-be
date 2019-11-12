@@ -5,8 +5,7 @@ module.exports = {
   allRecipes,
   findRecipeById,
   searchByTitle,
-  findByTitle,
-  deleteById
+  findByTitle
 };
 
 
@@ -126,6 +125,7 @@ function findByTitle(title) {
 }
 
 function allRecipes() {
+
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')
@@ -141,7 +141,7 @@ function allRecipes() {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('r.id');
+    .orderBy('t.total_saves', 'desc');
 }
 
 function searchByTitle(title) {
@@ -164,28 +164,3 @@ function searchByTitle(title) {
     .orderBy('r.id');
 }
 
-//if the saves table only has one cook_id associated with this recipe ID, fully delete the recipe from the DB.
-async function deleteById(recipeId, cookId) {
-   
-  //returns the saves table entries where the recipe ID matches the clicked recipe ID and returns an array of associated cook Ids. 
-  const saves = await db('saves')
-    .where({ 'saves.recipe_id': recipeId })
-    .pluck('saves.cook_id');
-
-  //if the array only has 1 entry, then the logged in user must be the cook within the entry, because they can only delete from their cookbook. which populates directly from the saves table.
-  if (saves.length <= 1) {
-    console.log('on delete the if statement ran')
-    
-    //erases recipe items in reverse order where the recipe id matches clicked recipe. 
-    return db('recipes as r') 
-      .where({ 'r.id': recipeId })
-      .del();
-
-  } else {
-    console.log('on delete the else statement ran')
-    //remove the cook_id/recipe_id pair from the saves table and call it a day.    
-    return db('saves')
-      .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
-      .del();
-  }
-}
