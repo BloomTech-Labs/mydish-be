@@ -1,6 +1,6 @@
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at Heroku (https://recipeshare-development.herokuapp.com/) <br>
+#### 1️⃣ Backend delpoyed at Heroku (https://recipeshare-development.herokuapp.com/)
 
 ## Contributors
 
@@ -11,7 +11,7 @@
 | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77) |
 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | 
 
-## 1️⃣ Getting started
+# Getting started
 
 To get the server running locally:
 
@@ -20,11 +20,11 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
-### Backend framework goes here
+## Backend Framework
 
  NodeJs/Express/knex
 
--    at the beginning of the project about hald the devs knew Node/express and half knew Java/spring. Team concensus was that Node would be easier to learn for the Java folk
+-    At the beginning of the project about half the devs knew Node/express and half knew Java/spring. Team consensus was that Node would be easier to learn for the Java folks.
 -    Sticking to a Javascript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
 
 # Endpoints
@@ -59,7 +59,7 @@ res = {
 };
 ```
 
-PUT `/cooks/self` modify account details e.g. password (auth)
+PUT `/cooks/self` Modify account details e.g. password. (auth)
 
 ```js
 body = {
@@ -72,14 +72,13 @@ res = {
 };
 ```
 
-DELETE `/cooks/self` delete account (auth)
+DELETE `/cooks/self` Delete account. (auth)
 
 ```js
-res = status code 204 OK
-
+res = {} // (status code 204 OK)
 ```
 
-GET `/cooks` get brief info on all cooks
+GET `/cooks` Get brief info on all cooks.
 
 ```js
 res = {
@@ -92,11 +91,11 @@ res = {
 };
 ```
 
-GET `/cooks/:id` get detailed info about one cook
+GET `/cooks/:id` Get detailed info about one cook.
 
 ## Recipes
 
-GET `/recipes/all` get brief info on all recipes, filtered if given query string
+GET `/recipes/all` Get brief info on all recipes, filtered if given query string.
 
 ```js
 res = {
@@ -115,7 +114,7 @@ res = {
 };
 ```
 
-GET `/recipes?title=foo` search for recipes with given string in the name. in the above example, replace foo with the recipe title
+GET `/recipes?title=foo` Search for recipes with given string in the name. In the above example, replace "foo" with the recipe title query.
 
 ```js
 res = {
@@ -133,7 +132,7 @@ res = {
 };
 ```
 
-POST `/recipes` add a new recipe (auth)
+POST `/recipes` Add a new recipe. (auth)
 
 ```js
   body = {
@@ -163,7 +162,7 @@ POST `/recipes` add a new recipe (auth)
   };
 ```
 
-GET `/recipes/:id` get detailed info about one recipe
+GET `/recipes/:id` Get detailed info about one recipe.
 
 ```js
 res = {
@@ -192,7 +191,7 @@ res = {
 ```
 ## Cookbook
 
-POST `/cookbook/:id` saves a recipe to the logged in users cookbook.
+POST `/cookbook/:id` Save a recipe to the logged-in user's cookbook.
 
 ```js
   res = {
@@ -200,7 +199,7 @@ POST `/cookbook/:id` saves a recipe to the logged in users cookbook.
     total_saves
   }
 ```
-DELETE `/cookbook/:id` deletes a recipe from the database if the user is the only person who has the recipe in a cookbook. if another user has it saved in a different cookboook, it removes the recipe from the currently logged in user's cookbook.
+DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only person who has the recipe in a cookbook. If another user has it saved in a different cookboook, this removes the recipe from the currently logged in user's cookbook.
 
 ```js
   res = {
@@ -227,42 +226,35 @@ res = {
 ```
 # Data Model
 
-| <img src="https://imgur.com/a/jqxOJVb" width = "350" /> |
+<img src="./db9.png" width = "350" />
 
+# Actions
 
-## 2️⃣ Actions
-
-# cooks
+## cooks
 
 `insert(cook)` -> adds a cook to cooks table
 
-`findByUsername(username) ` -> Returns a single cook by username
+`findByUsername(username) ` -> returns a single cook by username
 
-`all()` -> Returns the all cooks
+`all()` -> returns the all cooks
 
 `findById(id)` -> returns a single cook by ID
 
-`remove(id)` -> Delete a cook by ID
+`remove(id)` -> deletes a cook by ID
 
-`update(id, changes)` -> Find a user by ID and update by specified changes
-<br>
-<br>
-<br>
+`update(id, changes)` -> finds a user by ID and update by specified changes
 
-# recipes
+## recipes
 
 `insertRecipe({ steps, ingredients, ancestor, innovator, categories, ...recipesEntry })` -> adds recipe to the appropriate tables on the DB
 
-`findRecipeById(id)` -> Returns a single recipe by recipe ID
+`findRecipeById(id)` -> returns a single recipe by recipe ID
 
 `findByTitle(title)` -> returns a recipe by exact title match
 
 `searchByTitle(title)` -> returns all recipes that match a fuzzy search
-<br>
-<br>
-<br>
 
-# cookbook
+## cookbook
 
 `cookbookFindById(cookId)` -> returns an array of recipeIDs for recipes saved by cook id
 
@@ -270,7 +262,7 @@ res = {
 
 `cookbookRecipeDelete(recipeId, cookId)` -> deletes entry from the saves table
 
-## 3️⃣ Environment Variables
+# Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables.
 
@@ -283,13 +275,13 @@ create a .env file that includes the following:
     *  DB_PASSWORD - set this to the name of your local development database password, in production this is set in heroku settings. 
     *  DATABASE_URL - set to your localhost and port number in development and deployment URL in production
     
-## Contributing
+# Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
 
 Please note we have a [code of conduct](./code_of_conduct.md). Please follow it in all your interactions with the project.
 
-### Issue/Bug Request
+## Issue/Bug Request
 
  **If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
  - Check first to see if your issue has already been reported.
@@ -297,17 +289,17 @@ Please note we have a [code of conduct](./code_of_conduct.md). Please follow it 
  - Create a live example of the problem.
  - Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
 
-### Feature Requests
+## Feature Requests
 
 We would love to hear from you about new features which would improve this app and further the aims of our project. Please provide as much detail and information as possible to show us why you think your new feature should be implemented.
 
-### Pull Requests
+## Pull Requests
 
 If you have developed a patch, bug fix, or new feature that would improve this app, please submit a pull request. It is best to communicate your ideas with the developers first before investing a great deal of time into a pull request to ensure that it will mesh smoothly with the project.
 
 Remember that this project is licensed under the MIT license, and by submitting a pull request, you agree that your work will be, too.
 
-#### Pull Request Guidelines
+### Pull Request Guidelines
 
 - Ensure any install or build dependencies are removed before the end of the layer when doing a build.
 - Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
@@ -315,10 +307,10 @@ Remember that this project is licensed under the MIT license, and by submitting 
 - Include the relevant issue number, if applicable.
 - You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.     
 
-### Attribution
+## Attribution
 
 These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
 
-## Documentation
+# Documentation
 
 See [Frontend Documentation](https://github.com/Lambda-School-Labs/cooking-recipe-source-control-fe/blob/master/README.md) for details on the fronend of our project.
