@@ -95,26 +95,7 @@ GET `/cooks/:id` Get detailed info about one cook.
 
 ## Recipes
 
-GET `/recipes` Get brief info on all recipes, filtered if given query string.
-
-```js
-res = {
-  recipes: [
-    {
-      id,
-      title,
-      img: "(string) URL of the food photo",
-      minutes,
-      innovator_id:
-        "(number) the ID of the cook who created or modified the recipe",
-      total_saves,
-      username
-    }
-  ]
-};
-```
-
-GET `/recipes?title=foo` Search for recipes with given string in the name. In the above example, replace "foo" with the recipe title query.
+GET `/recipes` or `/recipes?title=foo` Get brief information for all recipes with given string in the name. Replace "foo" with a recipe title query. A bare search returns all recipes in the database.
 
 ```js
 res = {
@@ -207,7 +188,7 @@ DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only
   }
 ```
 
-GET `/cookbook/?category=foo` returns recipes saved by the logged in user as long as the category matches a current category tag. in the above example, replace foo with the desired category, if category is left empty it returns users entire cookbook
+GET `/cookbook` or `/cookbook?category=foo` Find recipes saved by the logged in user as long as the category matches a current category tag. In the given example, replace "foo" with the desired category. If category is left empty it returns users entire cookbook.
 
 ```js
 res = {
