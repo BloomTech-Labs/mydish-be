@@ -95,7 +95,7 @@ GET `/cooks/:id` Get detailed info about one cook.
 
 ## Recipes
 
-GET `/recipes/all` Get brief info on all recipes, filtered if given query string.
+GET `/recipes` Get brief info on all recipes, filtered if given query string.
 
 ```js
 res = {
