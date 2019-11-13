@@ -50,7 +50,7 @@ async function insertRecipe({
 }
 
 async function findRecipeById(id) {
-
+  
   //resolves to recipe table with only title, minutes to make, and notes.
   const baseRecipe = await db('recipes as r')
     .where({ 'r.id': id })
@@ -82,10 +82,13 @@ async function findRecipeById(id) {
     .select('e.cook_id').whereIn('e.new_recipe', [id])
     .first();
 
-  const innovatorEntry = await db('cooks')
-    .where({ id: recipeInnovator.cook_id })
-    .select('username')
-    .first();
+  // resolves to the username of the cook who created the recipe
+  const innovatorEntry = await db('recipes as r')
+  .where({ 'r.id': id })
+  .join('edits as e', 'e.new_recipe', 'r.id')
+  .join('cooks as c', 'c.id', 'e.cook_id')
+  .select('username')
+  .first();
 
   // resolves to the id of the previous version of this recipe, if any. and null, if not.
   const recipeAncestor = await db('recipes as r')
@@ -94,11 +97,13 @@ async function findRecipeById(id) {
     .select('e.old_recipe').whereIn('e.new_recipe', [id])
     .first();
 
+
   //resolves to an array of category names as strings
   const recipeCategories = await db('recipes as r')
     .where({ 'r.id': id })
     .join('categories as c', 'c.recipe_id', 'r.id')
     .pluck('c.name').whereIn('c.recipe_id', [id]);
+
 
   //constructs the expected response object
   const newRecipe = {
@@ -113,7 +118,7 @@ async function findRecipeById(id) {
     total_saves: recipeLikes ? recipeLikes.length : null,
     innovator: recipeInnovator ? recipeInnovator.cook_id : null,
     ancestor: recipeAncestor ? recipeAncestor.old_recipe : null,
-    innovator_name: innovatorEntry.username ? innovatorEntry.username : null
+    innovator_name: innovatorEntry ? innovatorEntry : null
   };
 
   return newRecipe;
