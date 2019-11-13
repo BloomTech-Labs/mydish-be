@@ -207,7 +207,7 @@ res = {
 ```
 # Data Model
 
-<img src="./db9.png" width = "350" />
+<img src="./db9.png" width = "600" />
 
 # Actions
 
