@@ -5,7 +5,6 @@ const Cooks = require('../data/cookModel.js');
 const mid = require('../middleware/cookMiddleware.js');
 
 function generateToken(cook) {
-  // console.log("cook in generateToken", cook);
   const payload = {
     username: cook.username,
     id: cook.id
@@ -107,10 +106,8 @@ router.put('/self', mid.restrict, (req, res) => {
 
 router.get('/:id', mid.validateId, (req, res) => {
   const { id } = req.params;
-  //console.log("id", id);
   Cooks.findById(id)
     .then(cooks => {
-      //console.log("cooks", cooks);
       res.status(200).json(cooks);
     })
     .catch(err => {
