@@ -26,7 +26,6 @@ async function deleteById(recipeId, cookId) {
       .del();
 
   } else {
-    console.log('on delete the else statement ran')
     //remove the cook_id/recipe_id pair from the saves table and call it a day.
     await db('saves')
       .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
@@ -43,15 +42,13 @@ function cookbookFindById(cookId) {
 }
 
 async function cookbookInsert(recipeId, cookId) {
-  console.log('cookbookInsert got:', recipeId, cookId);
   await db('saves')
     .insert({ recipe_id: recipeId, cook_id: cookId });
 
   return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
-//find the first recipe in the logged in cook's cookbook that matches the ID passed in and delete that.
-
+//find the first recipe in the logged in user's cookbook that matches the ID passed in and delete that.
 function cookbookRecipeDelete(recipeId, cookId) {
   return db('saves')
     .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
