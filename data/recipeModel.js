@@ -50,13 +50,11 @@ async function insertRecipe({
 }
 
 async function findRecipeById(id) {
-  console.log("****begin recipe construction****")
+  
   //resolves to recipe table with only title, minutes to make, and notes.
   const baseRecipe = await db('recipes as r')
     .where({ 'r.id': id })
     .first();
-
-  console.log("1-BASE RECIPE: ", baseRecipe);
 
   //resolves to array of step objects with their ordinals and step-body, ordered by ordinal
   const recipeSteps = await db('recipes as r')
@@ -65,23 +63,17 @@ async function findRecipeById(id) {
     .select('s.ordinal', 's.body').whereIn('s.recipe_id', [id])
     .orderBy('s.ordinal');
 
-  console.log("2-RECIPE STEPS: ", recipeSteps);
-
   //resolves to an array of ingredient objects with name, quantity, and unit type
   const recipeIngredients = await db('recipes as r')
     .where({ 'r.id': id })
     .join('ingredients as i', 'i.recipe_id', 'r.id')
     .select('i.name', 'i.quantity', 'i.unit').whereIn('i.recipe_id', [id]);
-    
-  console.log("3-RECIPE INGREDIENTS: ", recipeIngredients);
 
   //resolves to array of cook_ids.  will have to call likes.length in final return object.
   const recipeLikes = await db('recipes as r')
     .where({ 'r.id': id })
     .join('saves as l', 'l.recipe_id', 'r.id')
     .pluck('l.cook_id').whereIn('l.recipe_id', [id]);
-
-  console.log("4-RECIPE SAVES: ", recipeLikes);
 
   // resolves to the id of whichever cook created or modified this recipe.
   const recipeInnovator = await db('recipes as r')
@@ -90,15 +82,13 @@ async function findRecipeById(id) {
     .select('e.cook_id').whereIn('e.new_recipe', [id])
     .first();
 
-  console.log("5-RECIPE INNOVATOR: ", recipeInnovator);
-
   // resolves to the username of the cook who created the recipe
-  const innovatorEntry = await db('cooks')
-    .where({ id: recipeInnovator.cook_id })
-    .select('username')
-    .first();
-
-  console.log("6-RECIPE INNOVATOR USERNAME: ", innovatorEntry);
+  const innovatorEntry = await db('recipes as r')
+  .where({ 'r.id': id })
+  .join('edits as e', 'e.new_recipe', 'r.id')
+  .join('cooks as c', 'c.id', 'e.cook_id')
+  .select('username')
+  .first();
 
   // resolves to the id of the previous version of this recipe, if any. and null, if not.
   const recipeAncestor = await db('recipes as r')
@@ -107,7 +97,6 @@ async function findRecipeById(id) {
     .select('e.old_recipe').whereIn('e.new_recipe', [id])
     .first();
 
-  console.log("7-RECIPE INNOVATOR USERNAME: ", innovatorEntry);
 
   //resolves to an array of category names as strings
   const recipeCategories = await db('recipes as r')
@@ -115,7 +104,6 @@ async function findRecipeById(id) {
     .join('categories as c', 'c.recipe_id', 'r.id')
     .pluck('c.name').whereIn('c.recipe_id', [id]);
 
-  console.log("8-RECIPE CATEGORIES: ", recipeCategories);
 
   //constructs the expected response object
   const newRecipe = {
@@ -130,11 +118,8 @@ async function findRecipeById(id) {
     total_saves: recipeLikes ? recipeLikes.length : null,
     innovator: recipeInnovator ? recipeInnovator.cook_id : null,
     ancestor: recipeAncestor ? recipeAncestor.old_recipe : null,
-    innovator_name: innovatorEntry.username ? innovatorEntry.username : null
+    innovator_name: innovatorEntry ? innovatorEntry : null
   };
-  console.log("***RECIPE CONSTRUCTION COMPLETED***")
-  
-  console.log("the whole-ass response object: ", newRecipe);
 
   return newRecipe;
 }
