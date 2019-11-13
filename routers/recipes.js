@@ -10,6 +10,7 @@ router.get('/all', (req, res) => {
     .catch(err => { res.status(501).json(err); });
 });
 
+//for development only
 router.get('/test', (req, res) => {
   Recipes.totalLikesC(1)
     .then(x => { res.status(200).json(x); })
@@ -35,7 +36,6 @@ router.get('/:id', (req, res) => {
 
 //delete a recipe (removes from cookbook if recipe is saved by another user)
 router.delete('/:id', mid.restrict, (req, res) => {
-  console.log(req.cook)
   Recipes.deleteById(req.params.id, req.cook.id)
     .then(() => { res.status(204).end() })
     .catch(err => { res.status(501); });
