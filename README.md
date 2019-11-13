@@ -1,6 +1,6 @@
 # API Documentation
 
-#### 1️⃣ Backend delpoyed at Heroku (https://recipeshare-development.herokuapp.com/)
+#### Back-end deployed at Heroku (https://recipeshare-development.herokuapp.com/)
 
 ## Contributors
 
@@ -20,12 +20,12 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
-## Backend Framework
+## Back-end Framework
 
  NodeJs/Express/knex
 
 -    At the beginning of the project about half the devs knew Node/express and half knew Java/spring. Team consensus was that Node would be easier to learn for the Java folks.
--    Sticking to a Javascript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
+-    Sticking to a JavaScript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
 
 # Endpoints
 
@@ -103,7 +103,7 @@ res = {
     {
       id,
       title,
-      img: "(string) url of the food photo",
+      img: "(string) URL of the food photo",
       minutes,
       innovator_id:
         "(number) the ID of the cook who created or modified the recipe",
@@ -122,7 +122,7 @@ res = {
     {
       id,
       title,
-      img: "(string) url for a photo of food",
+      img: "(string) URL for a photo of food",
       minutes,
       innovator_id: "(number) the ID of the innovator who created this recipe",
       total_saves,
@@ -138,7 +138,7 @@ POST `/recipes` Add a new recipe. (auth)
   body = {
     title,
     minutes: "(optional number) time to make, adding more types of minutes in the works",
-    img: "(optional string) url of an image of the food"
+    img: "(optional string) URL of an image of the food"
     notes: "(optional string) free-form notes about the recipe",
     categories: [
       "(string) category/tag name"
@@ -147,7 +147,7 @@ POST `/recipes` Add a new recipe. (auth)
       {
         name,
         quantity: "(number)",
-        unit: "(string) example- mL or g or cups"
+        unit: "(string) example- ml or g or cups"
       }
     ],
     steps: [
@@ -168,7 +168,7 @@ GET `/recipes/:id` Get detailed info about one recipe.
 res = {
   title,
   minutes: "(optional number) preparation time in minutes",
-  img: "(string) url of an image of food prepared with the recipe"
+  img: "(string) URL of an image of food prepared with the recipe"
   notes: "(optional) free-form notes about the recipe",
   "(optional) categories": [
     "(string) category/tag name"
@@ -177,7 +177,7 @@ res = {
     {
       name,
       quantity: "(number)",
-      unit: "(string) example- mL or g or cups"
+      unit: "(string) example- ml or g or cups"
     }
   ],
   total_saves: "(number) total saves",
@@ -199,7 +199,7 @@ POST `/cookbook/:id` Save a recipe to the logged-in user's cookbook.
     total_saves
   }
 ```
-DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only person who has the recipe in a cookbook. If another user has it saved in a different cookboook, this removes the recipe from the currently logged in user's cookbook.
+DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only person who has the recipe in a cookbook. If another user has it saved in a different cookbook, this removes the recipe from the currently logged in user's cookbook.
 
 ```js
   res = {
@@ -215,7 +215,7 @@ res = {
     {
       id,
       title,
-      img: "(string) url for a photo of food",
+      img: "(string) URL for a photo of food",
       minutes,
       innovator_id: "(number) the ID of the innovator who created this recipe",
       total_saves,
@@ -266,13 +266,13 @@ res = {
 
 In order for the app to function correctly, the user must set up their own environment variables.
 
-create a .env file that includes the following:
+create a `.env` file that includes the following:
     
     *  PORT - local port for development
     *  NODE_ENV - set to "development" until ready for "production"
-    *  DB_NAME - set this to the name of your local development database
-    *  DB_USERNAME - set this to the name of your local development database username, in production this is set in heroku settings. 
-    *  DB_PASSWORD - set this to the name of your local development database password, in production this is set in heroku settings. 
+    *  DB_NAME - set to the name of your local development database
+    *  DB_USERNAME - set to the name of your local development database username, in production this is set in heroku settings
+    *  DB_PASSWORD - set to the name of your local development database password, in production this is set in heroku settings
     *  DATABASE_URL - set to your localhost and port number in development and deployment URL in production
     
 # Contributing
@@ -305,7 +305,7 @@ Remember that this project is licensed under the MIT license, and by submitting 
 - Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
 - Ensure that your code conforms to our existing code conventions and test coverage.
 - Include the relevant issue number, if applicable.
-- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.     
+- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
 
 ## Attribution
 
@@ -313,4 +313,4 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 # Documentation
 
-See [Frontend Documentation](https://github.com/Lambda-School-Labs/cooking-recipe-source-control-fe/blob/master/README.md) for details on the fronend of our project.
+See [Frontend Documentation](https://github.com/Lambda-School-Labs/cooking-recipe-source-control-fe/blob/master/README.md) for details on the front-end of our project.
