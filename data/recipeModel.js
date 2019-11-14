@@ -84,11 +84,11 @@ async function findRecipeById(id) {
 
   // resolves to the username of the cook who created the recipe
   const innovatorEntry = await db('recipes as r')
-  .where({ 'r.id': id })
-  .join('edits as e', 'e.new_recipe', 'r.id')
-  .join('cooks as c', 'c.id', 'e.cook_id')
-  .select('username')
-  .first();
+    .where({ 'r.id': id })
+    .join('edits as e', 'e.new_recipe', 'r.id')
+    .join('cooks as c', 'c.id', 'e.cook_id')
+    .select('username')
+    .first();
 
   // resolves to the id of the previous version of this recipe, if any. and null, if not.
   const recipeAncestor = await db('recipes as r')
@@ -118,7 +118,7 @@ async function findRecipeById(id) {
     total_saves: recipeLikes ? recipeLikes.length : null,
     innovator: recipeInnovator ? recipeInnovator.cook_id : null,
     ancestor: recipeAncestor ? recipeAncestor.old_recipe : null,
-    innovator_name: innovatorEntry ? innovatorEntry : null
+    innovator_name: innovatorEntry ? innovatorEntry.username : null
   };
 
   return newRecipe;
