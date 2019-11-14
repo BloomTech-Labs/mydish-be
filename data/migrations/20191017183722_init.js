@@ -3,7 +3,7 @@ exports.up = function (knex) {
     knex.schema
       //creates recipes table and necessary columns
       .createTable('recipes', tbl => {
-        tbl.increments('id')
+        tbl.increments('id');
         tbl
           .text('title')
           .notNullable();
@@ -53,7 +53,7 @@ exports.up = function (knex) {
           .unsigned()
           .references('id')
           .inTable('recipes')
-          .onDelete('cascade');
+          .onDelete('set null');
         tbl
           .integer('new_recipe')
           .unsigned()
@@ -67,23 +67,6 @@ exports.up = function (knex) {
           .inTable('cooks')
           .notNullable()
           .onDelete('set null');
-      })
-      //likes table to track which user has liked which recipes
-      .createTable('likes', tbl => {
-        tbl
-          .integer('cook_id')
-          .unsigned()
-          .notNullable()
-          .references('id')
-          .inTable('cooks')
-          .onDelete('cascade');
-        tbl
-          .integer('recipe_id')
-          .unsigned()
-          .notNullable()
-          .references('id')
-          .inTable('recipes')
-          .onDelete('cascade');
       })
       //saves table to track which recipes are saved to which user's cookbook
       .createTable('saves', tbl => {
