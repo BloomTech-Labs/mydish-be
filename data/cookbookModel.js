@@ -49,10 +49,11 @@ async function cookbookInsert(recipeId, cookId) {
 }
 
 //find the first recipe in the logged in user's cookbook that matches the ID passed in and delete that.
-function cookbookRecipeDelete(recipeId, cookId) {
-  return db('saves')
+async function cookbookRecipeDelete(recipeId, cookId) {
+  await db('saves')
     .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
     .del();
+  return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
 function cookbookSearch(userId, category) {
