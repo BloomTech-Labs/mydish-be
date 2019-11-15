@@ -4,7 +4,6 @@
 
 ## Contributors
 
-
 | [Lou](https://github.com/antilou86) | [Catherine](https://github.com/Katerinjo) | [Yurika](https://github.com/yuri77) |
 | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | 
 |  [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86) | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) |  [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
