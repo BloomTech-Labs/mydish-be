@@ -5,9 +5,9 @@ const db = require('./dbConfig');
 
 
 describe('cooks model', () => {
-  beforeEach(async () => {
-    await db('cooks').del();
-  });
+  // beforeEach(async () => {
+  //   await db('cooks').del();
+  // });
 
   it('should set environment to testing', () => {
     expect(process.env.NODE_ENV).toBe('testing');
@@ -22,7 +22,7 @@ describe('cooks model', () => {
       console.log(cook);
 
       //assert the record was inserted
-      expect(cook).toHaveLength(1);
+      expect(cook).toHaveLength(4);
     });
   });
 
@@ -34,7 +34,7 @@ describe('cooks model', () => {
     });
 
     it('post /', async () => {
-      const res = await request(server).post('/cooks/register').send({ username: 'Yurika', password: 'testpassword3' });
+      const res = await request(server).post('/cooks/register').send({ username: 'abcd', password: '12345' });
       expect(res.status).toBe(201);
     });
 
