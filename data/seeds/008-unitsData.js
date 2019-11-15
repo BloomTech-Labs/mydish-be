@@ -3,7 +3,7 @@ exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex('units').del()
     .then(function () {
-      // Inserts seed entries
+      // Inserts seed entries.
       return knex('units').insert([
         {name: 'tsp'},
         {name: 'tbsp'},
@@ -27,3 +27,4 @@ exports.seed = function(knex) {
       ]);
     });
 };
+//revert

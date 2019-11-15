@@ -53,7 +53,7 @@ router.post('/login', (req, res) => {
           token
         });
       } else {
-        res.status(401).json({ message: 'Invalid password' });
+        res.status(401).json({ message: 'Invalid username or password' });
       }
     })
     .catch(err => {
@@ -63,10 +63,8 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/', mid.restrict, (req, res) => {
-  const cook = req.cook;
-  //console.log("decodedToken cook", cook);
   Cooks.all().then(cooks => {
-    res.status(200).json(cooks)
+    res.status(200).json(cooks);
   });
 });
 
@@ -91,8 +89,8 @@ router.put('/self', mid.restrict, (req, res) => {
     .then(() => {
       Cooks.findById(id)
         .then(cook => {
-          const { id, username } = cook
-          res.status(200).json({ message: `${username} has been updated `, id })
+          const { id, username } = cook;
+          res.status(200).json({ message: `${username} has been updated `, id });
         })
         .catch(err => {
           console.log(err);

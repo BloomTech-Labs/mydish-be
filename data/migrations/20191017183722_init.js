@@ -3,7 +3,7 @@ exports.up = function (knex) {
     knex.schema
       //creates recipes table and necessary columns
       .createTable('recipes', tbl => {
-        tbl.increments('id');
+        tbl.increments('id')
         tbl
           .text('title')
           .notNullable();

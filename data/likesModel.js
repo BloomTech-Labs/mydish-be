@@ -8,16 +8,16 @@ module.exports = {
 
 function likesInsert(recipeId, cookId) {
   console.log('cook insert', recipeId, cookId);
-  return db('likes')
+  return db('saves')
     .insert({ recipe_id: recipeId, cook_id: cookId });
 }
 
 function likesTableDisplay() {
-  return db('likes');
+  return db('saves');
 }
 
 function likesDelete(recipeId, cookId) {
-  return db('likes')
+  return db('saves')
     .where({ 'likes.cook_id': cookId, 'likes.recipe_id': recipeId })
     .del();
 }

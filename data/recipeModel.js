@@ -125,6 +125,7 @@ function findByTitle(title) {
 }
 
 function allRecipes() {
+
   return db.with('tmpSaves', (qb) => {
     qb
       .select('r.*')
@@ -140,7 +141,7 @@ function allRecipes() {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('r.id');
+    .orderBy('t.total_saves', 'desc');
 }
 
 function searchByTitle(title) {
@@ -162,3 +163,4 @@ function searchByTitle(title) {
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
     .orderBy('r.id');
 }
+
