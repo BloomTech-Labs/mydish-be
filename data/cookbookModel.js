@@ -86,7 +86,7 @@ function cookbookSearch(userId, category) {
     .rightJoin('tmpSaves as t', 'r.id', 't.id')
     .join('saves as s', 'r.id', 's.recipe_id')
     .join('categories as cat', 'r.id', 'cat.recipe_id')
-    .where('cat.name', category)
+    .where('cat.name', 'ilike', `%${category}%`)
     .andWhere('s.cook_id', userId)
     .orderBy('t.total_saves', 'desc');
 }
