@@ -51,7 +51,10 @@ router.post('/', mid.restrict, async (req, res) => {
 
   if (missing.length > 0) { // abort if required fields missing
     res.status(400).json({ message: `missing required fields: ${missing}` });
-  } else {
+  } else if (!req.body.title) {
+    res.status(400).json({ message: "missing title for the recipe" })
+  }
+  else {
     // optional fields
     ['notes', 'ancestor', 'minutes', 'img'].forEach(field => {
       if (field in req.body) {
@@ -63,7 +66,8 @@ router.post('/', mid.restrict, async (req, res) => {
       const recipeId = await Recipes.insertRecipe(validRecipe);
       cookbook.cookbookInsert(recipeId, req.cook.id).then(dbRes => {
         res.status(201).json(
-          { message: 'Recipe created',
+          {
+            message: 'Recipe created',
             recipe_id: recipeId
           });
       }).catch(err => {
