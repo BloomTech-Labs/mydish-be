@@ -1,37 +1,41 @@
 const db = require('./dbConfig.js');
+const { remove } = require('./recipeModel.js');
 
 module.exports = {
   cookbookInsert,
-  cookbookRecipeDelete,
+  unsave,
   cookbookFindById,
   cookbookSearch,
   cookbookSearchAll,
-  deleteById
+  remove,
+  hardUnsave
 };
 
+// // destroy a recipe in the database (gone for everyone)
+// async function remove(id) {
+//   await db('recipes').where({ id }).del();
+//   return 0;
+// }
+
+//find the first recipe in the logged in user's cookbook that matches the ID passed in and unsave it. (gone only for your cookbook)
+// returns new save count
+async function unsave(recipeId, cookId) {
+  await db('saves')
+    .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
+    .del();
+  return (await db('saves').where('recipe_id', recipeId).count('cook_id').first()).count;
+}
+
 //if the saves table only has one cook_id associated with this recipe ID, fully delete the recipe from the DB.
-async function deleteById(recipeId, cookId) {
+async function hardUnsave(recipeId, cookId) {
 
-  //returns the saves table entries where the recipe ID matches the clicked recipe ID and returns an array of associated cook Ids.
-  const saves = await db('saves')
-    .where({ 'saves.recipe_id': recipeId })
-    .pluck('saves.cook_id');
+  const remainingSaves = await unsave(recipeId, cookId);
+  console.log('remsaves', remainingSaves) //!!
 
-  //if the array only has 1 entry, then the logged in user must be the cook within the entry, because they can only delete from their cookbook. which populates directly from the saves table.
-  if (saves.length <= 1) {
-
-    //erases recipe items in reverse order where the recipe id matches clicked recipe.
-    return db('recipes as r')
-      .where({ 'r.id': recipeId })
-      .del();
-
+  if (remainingSaves) {
+    return await remove(recipeId);
   } else {
-    //remove the cook_id/recipe_id pair from the saves table and call it a day.
-    await db('saves')
-      .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
-      .del();
-
-    return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
+    return remainingSaves;
   }
 }
 
@@ -48,13 +52,6 @@ async function cookbookInsert(recipeId, cookId) {
   return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
-//find the first recipe in the logged in user's cookbook that matches the ID passed in and delete that.
-async function cookbookRecipeDelete(recipeId, cookId) {
-  await db('saves')
-    .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
-    .del();
-  return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
-}
 
 function cookbookSearch(userId, category) {
   return db.with('tmpSaves', (qb) => {

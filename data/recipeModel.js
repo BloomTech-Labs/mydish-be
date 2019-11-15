@@ -5,7 +5,8 @@ module.exports = {
   allRecipes,
   findRecipeById,
   searchByTitle,
-  findByTitle
+  findByTitle,
+  remove
 };
 
 // support functions:
@@ -205,3 +206,8 @@ function searchByTitle(title) {
     });
 }
 
+// destroy a recipe in the database (gone for everyone)
+async function remove(id) {
+  await db('recipes').where({ id }).del();
+  return 0;
+}

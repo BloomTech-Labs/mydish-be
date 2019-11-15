@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
 
 //delete a recipe (removes from cookbook if recipe is saved by another user)
 router.delete('/:id', mid.restrict, (req, res) => {
-  Recipes.deleteById(req.params.id, req.cook.id)
+  Recipes.remove(req.params.id)
     .then(() => { res.status(204).end() })
     .catch(err => { res.status(501); });
 });

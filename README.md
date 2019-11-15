@@ -235,13 +235,17 @@ res = {
 
 `searchByTitle(title)` -> returns all recipes that match a fuzzy search
 
+`remove(id) ->` -> destroys the recipe with the given ID from the database
+
 ## cookbook
 
 `cookbookFindById(cookId)` -> returns an array of recipeIDs for recipes saved by cook id
 
 `cookbookInsert(recipeId, cookId)` -> adds recipe_id and cook_id to saves table
 
-`cookbookRecipeDelete(recipeId, cookId)` -> deletes entry from the saves table
+`unsave(recipeId, cookId)` -> deletes entry from the saves table
+
+`hardUnsave(recipeId, cookId)` -> deletes entry from the saves table, recipe disappears if orphaned
 
 # Environment Variables
 
