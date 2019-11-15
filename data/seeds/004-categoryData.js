@@ -1,26 +1,23 @@
 
-exports.seed = function(knex) {
+exports.seed = function (knex) {
   // Deletes ALL existing entries.
   return knex('categories').del()
     .then(function () {
       // Inserts seed entries
       return knex('categories').insert([
-        {recipe_id: 1, name: 'vegetables'},
-        {recipe_id: 1, name: 'healthy'},
-        {recipe_id: 1, name: 'low calorie'},
-        {recipe_id: 1, name: 'eggplant dishes'},
-        {recipe_id: 2, name: 'breakfast'},
-        {recipe_id: 2, name: 'people food'},
-        {recipe_id: 2, name: 'dairy'},
-        {recipe_id: 2, name: 'quick meals'},
-        {recipe_id: 3, name: 'breakfast'},
-        {recipe_id: 3, name: 'dairy'},
-        {recipe_id: 3, name: 'people food'},
-        {recipe_id: 3, name: 'egg foods'},
-        {recipe_id: 4, name: 'breakfast'},
-        {recipe_id: 4, name: 'brunch'},
-        {recipe_id: 4, name: 'quick meals'},
-        {recipe_id: 4, name: 'potato foods'}
+        { recipe_id: 1, name: 'Breakfast' },
+        { recipe_id: 1, name: 'Lunch' },
+        { recipe_id: 2, name: 'Breakfast' },
+        { recipe_id: 2, name: 'Brunch' },
+        { recipe_id: 2, name: 'Quick meals' },
+        { recipe_id: 3, name: 'Breakfast' },
+        { recipe_id: 3, name: 'Snack' },
+        { recipe_id: 3, name: 'People food' },
+        { recipe_id: 3, name: 'Egg foods' },
+        { recipe_id: 4, name: 'Dessert' },
+        { recipe_id: 4, name: 'Snack' },
+        { recipe_id: 4, name: 'Dinner' },
+        { recipe_id: 4, name: 'Potato foods' }
       ]);
     });
 };

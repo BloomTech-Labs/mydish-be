@@ -12,11 +12,6 @@ module.exports = {
 //if the saves table only has one cook_id associated with this recipe ID, fully delete the recipe from the DB.
 async function deleteById(recipeId, cookId) {
 
-  // //resolves to array of cook_ids.  will have to call likes.length in final return object.
-  // const recipeSaves = await db('recipes as r')
-  //   .where({ 'r.id': recipeId })
-  //   .join('saves as l', 'l.recipe_id', 'r.id')
-  //   .pluck('l.cook_id').whereIn('l.recipe_id', [id]);
   //returns the saves table entries where the recipe ID matches the clicked recipe ID and returns an array of associated cook Ids.
   const saves = await db('saves')
     .where({ 'saves.recipe_id': recipeId })
@@ -24,23 +19,17 @@ async function deleteById(recipeId, cookId) {
 
   //if the array only has 1 entry, then the logged in user must be the cook within the entry, because they can only delete from their cookbook. which populates directly from the saves table.
   if (saves.length <= 1) {
-    console.log('on delete the if statement ran')
 
     //erases recipe items in reverse order where the recipe id matches clicked recipe.
     return db('recipes as r')
       .where({ 'r.id': recipeId })
       .del();
 
-
-
   } else {
-    console.log('on delete the else statement ran')
     //remove the cook_id/recipe_id pair from the saves table and call it a day.
     await db('saves')
       .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
       .del();
-
-    console.log("got to line 43")
 
     return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
   }
@@ -53,19 +42,18 @@ function cookbookFindById(cookId) {
 }
 
 async function cookbookInsert(recipeId, cookId) {
-  console.log('cookbookInsert got:', recipeId, cookId);
   await db('saves')
     .insert({ recipe_id: recipeId, cook_id: cookId });
 
   return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
-//find the first recipe in the logged in cook's cookbook that matches the ID passed in and delete that.
-
-function cookbookRecipeDelete(recipeId, cookId) {
-  return db('saves')
+//find the first recipe in the logged in user's cookbook that matches the ID passed in and delete that.
+async function cookbookRecipeDelete(recipeId, cookId) {
+  await db('saves')
     .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
     .del();
+  return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
 function cookbookSearch(userId, category) {

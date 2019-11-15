@@ -2,7 +2,8 @@ const router = require('express').Router();
 const Likes = require('../data/likesModel.js');
 const mid = require('../middleware/cookMiddleware.js');
 
-//save user's likes to likes table
+//save user's likes to likes table 
+//this file is no longer a part of production and will be removed in a future update
 
 router.get('/', (req, res) => {
   Likes.likesTableDisplay().then(response => res.status(200).json(response));
