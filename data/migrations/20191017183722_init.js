@@ -119,7 +119,6 @@ exports.down = function (knex) {
     .dropTableIfExists('ingredients')
     .dropTableIfExists('units')
     .dropTableIfExists('saves')
-    .dropTableIfExists('likes')
     .dropTableIfExists('edits')
     .dropTableIfExists('cooks')
     .dropTableIfExists('categories')

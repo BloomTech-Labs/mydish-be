@@ -47,7 +47,7 @@ async function insertRecipe({
     ingredients.map(async ({ name, quantity, unit }) => {
       const unitId =
           unit ?
-          await db('units').where({ name: unit.toLowerCase() }).first().name
+          (await db('units').where({ name: unit.toLowerCase() }).first()).name
           : null;
       return {
         recipe_id: recipeId,
