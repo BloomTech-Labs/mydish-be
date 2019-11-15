@@ -148,7 +148,14 @@ function allRecipes() {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('t.total_saves', 'desc');
+    .orderBy('t.total_saves', 'desc')
+    .then(recipes => recipes.map((recipe) => {
+      if (recipe.total_saves == null) {
+        return {...recipe, total_saves: 0};
+      } else {
+        return {...recipe, total_saves: parseInt(recipe.total_saves)};
+      }
+    }));
 }
 
 function searchByTitle(title) {
@@ -168,6 +175,13 @@ function searchByTitle(title) {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('r.id');
+    .orderBy('r.id')
+    .then(recipes => recipes.map((recipe) => {
+      if (recipe.total_saves == null) {
+        return {...recipe, total_saves: 0};
+      } else {
+        return {...recipe, total_saves: parseInt(recipe.total_saves)};
+      }
+    }));
 }
 

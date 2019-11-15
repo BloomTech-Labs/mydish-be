@@ -10,13 +10,6 @@ router.get('/all', (req, res) => {
     .catch(err => { res.status(501).json(err); });
 });
 
-//for development only
-router.get('/test', (req, res) => {
-  Recipes.totalLikesC(1)
-    .then(x => { res.status(200).json(x); })
-    .catch(err => { res.status(501).json(err); });
-});
-
 //search by title
 router.get('', (req, res) => {
   const getFun = req.query.title ? Recipes.searchByTitle : Recipes.allRecipes;
