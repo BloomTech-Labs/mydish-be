@@ -8,6 +8,27 @@ module.exports = {
   findByTitle
 };
 
+// support functions:
+
+function forceNumber(val) {
+  return val ? parseInt(val) : 0;
+}
+
+function higherProp(key) {
+  // returns a comparison function that sorts high->low
+  // based on the value of the given key in objects to be compared
+  return (a, b) => {
+    if (a[key] < b[key]) {
+      return 1;
+    } else if (a[key] > b[key]) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+}
+
+// main functions:
 
 async function insertRecipe({
   steps, ingredients, ancestor, innovator, categories, ...recipesEntry }) {
@@ -131,6 +152,7 @@ function findByTitle(title) {
     .select(['r.id', 'r.title', 'r.minutes', 'r.img', 'e.cook_id', 'c.username']);
 }
 
+
 function allRecipes() {
 
   return db.with('tmpSaves', (qb) => {
@@ -148,14 +170,13 @@ function allRecipes() {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('t.total_saves', 'desc')
-    .then(recipes => recipes.map((recipe) => {
-      if (recipe.total_saves == null) {
-        return {...recipe, total_saves: 0};
-      } else {
-        return {...recipe, total_saves: parseInt(recipe.total_saves)};
-      }
-    }));
+    .then(recipes => recipes.map((recipe) => ({
+      ...recipe,
+      total_saves: forceNumber(recipe.total_saves)
+    })))
+    .then(recipes => {
+      return [...recipes].sort(higherProp('total_saves'));
+    });
 }
 
 function searchByTitle(title) {
@@ -175,13 +196,12 @@ function searchByTitle(title) {
     .leftJoin('edits as e', { 'e.new_recipe': 'r.id' })
     .leftJoin('cooks as c', 'e.cook_id', 'c.id')
     .leftJoin('tmpSaves as t', 'r.id', 't.id')
-    .orderBy('r.id')
-    .then(recipes => recipes.map((recipe) => {
-      if (recipe.total_saves == null) {
-        return {...recipe, total_saves: 0};
-      } else {
-        return {...recipe, total_saves: parseInt(recipe.total_saves)};
-      }
-    }));
+    .then(recipes => recipes.map((recipe) => ({
+      ...recipe,
+      total_saves: forceNumber(recipe.total_saves)
+    })))
+    .then(recipes => {
+      return [...recipes].sort(higherProp('total_saves'));
+    });
 }
 
