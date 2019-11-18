@@ -49,10 +49,11 @@ async function cookbookInsert(recipeId, cookId) {
 }
 
 //find the first recipe in the logged in user's cookbook that matches the ID passed in and delete that.
-function cookbookRecipeDelete(recipeId, cookId) {
-  return db('saves')
+async function cookbookRecipeDelete(recipeId, cookId) {
+  await db('saves')
     .where({ 'saves.cook_id': cookId, 'saves.recipe_id': recipeId })
     .del();
+  return await db('saves').where('recipe_id', recipeId).count('cook_id').first();
 }
 
 function cookbookSearch(userId, category) {
@@ -73,9 +74,9 @@ function cookbookSearch(userId, category) {
     .rightJoin('tmpSaves as t', 'r.id', 't.id')
     .join('saves as s', 'r.id', 's.recipe_id')
     .join('categories as cat', 'r.id', 'cat.recipe_id')
-    .where('cat.name', category)
+    .where('cat.name', 'ilike', `%${category}%`)
     .andWhere('s.cook_id', userId)
-    .orderBy('r.id');
+    .orderBy('t.total_saves', 'desc');
 }
 
 function cookbookSearchAll(userId) {
@@ -96,6 +97,6 @@ function cookbookSearchAll(userId) {
     .rightJoin('tmpSaves as t', 'r.id', 't.id')
     .join('saves as s', 's.recipe_id', 'r.id')
     .where('s.cook_id', userId)
-    .orderBy('r.id');
+    .orderBy('t.total_saves', 'desc');
 }
 

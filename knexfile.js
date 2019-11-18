@@ -29,9 +29,10 @@ module.exports = {
   testing: {
     client: 'pg',
     connection: {
-      database: 'postgres',
+      database: 'recipetest',
       user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD
+      password: process.env.DB_PASSWORD,
+      port: 6234
     },
     migrations: {
       directory: './data/migrations'

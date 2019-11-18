@@ -33,15 +33,15 @@ describe('server.js', () => {
         ],
         steps: [
             {
-                ordinal: 1.00,
+                ordinal: 1,
                 body: "pour your crunchy people food into a bowl"
             },
             {
-                ordinal: 2.00,
+                ordinal: 2,
                 body: "smother your crunchy people food with processed cows lacrimal essence"
             },
             {
-                ordinal: 3.00,
+                ordinal: 3,
                 body: "shovel your milky people food into your mouth in easy to manage bite-sized spoonfuls"
             }
         ],
