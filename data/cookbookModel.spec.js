@@ -16,12 +16,11 @@ describe('cookbook model', () => {
     it('should insert recipe_id and cook_id into the db', async () => {
       await Cookbook.cookbookInsert({ cook_id: 3, recipe_id: 3 });
       let cookbook = await db('saves');
-      console.log(cookbook);
       expect(cookbook).toHaveLength(1);
     });
   });
   describe('cookbook', () => {
-    it('get /', async () => {
+    it('wont get / if the user isnt logged in', async () => {
       const res = await request(server).get('/cookbook/');
       expect(res.status).toBe(501);
     });

@@ -1,3 +1,6 @@
+
+//to be honest this whole file needs to be deleted.
+
 const db = require('./dbConfig.js');
 
 module.exports = {
