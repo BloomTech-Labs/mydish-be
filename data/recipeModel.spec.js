@@ -59,9 +59,7 @@ describe('recipe model', () => {
         ancestor: null,
         innovator_name: null,
     };
-      async function response() { await Recipes.findRecipeById(2);}
-      const results = await response();
-
+      const results = await Recipes.findRecipeById(2);
       expect(results).toBe(expectedBody);
     });
   });
