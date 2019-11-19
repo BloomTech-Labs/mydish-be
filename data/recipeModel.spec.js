@@ -1,19 +1,21 @@
 const request = require('supertest');
 const server = require('../server.js');
-const db = require('../data/dbConfig.js');
+const Recipes = require('./recipeModel');
 
+describe('recipe model', () => {
+  
+  it('should set environment to testing', () => {
+    expect(process.env.NODE_ENV).toBe('testing');
+  });
 
-describe('server.js', () => {
-  describe('recipe route', () => {
-    it('should return an OK status code from the recipes route', () => {
-      let expectedStatusCode = 200;
-      let response;
-      return request(server).get('/recipes/').then(res => {
-        response = res;
-        expect(response.status).toEqual(expectedStatusCode);
-      });
+  describe('recipe get', () => {
+
+    it('should return an OK status code from the recipes route', async () => {
+      const res = await request(server).get('/');
+      expect(res.status).toBe(200);
     });
-    it('should return a JSON object from a specific recipe route', async () => {
+
+    it('should return a JSON object from a findById()', async () => {
       const expectedBody = {
         id: 2,
         title: "Cereal",
@@ -29,7 +31,7 @@ describe('server.js', () => {
                 name: "milk",
                 quantity: 1,
                 unit: "cup"
-            }
+              }
         ],
         steps: [
             {
@@ -55,10 +57,12 @@ describe('server.js', () => {
         total_saves: 3,
         innovator: null,
         ancestor: null,
-        innovator_name: null
+        innovator_name: null,
     };
-      const response = await request(server).get('/recipes/2');
-      expect(response.body).toEqual(expectedBody);
+      async function response() { await Recipes.findRecipeById(2);}
+      const results = await response();
+
+      expect(results).toBe(expectedBody);
     });
   });
 });
