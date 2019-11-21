@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const Cooks = require('../data/cookModel.js');
 const mid = require('../middleware/cookMiddleware.js');
 
+//issue token 
 function generateToken(cook) {
   const payload = {
     username: cook.username,
@@ -15,6 +16,7 @@ function generateToken(cook) {
   return jwt.sign(payload, process.env.SESSION_SECRET, options);
 }
 
+//route for registration - token is also generated
 router.post('/register', (req, res) => {
   const { username, password } = req.body;
 
@@ -61,12 +63,15 @@ router.post('/login', (req, res) => {
     });
 });
 
+//see what is in the users table 
+//user id is obtained through middleware 
 router.get('/', mid.restrict, (req, res) => {
   Cooks.all().then(cooks => {
     res.status(200).json(cooks);
   });
 });
 
+//delete user
 router.delete('/self', mid.restrict, (req, res) => {
   const { id } = req.cook;
   Cooks.remove(id)
@@ -77,6 +82,7 @@ router.delete('/self', mid.restrict, (req, res) => {
     });
 });
 
+//edit user 
 router.put('/self', mid.restrict, (req, res) => {
   const { id } = req.cook;
   const { username, password } = req.body;
