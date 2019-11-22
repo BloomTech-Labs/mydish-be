@@ -205,7 +205,7 @@ res = {
   ]
 };
 ```
-GET `/edits/:ancestor_id` 
+GET `/edits/:ancestor_id` Gets an array of recipe objects containing the below details.
 
 ```js
 res = {
