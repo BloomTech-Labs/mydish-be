@@ -7,10 +7,7 @@ const Edits = require('../data/editsModel.js');
 router.get('/:id', (req, res) => {
     Edits.searchByAncestor(req.params.id)
     .then(dbRes => {
-        res.status(201).json({
-            message: 'Recipes found',
-            data: dbRes
-        })
+        res.status(201).json({ recipes: dbRes });
     })
     .catch(err => {
         console.log(err);
