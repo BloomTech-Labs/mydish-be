@@ -27,7 +27,7 @@ router.get('/:id', (req, res) => {
     .catch(err => { res.status(501).json(err); });
 });
 
-//delete a recipe (removes from cookbook if recipe is saved by another user)
+//delete a recipe 
 router.delete('/:id', mid.restrict, (req, res) => {
   Recipes.deleteById(req.params.id, req.cook.id)
     .then(() => { res.status(204).end() })
