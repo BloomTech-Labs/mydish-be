@@ -204,6 +204,23 @@ res = {
   ]
 };
 ```
+GET `/edits/:ancestor_id` Gets an array of recipe objects containing the below details.
+
+```js
+res = {
+  recipes: [
+    {
+      id,
+      title,
+      img: "(string) URL for a photo of food",
+      minutes,
+      innovator_id: "(number) the ID of the innovator who created this recipe",
+      total_saves,
+      username
+    }
+  ]
+};
+```
 # Data Model
 
 <img src="./db9.png" width = "600" />

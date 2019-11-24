@@ -7,7 +7,9 @@
     "server": "nodemon index.js",
     "start": "node index.js",
     "frontend": "knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "test": "cross-env NODE_ENV=testing jest --watch --verbose"
+    "test": "cross-env NODE_ENV=testing jest --watch --verbose",
+    "test-create": "cross-env NODE_ENV=testing knex migrate:make test",
+    "test-dbreset": "cross-env NODE_ENV=testing knex migrate:rollback && cross-env NODE_ENV=testing knex migrate:latest && cross-env NODE_ENV=testing knex seed:run "
   },
   "jest": {
     "testEnvironment": "node"

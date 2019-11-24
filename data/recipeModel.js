@@ -5,11 +5,11 @@ module.exports = {
   allRecipes,
   findRecipeById,
   searchByTitle,
-  findByTitle
+  findByTitle,
+  deleteById
 };
 
 // support functions:
-
 function forceNumber(val) {
   return val ? parseInt(val) : 0;
 }
@@ -205,3 +205,9 @@ function searchByTitle(title) {
     });
 }
 
+//the endpoint is for development only.
+async function deleteById(recipeId) {
+    return db('recipes as r') 
+      .where({ 'r.id': recipeId })
+      .del();
+}
