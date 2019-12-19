@@ -1,13 +1,10 @@
-// Update with your config settings.
-require('dotenv').config();
-
 module.exports = {
   development: {
-    client: 'pg',
+    client: 'postgres',
     connection: {
-      database: 'postgres',
-      user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
     },
     migrations: {
       directory: './data/migrations'
@@ -17,23 +14,8 @@ module.exports = {
     }
   },
   production: {
-    client: 'pg',
-    connection: process.env.HEROKU_POSTGRESQL_BRONZE_URL,
-    migrations: {
-      directory: './data/migrations'
-    },
-    seeds: {
-      directory: './data/seeds'
-    }
-  },
-  testing: {
-    client: 'pg',
-    connection: {
-      database: 'recipetest',
-      user: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      port: 6234
-    },
+    client: 'postgres',
+    connection: process.env.DATABASE_URL,
     migrations: {
       directory: './data/migrations'
     },
@@ -41,4 +23,4 @@ module.exports = {
       directory: './data/seeds'
     }
   }
-};
+}
