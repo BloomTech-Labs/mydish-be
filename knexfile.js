@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
   developement: {
     client: 'postgres',
