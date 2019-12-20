@@ -50,7 +50,7 @@ exports.up = function(knex) {
                 .notNullable()
             tbl.text('abbreviation', 4)
         }),
-        knex.schema('ingredients_list', tbl => {
+        knex.schema.createTable('ingredients_list', tbl => {
             tbl.increments('id')
             tbl.integer('recipe_id')
                 .references('id')
