@@ -17,8 +17,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js",
-    "start": "node index.js"
+    "server": "nodemon serverjs",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
