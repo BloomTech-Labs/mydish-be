@@ -4,7 +4,7 @@ require('dotenv').config()
 const express = require('express')
 const server = express()
 const router = express.Router()
-const port = process.env.PORT || 4447
+const port = process.env.SERVER_PORT || 4447
 
 //import and use middleware
 server.use(require('cors')())
