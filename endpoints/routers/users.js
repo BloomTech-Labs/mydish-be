@@ -1,26 +1,30 @@
 const router = require('express').Router()
 const model = require('../models/users')
-const tbl = 'user'
+const tbl = 'users'
 
-router.post(`${tbl}/register`, (req, res) => {
+//add a user
+router.post(`/${tbl}/register`, (req, res) => {
     res.status(200).json('register user')
 })
 
-router.get(`/users`, (req, res) => {
-    console.log('made it here')
-    res.status(200).json('get users')
+//get one user
+router.get(`/${tbl}/:id`, (req, res) => {
+    res.status(200).json(`get user ${req.params.id}`)
 })
 
-router.get('users', (req, res) => {
-    const { id } = req.params;
-    model.get_one({id})
-      .then(cooks => {
-        res.status(200).json(cooks);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ message: 'Error retriving cook' });
-      });
-  });
+//get all users
+router.get(`/${tbl}`, (req, res) => {
+    res.status(200).json('get all users')
+})
+
+//update a user
+router.put(`/${tbl}/:id`, (req, res) => {
+    res.status(200).json(`update user ${req.params.id}`)
+})
+
+//terminate a user
+router.delete(`/${tbl}/:id`, (req, res) => {
+    res.status(200).json(`terminate user ${req.params.id}`)
+})
 
 module.exports = router

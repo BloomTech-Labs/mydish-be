@@ -2,7 +2,7 @@ const db = require('../../data/dbConfig')
 const tbl = 'users'
 
 add_one = async(obj) =>
-        (await db(tbl).insert(obj).returning('*')[0])
+    (await db(tbl).insert(obj).returning('*')[0])
 
 get_one = async(search_params) =>
     await db(tbl).where(search_params).first()
