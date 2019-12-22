@@ -38,7 +38,7 @@ exports.up = function(knex) {
                 .onDelete('set null')
                 .notNullable()
             tbl.integer('step_number')
-            tbl.text('desription')
+            tbl.text('description')
         }),
         knex.schema.createTable('ingredients', tbl => {
             tbl.increments('id')
@@ -77,11 +77,11 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
     return Promise.all([
-        knex.schema.dropTableIfExists('users'),
-        knex.schema.dropTableIfExists('recipes'),
-        knex.schema.dropTableIfExists('instructions'),
-        knex.schema.dropTableIfExists('ingredients'),
-        knex.schema.dropTableIfExists('units'),
-        knex.schema.dropTableIfExists('ingedient_list')
+        knex.schema.dropTable('ingredients_list', true),
+        knex.schema.dropTable('ingredients', true),
+        knex.schema.dropTable('units', true),
+        knex.schema.dropTable('instructions', true),
+        knex.schema.dropTable('recipes', true),
+        knex.schema.dropTable('users', true),
     ])
 }

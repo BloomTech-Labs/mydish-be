@@ -14,6 +14,7 @@ server.use(express.json())
 //routers
 server.use(require('./endpoints/routers/users'))
 server.use(require('./endpoints/routers/recipes'))
+server.use(require('./endpoints/routers/instructions'))
 
 //signal that the server is in fact running
 server.listen(port, () => {
