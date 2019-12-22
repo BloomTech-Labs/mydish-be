@@ -12,8 +12,7 @@ server.use(require('helmet')())
 server.use(express.json())
 
 //routers
-// server.use('/users', require('./endpoints/users.js'))
-// server.use('/recipes', require('./endpoints/recipes.js'))
+server.use(require('./endpoints/routers/users'))
 
 //signal that the server is in fact running
 server.listen(port, () => {
