@@ -3,10 +3,10 @@ const model = require('../models/recipes')
 const tbl = 'recipes'
 
 //add a recipe
-router.post(`/${tbl}/register`, async (req, res) => {
+router.post(`/${tbl}`, async (req, res) => {
     const {title} = req.body
     try {
-        const new_recipe = await model.add_one({recipename, password})
+        const new_recipe = await model.add_one({title})
         res.status(200).json(new_recipe)
     } catch(err) {
         res.status(500).json(err.detail)
@@ -58,7 +58,7 @@ router.delete(`/${tbl}/:id`, async (req, res) => {
     try {
         const recipe = await model.remove_one(id)
         recipe
-            ? res.status(200).json(`${recipe.recipename} has been terminated.`)
+            ? res.status(200).json(`${recipe.title} has been terminated.`)
             : res.status(404).json(`Couldn't find recipe ${id}.`)
     } catch(err) {
         res.status(500).json(err.detail)
