@@ -23,5 +23,5 @@ server.listen(port, () => {
 
 //catchall endpoint
 server.get('/', (req, res) => {
-    res.status(200).json('Yup, it worksing.')
+    res.status(200).json('Yup, it working.')
 })
