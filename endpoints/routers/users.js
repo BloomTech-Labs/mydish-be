@@ -3,28 +3,76 @@ const model = require('../models/users')
 const tbl = 'users'
 
 //add a user
-router.post(`/${tbl}/register`, (req, res) => {
-    res.status(200).json('register user')
+router.post(`/${tbl}/register`, async (req, res) => {
+    const {username, password} = req.body
+    try {
+        const new_user = await model.add_one({username, password})
+        res.status(200).json(new_user)
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
 })
 
 //get one user
-router.get(`/${tbl}/:id`, (req, res) => {
-    res.status(200).json(`get user ${req.params.id}`)
+router.get(`/${tbl}/:id`, async (req, res) => {
+    const {id} = req.params
+    try {
+        const user = await model.get_one({id})
+        user
+            ? res.status(200).json(user)
+            : res.status(404).json('No user found.')
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
 })
 
 //get all users
-router.get(`/${tbl}`, (req, res) => {
-    res.status(200).json('get all users')
+router.get(`/${tbl}`, async (req, res) => {
+    try {
+        const users = await model.get_all()
+        users.length > 0
+            ? res.status(200).json(users)
+            : res.status(404).json('No users found.')
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
 })
 
 //update a user
-router.put(`/${tbl}/:id`, (req, res) => {
-    res.status(200).json(`update user ${req.params.id}`)
+router.put(`/${tbl}/:id`, async (req, res) => {
+    const {id} = req.params
+    const updates = req.body
+    try {
+        const user = await model.update_one(id, updates)
+        user
+            ? res.status(200).json(user)
+            : res.status(404).json(`Couldn't update user`)
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
 })
 
 //terminate a user
-router.delete(`/${tbl}/:id`, (req, res) => {
-    res.status(200).json(`terminate user ${req.params.id}`)
+router.delete(`/${tbl}/:id`, async (req, res) => {
+    const {id} = req.params
+    try {
+        const user = await model.remove_one(id)
+        user
+            ? res.status(200).json(`${user.username} has been terminated.`)
+            : res.status(404).json(`Couldn't find user ${id}.`)
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
+})
+
+//terminate all users
+router.delete(`/${tbl}`, async (req, res) => {
+    try {
+        await model.remove_all()
+        res.status(200).json('All users have been eliminated.')
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
 })
 
 module.exports = router

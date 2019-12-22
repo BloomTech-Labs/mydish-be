@@ -1,22 +1,22 @@
 const db = require('../../data/dbConfig')
 const tbl = 'users'
 
-add_one = async(obj) =>
-    (await db(tbl).insert(obj).returning('*')[0])
+add_one = async (obj) => 
+    (await db(tbl).insert(obj).returning('*'))[0]
 
-get_one = async(search_params) =>
+get_one = async (search_params) =>
     await db(tbl).where(search_params).first()
 
-get_all = async(search_params) =>
+get_all = async (search_params = {}) =>
     await db(tbl).where(search_params)
 
-update_one = async(id, obj) =>
-    (await db(tbl).where({id}).update(obj).returning('*')[0])
+update_one = async (id, obj) =>
+    (await db(tbl).where({id}).update(obj).returning('*'))[0]
 
-remove_one = async(id) =>
-    (await db(tbl).where({id}).delete().returning('*')[0])
+remove_one = async (id) =>
+    (await db(tbl).where({id}).delete().returning('*'))[0]
 
-remove_all = async() =>
+remove_all = async () =>
     await db(tbl).delete()
 
 module.exports = {
