@@ -49,6 +49,8 @@ exports.up = function(knex) {
             tbl.increments('id')
             tbl.text('name')
                 .notNullable()
+            tbl.text('type')
+                .notNullable()
             tbl.text('abbreviation', 4)
         }),
         knex.schema.createTable('ingredients_list', tbl => {
