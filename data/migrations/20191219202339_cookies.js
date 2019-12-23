@@ -43,6 +43,9 @@ exports.up = function(knex) {
         knex.schema.createTable('ingredients', tbl => {
             tbl.increments('id')
             tbl.text('name')
+                .notNullable()
+            tbl.text('category')
+                .notNullable()
             tbl.text('description')
         }),
         knex.schema.createTable('units', tbl => {
