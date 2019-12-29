@@ -76,6 +76,8 @@ exports.up = function(knex) {
                 .onUpdate('CASCADE')
                 .onDelete('set null')
                 .notNullable()
+            tbl.integer('quantity')
+                .notNullable()
         })
     ])
 }
