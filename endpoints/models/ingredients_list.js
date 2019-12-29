@@ -5,7 +5,10 @@ add_one = async (obj) =>
     (await db(tbl).insert(obj).returning('*'))[0]
 
 get_one = async (search_params) => 
-    await db
+    await db(`${tbl} as list`)
+        .where('list.id', '=', search_params.id)
+        .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
+        .join('units', {'list.unit_id': 'units.id'})
         .select(
             'list.recipe_id',
             'ingredients.name as ingredient',
@@ -13,14 +16,12 @@ get_one = async (search_params) =>
             'units.abbreviation as unit_short',
             'list.quantity'
         )
-        .from('ingredients_list as list')
-        .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
-        .join('units', {'list.unit_id': 'units.id'})
-        .where('list.id', '=', search_params.id)
         .first()
 
 get_all = async (search_params = {}) =>
-    await db
+    await db(`${tbl} as list`)
+        .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
+        .join('units', {'list.unit_id': 'units.id'})
         .select(
             'list.recipe_id',
             'ingredients.name as ingredient',
@@ -28,9 +29,6 @@ get_all = async (search_params = {}) =>
             'units.abbreviation as unit_short',
             'list.quantity'
         )
-        .from('ingredients_list as list')
-        .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
-        .join('units', {'list.unit_id': 'units.id'})
 
 update_one = async (id, obj) =>
     (await db(tbl).where({id}).update(obj).returning('*'))[0]

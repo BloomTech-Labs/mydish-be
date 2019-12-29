@@ -22,6 +22,7 @@ router.get(`/${tbl}/:id`, async (req, res) => {
             ? res.status(200).json(recipe)
             : res.status(404).json('No recipe found.')
     } catch(err) {
+        console.log('err', err)
         res.status(500).json(err.detail)
     }
 })
