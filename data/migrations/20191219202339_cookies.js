@@ -78,12 +78,43 @@ exports.up = function(knex) {
                 .notNullable()
             tbl.integer('quantity')
                 .notNullable()
+        }),
+        knex.schema.createTable('categories', tbl => {
+            tbl.integer('recipe_id')
+            .references('id')
+            .inTable('recipes')
+            .onUpdate('CASCADE')
+            .onDelete('set null')
+            .notNullable()
+            tbl.text('name')
+            .notNullable()
+            tbl.Primary(['name', 'recipe_id'])
+
+        }),
+        knex.schema.createTable('edits', tbl => {
+            tbl.increments('id')
+            tbl.integer('recipe_id')
+            .references('id')
+            .intable('recipes')
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE')
+            .notNullable()
+            tbl.JSON('changes')
+            tbl.datetime('date_modified').defaultTo(knex.fn.now())
+            tbl.integer('owner_id')
+            .references('id')
+            .inTable('users')
+            .onUpdate('CASCADE')
+            .onDelete('CASCADE')
+            .notNullable()
         })
     ])
 }
 
 exports.down = function(knex) {
     return Promise.all([
+        knex.schema.dropTable('edits', true),
+        knex.schema.dropTable('categories', true),
         knex.schema.dropTable('ingredients_list', true),
         knex.schema.dropTable('ingredients', true),
         knex.schema.dropTable('units', true),
