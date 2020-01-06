@@ -1,9 +1,12 @@
 const router = require('express').Router()
 const model = require('../models/users')
 const tbl = 'users'
+const m = {
+    encrypt: require('../middleware/encrypt')
+}
 
 //add a user
-router.post(`/${tbl}/register`, async (req, res) => {
+router.post(`/${tbl}/register`, m.encrypt.password, async (req, res) => {
     const {username, password} = req.body
     try {
         const new_user = await model.add_one({username, password})

@@ -1,8 +1,6 @@
 const db = require('../../data/dbConfig')
 const tbl = 'recipes'
 
-// FORGOT TO JOIN USER INFO AND INSTRUCTIONS
-
 add_one = async (obj) => 
     (await db(tbl).insert(obj).returning('*'))[0]
 
