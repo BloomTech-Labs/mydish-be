@@ -14,6 +14,12 @@ const CookbookRouter = require('./routers/cookbook.js');
 const LikesRouter = require('./routers/likes.js');
 const EditsRouter = require('./routers/edits.js');
 
+server.use("/", (req, res, next) => {
+  let outputString = req.method;
+  outputString += " " + req.originalUrl;
+  console.log(outputString)
+  next()
+})
 server.use('/cooks', CooksRouter);
 server.use('/recipes', RecipeRouter);
 server.use('/cookbook', CookbookRouter);
