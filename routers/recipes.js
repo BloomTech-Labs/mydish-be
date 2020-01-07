@@ -131,11 +131,9 @@ router.put("/", mid.restrict, async (req, res) => {
 
   if (missing.length > 0) {
     // abort if required fields missing
-    res.status(400).json({ message: `missing required fields: ${missing}`,
-    currentRecipe });
+    res.status(400).json({ message: `missing required fields: ${missing}` });
   } else if (!req.body.title) {
-    res.status(400).json({ message: "missing title for the recipe",
-    currentRecipe });
+    res.status(400).json({ message: "missing title for the recipe" });
   } else {
     // optional fields
     ["notes", "ancestor", "minutes", "img"].forEach(field => {
