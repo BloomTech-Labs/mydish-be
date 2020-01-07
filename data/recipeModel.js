@@ -146,17 +146,20 @@ async function updateRecipe(updatedRecipe) {
         // Make sure our units are in the db, and include them in our object as an integer instead of a string
         const ingredientsEntries = await Promise.all(
           updatedRecipe.ingredients.map(async ingredient => {
+            console.log("before", ingredient);
             try {
-              ingredient.unit = unit
+              ingredient.unit = ingredient.unit
                 ? (
                     await trx("units")
-                      .where({ name: unit.toLowerCase() })
+                      .where({ name: ingredient.unit.toLowerCase() })
                       .first()
                   ).name
                 : null;
             } catch (e) {
+              console.log("catch", e)
               ingredient.unit = null;
             } finally {
+              console.log("after", ingredient);
               return ingredient;
             }
           })
