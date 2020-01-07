@@ -96,12 +96,16 @@ router.post("/", mid.restrict, async (req, res) => {
 
 //update a new recipe
 router.put("/", mid.restrict, async (req, res) => {
+  const currentRecipe = await Recipes.findRecipeById(req.body.id);
+  if (!currentRecipe) return res.status(404).json({message: "We couldn't find a recipe to update with this id"})
+
   if (!req.body || !req.body.innovator) {
     return res
       .status(400)
       .json({
         message: "To update a recipe, the recipe must have an creator",
-        missing: "innovator"
+        missing: "innovator",
+        currentRecipe
       });
   }
   if (req.body.innovator !== req.cook.id) {
@@ -109,7 +113,8 @@ router.put("/", mid.restrict, async (req, res) => {
       .status(403)
       .json({
         message:
-          "You do not have permission to edit this recipe. Please edit a recipe you have created."
+          "You do not have permission to edit this recipe. Please edit a recipe you have created.",
+          currentRecipe
       });
   }
   const missing = [];
@@ -126,9 +131,11 @@ router.put("/", mid.restrict, async (req, res) => {
 
   if (missing.length > 0) {
     // abort if required fields missing
-    res.status(400).json({ message: `missing required fields: ${missing}` });
+    res.status(400).json({ message: `missing required fields: ${missing}`,
+    currentRecipe });
   } else if (!req.body.title) {
-    res.status(400).json({ message: "missing title for the recipe" });
+    res.status(400).json({ message: "missing title for the recipe",
+    currentRecipe });
   } else {
     // optional fields
     ["notes", "ancestor", "minutes", "img"].forEach(field => {
@@ -144,7 +151,8 @@ router.put("/", mid.restrict, async (req, res) => {
         res.status(200).json(recipeResponse);
       } else {
         res.status(404).json({
-          message: "We couldn't find a recipe to update with this id"
+          message: "We couldn't find a recipe to update with this id",
+          currentRecipe
         });
       }
     } catch (err) {
