@@ -83,130 +83,123 @@ async function insertRecipe({
 }
 
 async function updateRecipe(updatedRecipe) {
-  try {
-    // db.transaction -> If at any point, any of these transactions fail,
-    //                        ALL of these db calls will rollback. This will
-    //                        ensure that you don't have partial data inserted/updated
-    //                        if there's an error anywhere '' '
-    db.transaction(async trx => {
-      try {
-        //========== Step 1 - update the recipe ==========//
-        const updatedRecipeDetails = {
-          title: updatedRecipe.title,
-          minutes: updatedRecipe.minutes,
-          notes: updatedRecipe.notes
-        };
-        await trx("recipes")
-          .where({ id: updatedRecipe.id })
-          .update(updatedRecipeDetails);
+  // db.transaction -> If at any point, any of these transactions fail,
+  //                        ALL of these db calls will rollback. This will
+  //                        ensure that you don't have partial data inserted/updated
+  //                        if there's an error anywhere '' '
+  await db.transaction(async trx => {
+    try {
+      //========== Step 1 - update the recipe ==========//
+      const updatedRecipeDetails = {
+        title: updatedRecipe.title,
+        minutes: updatedRecipe.minutes,
+        notes: updatedRecipe.notes
+      };
+      await trx("recipes")
+        .where({ id: updatedRecipe.id })
+        .update(updatedRecipeDetails);
 
-        //========== Step 2 - Update the recipe steps ==========//
-        const dbSteps = await trx("steps").where({
-          recipe_id: updatedRecipe.id
-        });
-        // By mapping through the steps in the database, we find the steps we want to update
-        //     If there are any steps left over from the db, that means the user removed a step or more,
-        //     and these steps should be deleted from the db '' '
-        const stepsToDelete = [];
-        const updatedSteps = [];
-        dbSteps.forEach(step => {
-          const index = updatedRecipe.steps.findIndex(
-            checkStep => checkStep.ordinal === step.ordinal
-          );
-          if (index === -1) {
-            stepsToDelete.push(step.ordinal);
-          } else {
-            updatedSteps.push(updatedRecipe.steps.splice(index, 1)[0]);
+      //========== Step 2 - Update the recipe steps ==========//
+      const dbSteps = await trx("steps").where({
+        recipe_id: updatedRecipe.id
+      });
+      // By mapping through the steps in the database, we find the steps we want to update
+      //     If there are any steps left over from the db, that means the user removed a step or more,
+      //     and these steps should be deleted from the db '' '
+      const stepsToDelete = [];
+      const updatedSteps = [];
+      dbSteps.forEach(step => {
+        const index = updatedRecipe.steps.findIndex(
+          checkStep => checkStep.ordinal === step.ordinal
+        );
+        if (index === -1) {
+          stepsToDelete.push(step.ordinal);
+        } else {
+          updatedSteps.push(updatedRecipe.steps.splice(index, 1)[0]);
+        }
+      });
+      // Any steps left over need to be inserted into the database
+      const newSteps = updatedRecipe.steps;
+
+      updatedSteps.forEach(async step => {
+        await trx("steps")
+          .where({ recipe_id: updatedRecipe.id })
+          .andWhere({ ordinal: step.ordinal })
+          .update(step);
+      });
+      stepsToDelete.forEach(async stepNumber => {
+        await trx("steps")
+          .where({ recipe_id: updatedRecipe.id })
+          .andWhere({ ordinal: stepNumber })
+          .del();
+      });
+      await trx("steps").insert(
+        newSteps.map(step => ({ ...step, recipe_id: updatedRecipe.id }))
+      );
+
+      //========== Step 3 - update the recipe ingredients ==========//
+      const dbIngredients = await trx("ingredients").where({
+        recipe_id: updatedRecipe.id
+      });
+
+      // Make sure our units are in the db, and include them in our object as an integer instead of a string
+      const ingredientsEntries = await Promise.all(
+        updatedRecipe.ingredients.map(async ingredient => {
+          try {
+            ingredient.unit = ingredient.unit
+              ? (
+                  await trx("units")
+                    .where({ name: ingredient.unit.toLowerCase() })
+                    .first()
+                ).name
+              : null;
+          } catch (e) {
+            ingredient.unit = null;
+          } finally {
+            return ingredient;
           }
-        });
-        // Any steps left over need to be inserted into the database
-        const newSteps = updatedRecipe.steps;
-
-        updatedSteps.forEach(async step => {
-          await trx("steps")
-            .where({ recipe_id: updatedRecipe.id })
-            .andWhere({ ordinal: step.ordinal })
-            .update(step);
-        });
-        stepsToDelete.forEach(async stepNumber => {
-          await trx("steps")
-            .where({ recipe_id: updatedRecipe.id })
-            .andWhere({ ordinal: stepNumber })
-            .del();
-        });
-        await trx("steps").insert(
-          newSteps.map(step => ({ ...step, recipe_id: updatedRecipe.id }))
+        })
+      );
+      // Same process we did with the steps, we do with the ingredients
+      const ingredientsToDelete = [];
+      const updatedIngredients = [];
+      dbIngredients.forEach(ingredient => {
+        const index = ingredientsEntries.findIndex(
+          checkIngredient => checkIngredient.name === ingredient.name
         );
+        if (index === -1) {
+          ingredientsToDelete.push(ingredient.name);
+        } else {
+          updatedIngredients.push(ingredientsEntries.splice(index, 1)[0]);
+        }
+      });
+      // Any ingredients left over need to be inserted into the database
+      const newIngredients = ingredientsEntries;
 
-        //========== Step 3 - update the recipe ingredients ==========//
-        const dbIngredients = await trx("ingredients").where({
+      ingredientsToDelete.forEach(async ingredientName => {
+        await trx("ingredients")
+          .where({ recipe_id: updatedRecipe.id })
+          .andWhere({ name: ingredientName })
+          .del();
+      });
+      updatedIngredients.forEach(async ingredient => {
+        await trx("ingredients")
+          .where({ recipe_id: updatedRecipe.id })
+          .andWhere({ name: ingredient.name })
+          .update(ingredient);
+      });
+      await trx("ingredients").insert(
+        newIngredients.map(ingredient => ({
+          ...ingredient,
           recipe_id: updatedRecipe.id
-        });
-
-        // Make sure our units are in the db, and include them in our object as an integer instead of a string
-        const ingredientsEntries = await Promise.all(
-          updatedRecipe.ingredients.map(async ingredient => {
-            console.log("before", ingredient);
-            try {
-              ingredient.unit = ingredient.unit
-                ? (
-                    await trx("units")
-                      .where({ name: ingredient.unit.toLowerCase() })
-                      .first()
-                  ).name
-                : null;
-            } catch (e) {
-              console.log("catch", e)
-              ingredient.unit = null;
-            } finally {
-              console.log("after", ingredient);
-              return ingredient;
-            }
-          })
-        );
-        // Same process we did with the steps, we do with the ingredients
-        const ingredientsToDelete = [];
-        const updatedIngredients = [];
-        dbIngredients.forEach(ingredient => {
-          const index = ingredientsEntries.findIndex(
-            checkIngredient => checkIngredient.name === ingredient.name
-          );
-          if (index === -1) {
-            ingredientsToDelete.push(ingredient.name);
-          } else {
-            updatedIngredients.push(ingredientsEntries.splice(index, 1)[0]);
-          }
-        });
-        // Any ingredients left over need to be inserted into the database
-        const newIngredients = ingredientsEntries;
-
-        ingredientsToDelete.forEach(async ingredientName => {
-          await trx("ingredients")
-            .where({ recipe_id: updatedRecipe.id })
-            .andWhere({ name: ingredientName })
-            .del();
-        });
-        updatedIngredients.forEach(async ingredient => {
-          await trx("ingredients")
-            .where({ recipe_id: updatedRecipe.id })
-            .andWhere({ name: ingredient.name })
-            .update(ingredient);
-        });
-        await trx("ingredients").insert(
-          newIngredients.map(ingredient => ({
-            ...ingredient,
-            recipe_id: updatedRecipe.id
-          }))
-        );
-      } catch (e) {
-        trx.rollback();
-        throw e;
-      }
-    });
-    return true;
-  } catch (e) {
-    throw e;
-  }
+        }))
+      );
+    } catch (e) {
+      trx.rollback();
+      throw e;
+    }
+  });
+  return true;
 }
 
 async function findRecipeById(id) {
