@@ -84,10 +84,10 @@ async function insertRecipe({
 
 async function updateRecipe(updatedRecipe) {
   try {
-    // db.transaction -> "If at any point, any of these transactions fail,
+    // db.transaction -> If at any point, any of these transactions fail,
     //                        ALL of these db calls will rollback. This will
     //                        ensure that you don't have partial data inserted/updated
-    //                        if there's an error anywhere."
+    //                        if there's an error anywhere '' '
     db.transaction(async trx => {
       try {
         //========== Step 1 - update the recipe ==========//
@@ -106,7 +106,7 @@ async function updateRecipe(updatedRecipe) {
         });
         // By mapping through the steps in the database, we find the steps we want to update
         //     If there are any steps left over from the db, that means the user removed a step or more,
-        //     and these steps should be deleted from the db
+        //     and these steps should be deleted from the db '' '
         const stepsToDelete = [];
         const updatedSteps = [];
         dbSteps.forEach(step => {
