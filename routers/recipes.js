@@ -95,27 +95,29 @@ router.post("/", mid.restrict, async (req, res) => {
 });
 
 //update a new recipe
-router.put("/", mid.restrict, mid.validateRecipe, async (req, res) => {
+router.put("/", mid.restrict, async (req, res) => {
   const currentRecipe = await Recipes.findRecipeById(req.body.id);
-  if (!currentRecipe) return res.status(404).json({message: "We couldn't find a recipe to update with this id"})
+  if (!currentRecipe)
+    return res
+      .status(404)
+      .json({ message: "We couldn't find a recipe to update with this id" });
+
+  const error = mid.validateRecipe(req, currentRecipe);
+  if (error) return res.status(400).json({message: error, currentRecipe});
 
   if (!req.body || !req.body.innovator) {
-    return res
-      .status(400)
-      .json({
-        message: "To update a recipe, the recipe must have an creator",
-        missing: "innovator",
-        currentRecipe
-      });
+    return res.status(400).json({
+      message: "To update a recipe, the recipe must have an creator",
+      missing: "innovator",
+      currentRecipe
+    });
   }
   if (req.body.innovator !== req.cook.id) {
-    return res
-      .status(403)
-      .json({
-        message:
-          "You do not have permission to edit this recipe. Please edit a recipe you have created.",
-          currentRecipe
-      });
+    return res.status(403).json({
+      message:
+        "You do not have permission to edit this recipe. Please edit a recipe you have created.",
+      currentRecipe
+    });
   }
   const missing = [];
   const validRecipe = { innovator: req.body.innovator };
@@ -145,7 +147,7 @@ router.put("/", mid.restrict, mid.validateRecipe, async (req, res) => {
     try {
       const success = await Recipes.updateRecipe(validRecipe);
       if (success) {
-        const recipeResponse = await Recipes.findRecipeById(req.body.id)
+        const recipeResponse = await Recipes.findRecipeById(req.body.id);
         res.status(200).json(recipeResponse);
       } else {
         res.status(404).json({
