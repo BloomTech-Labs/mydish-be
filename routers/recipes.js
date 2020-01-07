@@ -140,10 +140,8 @@ router.put("/", mid.restrict, async (req, res) => {
     try {
       const success = await Recipes.updateRecipe(validRecipe);
       if (success) {
-        res.status(200).json({
-          message: "Recipe updated",
-          recipe_id: req.body.id
-        });
+        const recipeResponse = await Recipes.findRecipeById(req.body.id)
+        res.status(200).json(recipeResponse);
       } else {
         res.status(404).json({
           message: "We couldn't find a recipe to update with this id"
