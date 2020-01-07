@@ -95,7 +95,7 @@ router.post("/", mid.restrict, async (req, res) => {
 });
 
 //update a new recipe
-router.put("/", mid.restrict, async (req, res) => {
+router.put("/", mid.restrict, mid.validateRecipe, async (req, res) => {
   const currentRecipe = await Recipes.findRecipeById(req.body.id);
   if (!currentRecipe) return res.status(404).json({message: "We couldn't find a recipe to update with this id"})
 
