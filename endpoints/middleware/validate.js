@@ -26,6 +26,7 @@ generate_token = (user) => {
 //create token for user upon login
 user = async (req, res, next) => {
     const {username, password} = req.body
+    //get user from database
     const user = await user_model.get_one({username})
     if(user && crypt.compareSync(password, user.password)) {
         //remove password from response
@@ -36,12 +37,25 @@ user = async (req, res, next) => {
     }
     next()
 }
-//check if user has token and it's legit
-// token = async (req, res, next) => {
 
-// }
+// check if user has token and it's legit
+token = async (req, res, next) => {
+    //grab and check for jwt
+    const webtoken = req.headers.authorization
+    webtoken
+        //check if token is valid
+    ?   jwt.verify(webtoken, settings.token_secret, (err, decoded_token) => {
+            err
+            //if not, send an error
+            ?   res.status(401).json({message: `Nice try. This token hasn't been validated by the Citadel of Ricks.`})
+            //otherwise move on
+            :   next()
+        })
+        //send error if no token is provided
+    :   res.status(404).json({message: `What's the password?`})
+}
 
 module.exports = {
     user,
-    // token
+    token
 }
