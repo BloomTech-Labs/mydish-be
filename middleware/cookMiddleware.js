@@ -73,3 +73,20 @@ function validateRecipe(req) {
     return "Please make sure your ingredient(s) have a name and quantity!";
   } else return false;
 }
+
+function validateToken(req, res, next) {
+  const token = req.headers.authorization;
+
+  if (token) {
+    jwt.verify(token, process.env.SESSION_SECRET, (err, decodedToken) => {
+      if (err) {
+        next();
+      } else {
+        req.cook = decodedToken;
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+}
