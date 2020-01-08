@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const model = require('../models/users')
 const tbl = 'users'
-const m = {
-    encrypt: require('../middleware/encrypt')
+const m = { //middleware
+    encrypt: require('../middleware/encrypt'),
+    validate: require('../middleware/validate')
 }
 
 //add a user
@@ -11,6 +12,26 @@ router.post(`/${tbl}/register`, m.encrypt.password, async (req, res) => {
     try {
         const new_user = await model.add_one({username, password})
         res.status(200).json(new_user)
+    } catch(err) {
+        res.status(500).json(err.detail)
+    }
+})
+
+//login a user
+router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
+    try {
+        if(!req.denied) {
+            const user = req.user
+            const token = req.token
+            res.status(200).json({
+                message: `Great job remembering your password.`,
+                user: user,
+                token: token
+            })
+        } else
+            res.status(404).json({
+                message: `Wrong password, dumbass.`
+            })
     } catch(err) {
         res.status(500).json(err.detail)
     }
