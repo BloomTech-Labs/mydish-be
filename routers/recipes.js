@@ -21,9 +21,15 @@ router.get('', (req, res) => {
 });
 
 //single recipe
-router.get('/:id', (req, res) => {
+router.get('/:id', mid.validateToken, (req, res) => {
   Recipes.findRecipeById(req.params.id)
-    .then(x => { res.status(200).json(x); })
+    .then(x => { 
+     if(req.cook && req.cook.id && x.innovator === req.cook.id) {
+        x.editable = true;  
+      } else {
+        x.editable = false;
+      }
+      res.status(200).json(x); })
     .catch(err => { res.status(501).json(err); });
 });
 

@@ -1,7 +1,7 @@
 const Cooks = require('../data/cookModel.js');
 const jwt = require('jsonwebtoken');
 
-module.exports = { validateId, restrict };
+module.exports = { validateId, restrict, validateToken };
 
 function validateId(req, res, next) {
 
@@ -35,4 +35,22 @@ function restrict(req, res, next) {
       message: 'No authorization token provided'
     });
   }
+}
+
+function validateToken(req, res, next) {
+ const token = req.headers.authorization;
+
+ if(token) {
+   jwt.verify(token, process.env.SESSION_SECRET, (err, decodedToken) => {
+     if(err) {
+       next();
+     }
+     else {
+       req.cook = decodedToken;
+       next();
+     }
+   })
+ } else {
+   next();
+ }
 }
