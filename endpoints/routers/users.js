@@ -20,7 +20,7 @@ router.post(`/${tbl}/register`, m.encrypt.password, async (req, res) => {
 //login a user
 router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
     try {
-        if(!req.denied) {
+        if(req.user) {
             const user = req.user
             const token = req.token
             res.status(200).json({
