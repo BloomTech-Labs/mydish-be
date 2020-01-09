@@ -4,11 +4,11 @@
 
 ## Contributors
 
-| [Lou](https://github.com/antilou86) | [Catherine](https://github.com/Katerinjo) | [Yurika](https://github.com/yuri77) |
-| :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | 
-|  [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86) | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) |  [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
-| [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo) | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77) |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | 
+|                                                  [Lou](https://github.com/antilou86)                                                  |                                        [Catherine](https://github.com/Katerinjo)                                        |                                         [Yurika](https://github.com/yuri77)                                          |
+| :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
+|        [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86)        | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) | [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
+|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86)                         |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77)                  |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)      |    [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |
 
 # Getting started
 
@@ -21,10 +21,10 @@ To get the server running locally:
 
 ## Back-end Framework
 
- NodeJs/Express/knex
+NodeJs/Express/knex
 
--    At the beginning of the project about half the devs knew Node/express and half knew Java/spring. Team consensus was that Node would be easier to learn for the Java folks.
--    Sticking to a JavaScript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
+- At the beginning of the project about half the devs knew Node/express and half knew Java/spring. Team consensus was that Node would be easier to learn for the Java folks.
+- Sticking to a JavaScript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
 
 # Endpoints
 
@@ -38,7 +38,7 @@ body = {
   password
 };
 res = {
-  message: 'registration successful',
+  message: "registration successful",
   id: "(number) the ID of the user/cook",
   token: "authentication token for the session"
 };
@@ -52,7 +52,7 @@ body = {
   password
 };
 res = {
-  message: 'You have logged in',
+  message: "You have logged in",
   id: "(number) the ID of the user/cook",
   token: "authentication token for the session"
 };
@@ -74,7 +74,7 @@ res = {
 DELETE `/cooks/self` Delete account. (auth)
 
 ```js
-res = {} // (status code 204 OK)
+res = {}; // (status code 204 OK)
 ```
 
 GET `/cooks` Get brief info on all cooks.
@@ -136,7 +136,7 @@ POST `/recipes` Add a new recipe. (auth)
     ancestor: "(optional number) the ID of the previous version of this recipe"
   };
 
-  res = { 
+  res = {
     message: 'Recipe created',
     recipe_id
   };
@@ -169,6 +169,48 @@ res = {
   innovator_name: "(string) the username of the innovator"
 };
 ```
+
+PUT `/recipes/` Takes the id from the object being passed in and returns the recipe with any changes made.
+
+````json
+{
+  "id": 2,
+  "title": "Cereal",
+  "minutes": 45,
+  "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+  "ingredients": [
+    {
+      "name": "milk",
+      "quantity": 1,
+      "unit": "cup"
+    }
+  ],
+  "steps": [
+    {
+      "ordinal": 1,
+      "body": "pour your crunchy people food into a bowl"
+    },
+    {
+      "ordinal": 2,
+      "body": "smother your crunchy people food with processed cows lacrimal essence"
+    },
+    {
+      "ordinal": 3,
+      "body": "shovel your milky people food into your mouth in easy to manage bite-sized spoonfuls"
+    }
+  ],
+  "notes": "Cereal is one the most delicate and complex recipes known throughout the history of mankind...",
+  "categories": [
+    "Breakfast",
+    "Brunch",
+    "Quick meals"
+  ],
+  "total_saves": 3,
+  "innovator": 1,
+  "ancestor": 1,
+  "innovator_name": "Catherine"
+}```
+
 ## Cookbook
 
 POST `/cookbook/:id` Save a recipe to the logged-in user's cookbook.
@@ -178,13 +220,14 @@ POST `/cookbook/:id` Save a recipe to the logged-in user's cookbook.
     message: 'Recipe Successfully Saved to Cookbook.',
     total_saves
   }
-```
+````
+
 DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only person who has the recipe in a cookbook. If another user has it saved in a different cookbook, this removes the recipe from the currently logged in user's cookbook.
 
 ```js
-  res = {
-    total_saves
-  }
+res = {
+  total_saves
+};
 ```
 
 GET `/cookbook` or `/cookbook?category=foo` Find recipes saved by the logged in user as long as the category matches a current category tag. In the given example, replace "foo" with the desired category. If category is left empty it returns users entire cookbook.
@@ -204,6 +247,7 @@ res = {
   ]
 };
 ```
+
 GET `/edits/:ancestor_id` Gets an array of recipe objects containing the below details.
 
 ```js
@@ -221,6 +265,7 @@ res = {
   ]
 };
 ```
+
 # Data Model
 
 <img src="./db9.png" width = "600" />
@@ -231,7 +276,7 @@ res = {
 
 `insert(cook)` -> adds a cook to cooks table
 
-`findByUsername(username) ` -> returns a single cook by username
+`findByUsername(username)` -> returns a single cook by username
 
 `all()` -> returns the all cooks
 
@@ -264,14 +309,14 @@ res = {
 In order for the app to function correctly, the user must set up their own environment variables.
 
 create a `.env` file that includes the following:
-    
-    *  PORT - local port for development
-    *  NODE_ENV - set to "development" until ready for "production"
-    *  DB_NAME - set to the name of your local development database
-    *  DB_USERNAME - set to the name of your local development database username, in production this is set in heroku settings
-    *  DB_PASSWORD - set to the name of your local development database password, in production this is set in heroku settings
-    *  DATABASE_URL - set to your localhost and port number in development and deployment URL in production
-    
+  
+ _ PORT - local port for development
+_ NODE_ENV - set to "development" until ready for "production"
+_ DB_NAME - set to the name of your local development database
+_ DB_USERNAME - set to the name of your local development database username, in production this is set in heroku settings
+_ DB_PASSWORD - set to the name of your local development database password, in production this is set in heroku settings
+_ DATABASE_URL - set to your localhost and port number in development and deployment URL in production
+
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
@@ -280,11 +325,12 @@ Please note we have a [code of conduct](./code_of_conduct.md). Please follow it 
 
 ## Issue/Bug Request
 
- **If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
- - Check first to see if your issue has already been reported.
- - Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
- - Create a live example of the problem.
- - Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
+**If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
+
+- Check first to see if your issue has already been reported.
+- Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
+- Create a live example of the problem.
+- Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes, where you believe the issue is originating from, and any potential solutions you have considered.
 
 ## Feature Requests
 
