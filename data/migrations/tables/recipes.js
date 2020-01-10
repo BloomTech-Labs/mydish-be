@@ -1,0 +1,17 @@
+module.exports = tbl => {
+    tbl.increments('id')
+    tbl.text('title')
+        .notNullable()
+    tbl.integer('parent_id')
+        .references('id')
+        .inTable('recipes')
+    tbl.integer('forked_from')
+        .references('id')
+        .inTable('recipes')
+    tbl.integer('owner_id')
+        .references('id')
+        .inTable('users')
+    tbl.integer('prep_time')
+    tbl.integer('cook_time')
+    tbl.text('description')
+}

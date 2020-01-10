@@ -1,8 +1,46 @@
 const db = require('../../data/dbConfig')
 const tbl = 'recipes'
 
-add_one = async (obj) => 
-    (await db(tbl).insert(obj).returning('*'))[0]
+// body = {
+//     title,
+//     minutes: "(optional number) time to make, adding more types of minutes in the works",
+//     img: "(optional string) URL of an image of the food"
+//     notes: "(optional string) free-form notes about the recipe",
+//     categories: [
+//       "(string) category/tag name"
+//     ],
+//     ingredients: [
+//       {
+//         name,
+//         quantity: "(number)",
+//         unit: "(string) example- ml or g or cups"
+//       }
+//     ],
+//     steps: [
+//       body: "(string) step 1 blah blah blah"
+//     ],
+//     ancestor: "(optional number) the ID of the previous version of this recipe"
+//   };
+
+//   res = { 
+//     message: 'Recipe created',
+//     recipe_id
+//   };
+
+add_one = async (obj) => {
+    //check ingredients, both by id and name to see if they exist
+        //if they don't and name is provided, add it
+        //if they or (or have been added) add recipe id and ingredient id to ingredient_list table
+
+    //we know instructions already don't exist, because this is a new recipe
+    
+    //check categories to see if they exist by either id or name
+        //if not and name is provided, add it
+        //if they do, add both recipe id and category id to category_list
+
+    //if no error from ^^^ add recipe
+    return (await db(tbl).insert(obj).returning('*'))[0]
+}
 
 get_one = async (search_params) =>
     await db(`${tbl} as r`)
