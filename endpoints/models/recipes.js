@@ -1,6 +1,11 @@
 const db = require('../../data/dbConfig')
 const tbl = 'recipes'
-
+const helper = {
+    find_matching: require('../helpers/find_matches')
+}
+// const models = {
+//     ingredients: require('./ingredients')
+// }
 // body = {
 //     title,
 //     minutes: "(optional number) time to make, adding more types of minutes in the works",
@@ -28,6 +33,15 @@ const tbl = 'recipes'
 //   };
 
 add_one = async (obj) => {
+    //creates a query that looks up every ingredient in the ingredients array
+    const results = helper.find_matching('ingredients', obj.ingredients, ['id', 'name'])
+    return results
+
+    //multiple .orwheres
+    //compare len(ingredients) with results
+    //if different, find what's missing, add it to the error
+    //else grab ids and add them to ingredient_list db (if no future errors)
+
     //check ingredients, both by id and name to see if they exist
         //if they don't and name is provided, add it
         //if they or (or have been added) add recipe id and ingredient id to ingredient_list table
@@ -39,7 +53,7 @@ add_one = async (obj) => {
         //if they do, add both recipe id and category id to category_list
 
     //if no error from ^^^ add recipe
-    return (await db(tbl).insert(obj).returning('*'))[0]
+    // return (await db(tbl).insert(obj).returning('*'))[0]
 }
 
 get_one = async (search_params) =>
