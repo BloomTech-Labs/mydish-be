@@ -1,7 +1,8 @@
 const db = require('../../data/dbConfig')
 const tbl = 'recipes'
 const helper = {
-    find_matching: require('../helpers/find_matches')
+    find_matching: require('../helpers/find_matches'),
+    can_post: require('../helpers/can_post')
 }
 // const models = {
 //     ingredients: require('./ingredients')
@@ -34,8 +35,11 @@ const helper = {
 
 add_one = async (obj) => {
     //creates a query that looks up every ingredient in the ingredients array
-    const results = helper.find_matching('ingredients', obj.ingredients, ['id', 'name'])
-    return results
+    const ingredient_matches = await helper.find_matching('ingredients', obj.ingredients, ['id', 'name'])
+    const {can_post, errors} = await helper.can_post('ingredients', ingredient_matches['non_ingredients'])
+    
+    if(errors.length) return {ingredient_errors: errors}
+    return ingredient_matches
 
     //multiple .orwheres
     //compare len(ingredients) with results

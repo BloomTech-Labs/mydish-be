@@ -1,5 +1,5 @@
 const db = require('../../data/dbConfig')
-const table_requirements = require('./table_requirements')
+
 create_matcher_query = (array, keys) => {
     let query = ''
     array.forEach(item => {
@@ -29,17 +29,6 @@ module.exports = async (table, array_to_check = [], keys_to_check = []) => {
             item_is_match || Object.keys(item).reduce((item_is_match, key) =>
                 match[key] == item[key] || item_is_match, false),false))
     
-    //IF there are non-matches
-    //check all non-matches to see requirements are met to create a new record in the given table
-    if(non_matches) {
-        const required_keys = await table_requirements(table)
-        non_matches.forEach(item => {
-            required_keys.forEach(key => {
-                if(!item.hasOwnProperty(key) && !item.hasOwnProperty('missing_fields')) item['missing_fields'] = [key]
-                else if(!item.hasOwnProperty(key)) item.missing_fields.push(key)
-            })
-        })
-    }
     //return matches; if there are non_matches return them too
     if(non_matches) return {[table]: matches, [`non_${table}`]: non_matches}
     return {[table]: matches}
