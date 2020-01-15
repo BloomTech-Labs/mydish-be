@@ -3,14 +3,17 @@
 //To add a table; add it's name to the array and put it's schema in ./tables
 tables = [
     'users',
+    'roles',
+    'user_roles',
     'recipes',
     'instructions',
     'units',
     'ingredients',
-    'ingredients_list',
+    'recommended_ingredients',
+    'ingredients_string_only',
     'tags',
     'tags_list',
-    // 'edits'
+    // 'previous_versions'
 ]
 
 //Creates tables in the database from the array of tables above
@@ -24,4 +27,4 @@ exports.up = async knex =>
 
 //Reverses the order the tables were created in, then removes them
 exports.down = knex =>
-    Promise.all(tables.reverse().map(table => knex.schema.dropTable(table, true)))
+    Promise.all(tables.reverse().map(table => knex.schema.dropTableIfExists(table, true)))
