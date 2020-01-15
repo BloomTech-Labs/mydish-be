@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const model = require('../models/recommended_ingredients')
-const tbl = 'recommended_ingredients'
+const model = require('../models/ingredients')
+const tbl = 'ingredients'
 
 //add a ingredient
 router.post(`/${tbl}`, async (req, res) => {

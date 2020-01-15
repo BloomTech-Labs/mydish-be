@@ -1,5 +1,5 @@
 const db = require('../../data/dbConfig')
-const tbl = 'recommended_ingredients'
+const tbl = 'ingredients'
 
 add_one = async (obj) => 
     (await db(tbl).insert(obj).returning('*'))[0]
