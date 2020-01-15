@@ -7,6 +7,6 @@ module.exports = tbl => {
         .onDelete('CASCADE')
         .notNullable()
     tbl.text('changes')
-    tbl.datetime('date_modified').defaultTo(knex.fn.now())
+    tbl.datetime('date_modified').defaultTo(new Date().toISOString())
     tbl.integer('revision_number')
 }
