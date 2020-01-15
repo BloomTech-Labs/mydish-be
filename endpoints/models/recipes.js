@@ -96,7 +96,26 @@ get_one = async (search_params) =>
         .groupBy('r.id', 'users.id')
         .first()
 
-get_all = async (search_params = {}) =>
+get_all = title =>
+    db(`${tbl} as r`)
+        // ilike = fuzzy search, ignore case
+        // WHERE r.title LIKE %cerea%
+        .where('r.title', 'ilike', `%${title}%`)
+        .join('users', {'r.owner_id': 'users.id'})
+        .select(
+            'r.id',
+            'r.title',
+            'r.description',
+            'r.forked_from as history',
+            db.raw(`json_build_object(
+                'user_id', users.id,
+                'username', users.username
+                ) as owner`),
+        )
+        .groupBy('r.id', 'users.id')
+
+// Older version of function
+get_all_LEGACY = async (search_params = {}) =>
     await db(`${tbl} as r`).where(search_params)
         .join('users', {'r.owner_id': 'users.id'})
         .join('recipe_ingredients as list', {'list.recipe_id': 'r.id'})

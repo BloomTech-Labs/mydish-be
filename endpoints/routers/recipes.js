@@ -30,10 +30,8 @@ router.get(`/${tbl}/:id`, async (req, res) => {
 //get all recipes
 router.get(`/${tbl}`, async (req, res) => {
     try {
-        // Check the query for a title search
-        const title = req.query.title
-        // If there is a search, use it. If no search, send an empty object
-        const recipes = await model.get_all(title ? {title} : {})
+        // If there is a search, use it. If no search, use an empty string
+        const recipes = await model.get_all(req.query.title || '')
 
         recipes.length > 0
             ? res.status(200).json(recipes)
