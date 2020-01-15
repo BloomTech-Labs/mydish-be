@@ -10,7 +10,7 @@ generate_token = user => {
   const payload = {
     username: user.username,
     id: user.id,
-    role: user.roles
+    roles: user.roles
   };
   const options = {
     expiresIn: settings.token_expiration_time
@@ -52,14 +52,23 @@ token = async (req, res, next) => {
               message: `Nice try. This token hasn't been validated by the Citadel of Ricks.`
             })
           : //otherwise move on
-            console.log(decoded_token);
+            (req.user = decoded_token);
         next();
       })
     : //send error if no token is provided
       res.status(404).json({ message: `What's the password?` });
 };
 
+admin = (req, res, next) => {
+  if (!req.user.roles.includes("admin")) {
+    res
+      .status(403)
+      .json({ message: "You do not have permission to view this page." });
+  } else next()
+};
+
 module.exports = {
   user,
-  token
+  token,
+  admin
 };

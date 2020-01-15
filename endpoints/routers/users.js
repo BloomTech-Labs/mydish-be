@@ -26,8 +26,8 @@ router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
       const token = req.token;
       res.status(200).json({
         message: `Great job remembering your password.`,
-        user: user,
-        token: token
+        user: { id: user.id, username: user.username },
+        token
       });
     } else
       res.status(404).json({
@@ -39,72 +39,88 @@ router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
 });
 
 //get one user
-router.get(`/${tbl}/:id`, async (req, res) => {
-  const { id } = req.params;
-  try {
-    const user = await model.get_one({ id });
-    user ? res.status(200).json(user) : res.status(404).json("No user found.");
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err.detail);
-  }
-});
-
-//get all users
-router.get(`/${tbl}`, m.validate.token, async (req, res) => {
-  console.log(req.user);
-
-  if (req.user.role === "admin") {
+router.get(
+  `/${tbl}/:id`,
+  m.validate.token,
+  m.validate.admin,
+  async (req, res) => {
+    const { id } = req.params;
     try {
-      const users = await model.get_all();
-      users.length > 0
-        ? res.status(200).json(users)
-        : res.status(404).json("No users found.");
+      const user = await model.get_by_id(id);
+      user
+        ? res.status(200).json(user)
+        : res.status(404).json("No user found.");
     } catch (err) {
+      console.log(err);
       res.status(500).json(err.detail);
     }
-  } else {
-    res
-      .status(403)
-      .json({ message: "You do not have permission to view this page." });
+  }
+);
+
+//get all users
+router.get(`/${tbl}`, m.validate.token, m.validate.admin, async (req, res) => {
+  console.log(req.user);
+
+  try {
+    const users = await model.get_all();
+    users.length > 0
+      ? res.status(200).json(users)
+      : res.status(404).json("No users found.");
+  } catch (err) {
+    res.status(500).json(err.detail);
   }
 });
 
 //update a user
-router.put(`/${tbl}/:id`, async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;
-  try {
-    const user = await model.update_one(id, updates);
-    user
-      ? res.status(200).json(user)
-      : res.status(404).json(`Couldn't update user`);
-  } catch (err) {
-    res.status(500).json(err.detail);
+router.put(
+  `/${tbl}/:id`,
+  m.validate.token,
+  m.validate.admin,
+  async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+    try {
+      const user = await model.update_one(id, updates);
+      user
+        ? res.status(200).json(user)
+        : res.status(404).json(`Couldn't update user`);
+    } catch (err) {
+      res.status(500).json(err.detail);
+    }
   }
-});
+);
 
 //terminate a user
-router.delete(`/${tbl}/:id`, async (req, res) => {
-  const { id } = req.params;
-  try {
-    const user = await model.remove_one(id);
-    user
-      ? res.status(200).json(`${user.username} has been terminated.`)
-      : res.status(404).json(`Couldn't find user ${id}.`);
-  } catch (err) {
-    res.status(500).json(err.detail);
+router.delete(
+  `/${tbl}/:id`,
+  m.validate.token,
+  m.validate.admin,
+  async (req, res) => {
+    const { id } = req.params;
+    try {
+      const user = await model.remove_one(id);
+      user
+        ? res.status(200).json(`${user.username} has been terminated.`)
+        : res.status(404).json(`Couldn't find user ${id}.`);
+    } catch (err) {
+      res.status(500).json(err.detail);
+    }
   }
-});
+);
 
 //terminate all users
-router.delete(`/${tbl}`, async (req, res) => {
-  try {
-    await model.remove_all();
-    res.status(200).json("All users have been eliminated.");
-  } catch (err) {
-    res.status(500).json(err.detail);
+router.delete(
+  `/${tbl}`,
+  m.validate.token,
+  m.validate.admin,
+  async (req, res) => {
+    try {
+      await model.remove_all();
+      res.status(200).json("All users have been eliminated.");
+    } catch (err) {
+      res.status(500).json(err.detail);
+    }
   }
-});
+);
 
 module.exports = router;
