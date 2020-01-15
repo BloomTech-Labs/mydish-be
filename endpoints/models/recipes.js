@@ -97,9 +97,9 @@ get_one = async (search_params) =>
         .first()
 
 get_all = async (search_params = {}) =>
-    await db(`${tbl} as r`)
+    await db(`${tbl} as r`).where(search_params)
         .join('users', {'r.owner_id': 'users.id'})
-        .join('ingredients_list as list', {'list.recipe_id': 'r.id'})
+        .join('recipe_ingredients as list', {'list.recipe_id': 'r.id'})
         .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
         .join('units', {'list.unit_id': 'units.id'})
         .join('instructions', {'instructions.recipe_id': 'r.id'})
@@ -112,7 +112,6 @@ get_all = async (search_params = {}) =>
                 'username', users.username
                 ) as owner`),
             db.raw(`json_build_object(
-                'parent_id', r.parent_id,
                 'forked_from', r.forked_from
                 ) as history`),
             db.raw(`json_agg(distinct jsonb_build_object(
