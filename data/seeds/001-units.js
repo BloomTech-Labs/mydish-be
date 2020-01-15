@@ -26,11 +26,4 @@ const seed_data = [
 // So we can import seed_data for testing
 exports.units_data = seed_data;
 
-exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex('units').truncate()
-    .then(function () {
-      // Inserts seed entries
-      return knex('units').insert(seed_data);
-    });
-};
+exports.seed = knex => knex('units').insert(seed_data);
