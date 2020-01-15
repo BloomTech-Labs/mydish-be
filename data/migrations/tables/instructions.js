@@ -4,7 +4,7 @@ module.exports = tbl => {
         .references('id')
         .inTable('recipes')
         .onUpdate('CASCADE')
-        .onDelete('set null')
+        .onDelete('CASCADE')
         .notNullable()
     tbl.integer('step_number')
     tbl.text('description')
