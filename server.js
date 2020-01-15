@@ -19,7 +19,6 @@ server.use(require('./endpoints/routers/ingredients'))
 server.use(require('./endpoints/routers/recommended_ingredients'))
 server.use(require('./endpoints/routers/notes'))
 server.use(require('./endpoints/routers/units'))
-server.use(require('./endpoints/routers/ingredients_strings_only'))
 
 //signal that the server is in fact running
 server.listen(port, () => {
