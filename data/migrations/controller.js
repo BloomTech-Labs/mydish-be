@@ -9,10 +9,10 @@ tables = [
     'instructions',
     'units',
     'ingredients',
-    'recommended_ingredients',
+    'recipe_ingredients',
     'tags',
     'tags_list',
-    // 'previous_versions'
+    'previous_versions'
 ]
 
 //Creates tables in the database from the array of tables above
