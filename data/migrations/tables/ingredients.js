@@ -3,5 +3,4 @@ module.exports = tbl => {
     tbl.text('name')
         .notNullable()
     tbl.text('category')
-        .notNullable()
 }
