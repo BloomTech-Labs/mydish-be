@@ -16,13 +16,15 @@ server.use(require('./endpoints/routers/users'))
 server.use(require('./endpoints/routers/recipes'))
 server.use(require('./endpoints/routers/instructions'))
 server.use(require('./endpoints/routers/ingredients'))
+server.use(require('./endpoints/routers/recommended_ingredients'))
+server.use(require('./endpoints/routers/notes'))
 server.use(require('./endpoints/routers/units'))
-server.use(require('./endpoints/routers/ingredients_list'))
+server.use(require('./endpoints/routers/ingredients_strings_only'))
 
 //signal that the server is in fact running
 server.listen(port, () => {
     console.clear()
-    console.log(`\n*** Go ahead, make my port ${port} **\n`)
+    console.log(`\n*** Go ahead, take my port ${port} **\n`)
 })
 
 //catchall endpoint
