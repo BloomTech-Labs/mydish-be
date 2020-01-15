@@ -4,14 +4,14 @@
 tables = [
     'users',
     'roles',
-    'user_roles',
+    'user_roles', // many-to-many
     'recipes',
     'instructions',
     'units',
     'ingredients',
-    'recipe_ingredients',
+    'recipe_ingredients', // many-to-many-to-many (recipes with units and ingredients)
     'tags',
-    'tags_list',
+    'recipe_tags', // many-to-many
     'previous_versions'
 ]
 
