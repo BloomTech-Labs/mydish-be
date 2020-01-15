@@ -30,11 +30,14 @@ router.get(`/${tbl}/:id`, async (req, res) => {
 //get all recipes
 router.get(`/${tbl}`, async (req, res) => {
     try {
-        const recipes = await model.get_all()
+        // If there is a search, use it. If no search, use an empty string
+        const recipes = await model.get_all(req.query.title || '')
+
         recipes.length > 0
             ? res.status(200).json(recipes)
             : res.status(404).json('No recipes found.')
     } catch(err) {
+        console.log(err)
         res.status(500).json(err.detail)
     }
 })
