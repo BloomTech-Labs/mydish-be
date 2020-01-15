@@ -9,6 +9,7 @@ module.exports = tbl => {
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
     tbl.integer('owner_id')
+        .notNullable()
         .references('id')
         .inTable('users')
         .onUpdate('CASCADE')
