@@ -10,7 +10,6 @@ tables = [
     'units',
     'ingredients',
     'recommended_ingredients',
-    'ingredients_string_only',
     'tags',
     'tags_list',
     // 'previous_versions'
