@@ -1,8 +1,8 @@
 
 exports.seed = function(knex) {
-  return knex('ingredients').del()
+  return knex('recommended_ingredients').del()
     .then(function () {
-      return knex('ingredients').insert([
+      return knex('recommended_ingredients').insert([
         //vegetable
         {name: 'asparagus', category: 'vegetable'},
         {name: 'avacado', category: 'vegetable'},
