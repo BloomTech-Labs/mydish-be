@@ -12,7 +12,8 @@ tables = [
     'recipe_ingredients', // many-to-many-to-many (recipes with units and ingredients)
     'tags',
     'recipe_tags', // many-to-many
-    'previous_versions'
+    'previous_versions',
+    'notes'
 ]
 
 //Creates tables in the database from the array of tables above
