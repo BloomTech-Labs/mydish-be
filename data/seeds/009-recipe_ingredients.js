@@ -1,6 +1,6 @@
 const seed_data = [
     {
-        id: 1,
+        // id: 1,
         recipe_id: 1,
         ingredient_id: 15,
         unit_id: 1,
