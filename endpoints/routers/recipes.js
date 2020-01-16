@@ -4,11 +4,12 @@ const tbl = 'recipes'
 const validate = require("../middleware/validate")
 
 //add a recipe
-router.post(`/${tbl}`, validate.recipe, async (req, res) => {
+router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
     try {
-        const new_recipe = await model.add_one(res.locals.recipe)
+        const new_recipe = await model.add_one({...res.locals.recipe, owner_id: req.user.id})
         res.status(200).json(new_recipe)
     } catch(err) {
+        if (err.userError) res.status(400).json(err)
         res.status(500).json(err.detail)
     }
 })

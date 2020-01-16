@@ -1,4 +1,9 @@
 const db = require('../../data/dbConfig')
+const models = {
+    ingredients: require('./ingredients'),
+    units: require('./units'),
+    tags: require('./tags'),
+}
 const tbl = 'recipes'
 const helper = {
     find_matching: require('../helpers/find_matches'),
@@ -33,34 +38,123 @@ const helper = {
 //     recipe_id
 //   };
 
-add_one = async (obj) => {
-    //creates a query that looks up every ingredient in the ingredients array
-    const ingredient_matches = await helper.find_matching('ingredients', obj.ingredients, ['id', 'name'])
-    const {can_post, errors} = await helper.can_post('ingredients', ingredient_matches['non_ingredients'])
-    
-    if(errors.length) return {ingredient_errors: errors}
-    return ingredient_matches
+/**
+ * Adds a Recipe, and any linking instructions/ingredients/notes, to the database.
+ * 
+ * This model function affects multiple tables in the database. Please read and
+ * refactor carefully, if necessary.
+ * 
+ */
+const add_one = async new_recipe => {
+    // Determines success at the end of this function.
+    // If successful, will hold the id of our added recipe.
+    // If unsuccessful, will hold our error.
+    let success;
+    try {
 
-    //multiple .orwheres
-    //compare len(ingredients) with results
-    //if different, find what's missing, add it to the error
-    //else grab ids and add them to ingredient_list db (if no future errors)
+        //======================PREPPING INGREDIENTS AND UNITS=============================//
 
-    //check ingredients, both by id and name to see if they exist
-        //if they don't and name is provided, add it
-        //if they or (or have been added) add recipe id and ingredient id to ingredient_list table
+        //creates a query that looks up every ingredient in the ingredients array
+        const { non_ingredients } = await helper.find_matching('ingredients', new_recipe.ingredients, ['id', 'name'])
+        
+        let ingredients_to_be_added = []
+        // Any ingredients that aren't already in our db?
+        if (non_ingredients.length) {
 
-    //we know instructions already don't exist, because this is a new recipe
-    
-    //check categories to see if they exist by either id or name
-        //if not and name is provided, add it
-        //if they do, add both recipe id and category id to category_list
+            // Do they have the props necessary to add to the db? If not, throw an error!
+            const {errors} = await helper.can_post('ingredients', non_ingredients)
+            if(errors.length) throw {userError: true, ingredient_errors: errors}
 
-    //if no error from ^^^ add recipe
-    // return (await db(tbl).insert(obj).returning('*'))[0]
+            // If yes, prep them to be added to the db!
+            ingredients_to_be_added = non_ingredients.map(ing => {
+                return { name: ing.name, category: ing.category || null}
+            })
+        }
+
+        await db.transaction(async trx => {
+
+            //===========================ADDING INGREDIENTS===========================//
+            
+            // If we have ingredients that need to be added into the database,
+            //     We add them now:
+            if (ingredients_to_be_added.length) await trx('ingredients').insert(ingredients_to_be_added)
+
+            //=====================ADDING MAIN RECIPE INFO===========================//
+            // Create our recipe object . . .
+            const recipe_info = {
+                title: new_recipe.title,
+                img: new_recipe.img || null,
+                forked_from: new_recipe.forked_from || null,
+                owner_id: new_recipe.owner_id,
+                prep_time: new_recipe.prep_time || null,
+                cook_time: new_recipe.cook_time || null,
+                description: new_recipe.description || null,
+            }
+            const added_recipe_id = await trx('recipes').insert(recipe_info).returning('id')
+        
+            //==========================ADDING RECIPE_TAGS=============================//
+
+            // Query the db to get the IDs of each tag we want to add.
+            // Map through the array of ids to create an array of objects
+            //     to match the schema { recipe_id, tag_id },
+            //     and then add to the database.
+            const tag_ids = await db('tags').whereIn('name', new_recipe.tags).select('id');
+            const recipe_tags_to_be_added = tag_ids.map(tag => ({ recipe_id:added_recipe_id[0], tag_id:tag.id }))
+            await trx('recipe_tags').insert(recipe_tags_to_be_added)
+
+            //======================ADDING RECIPE_INGREDIENTS=========================//
+            
+            // Map through the array of ingredients we have, changing our ingredient object
+            //     to match the schema { recipe_id, ingredient_id, unit_id, quantity },
+            //     and then add to the database.
+            const recipe_ingredients_to_be_added = await Promise.all(new_recipe.ingredients.map(async ingredient => {
+                const ingredient_id = await trx('ingredients')
+                                    .where('name', ingredient.name)
+                                    .select('id')
+                                    .first();
+                const unit_id = await trx('units')
+                                    .where('name', ingredient.unit)
+                                    .orWhere('abbreviation', ingredient.unit)
+                                    .select('id')
+                                    .first();
+                return {
+                    recipe_id: added_recipe_id[0], 
+                    ingredient_id: ingredient_id.id, 
+                    unit_id: unit_id.id, 
+                    quantity: ingredient.quantity
+                }
+            }))
+            await trx('recipe_ingredients').insert(recipe_ingredients_to_be_added)
+            
+            //===========================ADDING INSTRUCTIONS============================//
+            
+            // Assuming we have an array of objects like { step_number, description },
+            //     we add the recipe_id to each object and add the array to the database.
+            const instructions_to_be_added = new_recipe.instructions.map(instruction => 
+                ({ ...instruction, recipe_id: added_recipe_id[0] }))
+            
+            //==============================ADDING NOTES===============================//
+
+            // Assuming we have an array of only strings, we map through the array 
+            //     to create an array of objects to match the schema { recipe_id, description },
+            //     and then add it to the database.
+            if (new_recipe.notes && new_recipe.notes.length) {
+                const notes_to_be_added = new_recipe.notes.map(note => 
+                    ({ recipe_id: added_recipe_id[0], description: note }))
+                await trx('notes').insert(notes_to_be_added)
+            }
+            
+            success = added_recipe_id[0]
+        })
+    } catch (e) {
+        success = e
+    } finally {
+        if (isNaN(success)) throw success
+        else return success
+    }
 }
 
-get_one = search_params => {
+function get_one(search_params) {
     return db(`${tbl} as r`)
         .where({'r.id': search_params.id})
         .join('users', {'r.owner_id': 'users.id'})
@@ -107,7 +201,7 @@ get_one = search_params => {
         .first()
 }
 
-get_all = title => {
+const get_all = title => {
     return db(`${tbl} as r`)
         // ilike = fuzzy search, ignore case
         // WHERE r.title LIKE %cerea%
@@ -126,11 +220,11 @@ get_all = title => {
         .groupBy('r.id', 'users.id')
 }
 
-update_one = (id, obj) => db(tbl).where({id}).update(obj).returning('*')[0]
+const update_one = (id, obj) => db(tbl).where({id}).update(obj).returning('*')[0]
 
-remove_one = (id) => db(tbl).where({id}).delete().returning('*')[0]
+const remove_one = (id) => db(tbl).where({id}).delete().returning('*')[0]
 
-remove_all = () => db(tbl).delete()
+const remove_all = () => db(tbl).delete()
 
 module.exports = {
     add_one,
