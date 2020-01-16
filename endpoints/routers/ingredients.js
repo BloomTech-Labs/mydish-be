@@ -4,11 +4,12 @@ const tbl = 'ingredients'
 
 //add a ingredient
 router.post(`/${tbl}`, async (req, res) => {
-    const {name, description} = req.body
+    const {name, category} = req.body
     try {
-        const new_ingredient = await model.add_one({name, description})
+        const new_ingredient = await model.add_one({name, category})
         res.status(200).json(new_ingredient)
     } catch(err) {
+        console.log(err)
         res.status(500).json(err.detail)
     }
 })

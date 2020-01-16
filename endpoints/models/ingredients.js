@@ -1,26 +1,23 @@
 const db = require('../../data/dbConfig')
 const tbl = 'ingredients'
 
-add_one = async (obj) => 
-    (await db(tbl).insert(obj).returning('*'))[0]
+add_array = (arr) =>  db(tbl).insert(arr).returning('*')
 
-get_one = async (search_params) =>
-    await db(tbl).where(search_params).first()
+add_one = (obj) =>  db(tbl).insert(obj).returning('*')[0]
 
-get_all = async (search_params = {}) =>
-    await db(tbl).where(search_params)
+get_one = (search_params) => db(tbl).where(search_params).first()
 
-update_one = async (id, obj) =>
-    (await db(tbl).where({id}).update(obj).returning('*'))[0]
+get_all = (search_params = {}) => db(tbl).where(search_params)
 
-remove_one = async (id) =>
-    (await db(tbl).where({id}).delete().returning('*'))[0]
+update_one = (id, obj) => db(tbl).where({id}).update(obj).returning('*')[0]
 
-remove_all = async () =>
-    await db(tbl).delete()
+remove_one = (id) => db(tbl).where({id}).delete().returning('*')[0]
+
+remove_all = () => db(tbl).delete()
 
 module.exports = {
     add_one,
+    add_array,
     get_one,
     get_all,
     update_one,
