@@ -54,7 +54,7 @@ const add_one = async new_recipe => {
 
         //======================PREPPING INGREDIENTS AND UNITS=============================//
 
-        //creates a query that looks up every ingredient in the ingredients array
+        //creates a query that finds ingredients not already existing in our database
         const { non_ingredients } = await helper.find_matching('ingredients', new_recipe.ingredients, ['id', 'name'])
         
         let ingredients_to_be_added = []
@@ -65,7 +65,8 @@ const add_one = async new_recipe => {
             const {errors} = await helper.can_post('ingredients', non_ingredients)
             if(errors.length) throw {userError: true, ingredient_errors: errors}
 
-            // If yes, prep them to be added to the db!
+            // If yes, prep them to be added to the db by giving them 
+            //     the valid schema { name, category }
             ingredients_to_be_added = non_ingredients.map(ing => {
                 return { name: ing.name, category: ing.category || null}
             })
@@ -80,7 +81,7 @@ const add_one = async new_recipe => {
             if (ingredients_to_be_added.length) await trx('ingredients').insert(ingredients_to_be_added)
 
             //=====================ADDING MAIN RECIPE INFO===========================//
-            // Create our recipe object . . .
+            // Create our recipe object, and add it to the database
             const recipe_info = {
                 title: new_recipe.title,
                 img: new_recipe.img || null,
@@ -99,12 +100,13 @@ const add_one = async new_recipe => {
             //     to match the schema { recipe_id, tag_id },
             //     and then add to the database.
             const tag_ids = await db('tags').whereIn('name', new_recipe.tags).select('id');
-            const recipe_tags_to_be_added = tag_ids.map(tag => ({ recipe_id:added_recipe_id[0], tag_id:tag.id }))
+            const recipe_tags_to_be_added = tag_ids.map(tag => 
+                ({ recipe_id:added_recipe_id[0], tag_id:tag.id }))
             await trx('recipe_tags').insert(recipe_tags_to_be_added)
 
             //======================ADDING RECIPE_INGREDIENTS=========================//
             
-            // Map through the array of ingredients we have, changing our ingredient object
+            // Map through the array of ingredients we have, changing each ingredient object
             //     to match the schema { recipe_id, ingredient_id, unit_id, quantity },
             //     and then add to the database.
             const recipe_ingredients_to_be_added = await Promise.all(new_recipe.ingredients.map(async ingredient => {
@@ -129,7 +131,7 @@ const add_one = async new_recipe => {
             //===========================ADDING INSTRUCTIONS============================//
             
             // Assuming we have an array of objects like { step_number, description },
-            //     we add the recipe_id to each object and add the array to the database.
+            //     we add the recipe_id to each object and add the full array to the database.
             const instructions_to_be_added = new_recipe.instructions.map(instruction => 
                 ({ ...instruction, recipe_id: added_recipe_id[0] }))
             
@@ -137,7 +139,7 @@ const add_one = async new_recipe => {
 
             // Assuming we have an array of only strings, we map through the array 
             //     to create an array of objects to match the schema { recipe_id, description },
-            //     and then add it to the database.
+            //     and then add the new array to the database.
             if (new_recipe.notes && new_recipe.notes.length) {
                 const notes_to_be_added = new_recipe.notes.map(note => 
                     ({ recipe_id: added_recipe_id[0], description: note }))
@@ -147,8 +149,10 @@ const add_one = async new_recipe => {
             success = added_recipe_id[0]
         })
     } catch (e) {
+        // Catch an error? No success :(
         success = e
     } finally {
+        // If our success isn't a number, it must be an error. Let's throw!
         if (isNaN(success)) throw success
         else return success
     }
