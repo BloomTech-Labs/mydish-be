@@ -67,8 +67,54 @@ admin = (req, res, next) => {
   } else next()
 };
 
+recipe = (req, res, next) => {
+  // title, ingredients, instructions, tags are required
+  // desc, notes, img, are optional
+  // The recipe needs EITHER a prep_time or cook_time
+  const {
+    title, 
+    ingredients, 
+    instructions, 
+    tags, 
+    description, 
+    notes, 
+    prep_time, 
+    cook_time,
+    img
+  } = req.body
+
+  // Check the required props. If they don't exist, put them in the array
+  const missing = []
+  if (!title || !title.length) missing.push("title")
+  if (!ingredients || !ingredients.length) missing.push("ingredients")
+  if (!instructions || !instructions.length) missing.push("instructions")
+  if (!tags || !tags.length) missing.push("tags")
+  if (!prep_time && !cook_time) missing.push("prep_time and/or cook_time")
+  
+  // If the array has stuff, respond saying "Yo, we need the stuff"
+  if (missing.length) {
+    res.status(400).json({message: "You are missing these fields:", missing})
+  } else {
+
+    // Otherwise, save our good ol recipe and go to the next() thing
+    res.locals.recipe = {
+      title, 
+      ingredients, 
+      instructions, 
+      tags, 
+      description: description || null, 
+      notes: notes, 
+      prep_time: prep_time || null, 
+      cook_time: cook_time || null,
+      img: img || null
+    }
+    next();
+  }
+}
+
 module.exports = {
   user,
   token,
-  admin
+  admin,
+  recipe
 };

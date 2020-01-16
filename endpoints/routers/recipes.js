@@ -1,12 +1,12 @@
 const router = require('express').Router()
 const model = require('../models/recipes')
 const tbl = 'recipes'
+const validate = require("../middleware/validate")
 
 //add a recipe
-router.post(`/${tbl}`, async (req, res) => {
-    const {title, owner_id, parent_id, forked_from, description, ingredients} = req.body
+router.post(`/${tbl}`, validate.recipe, async (req, res) => {
     try {
-        const new_recipe = await model.add_one({title, owner_id, parent_id, forked_from, description, ingredients})
+        const new_recipe = await model.add_one(res.locals.recipe)
         res.status(200).json(new_recipe)
     } catch(err) {
         res.status(500).json(err.detail)
