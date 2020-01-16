@@ -476,11 +476,35 @@ const remove_one = id => db(tbl).where({id}).delete().returning('*')[0]
 
 const remove_all = () => db(tbl).delete()
 
+const get_by_course = (id, course) => {
+    return db(`${tbl} as r`)
+        // ilike = fuzzy search, ignore case
+        // WHERE r.title LIKE %cerea%
+        .join('users', {'r.owner_id': 'users.id'})
+        .join('recipe_tags as rt', { 'r.id': 'rt.recipe_id'  })
+        .join('tags as t', { 'rt.tag_id' : 't.id' })
+        .select(
+            'r.id',
+            'r.title',
+            'r.description',
+            'r.forked_from',
+            db.raw(`json_build_object(
+                'user_id', users.id,
+                'username', users.username
+                ) as owner`),
+            db.raw(`json_build_object('course', t.name) as courses`)
+        )
+        .groupBy('r.id', 'users.id', 't.id')
+        .where({ 'users.id': `${id}` })
+        .andWhere({'t.name': `${course}`})
+} 
+
 module.exports = {
     add_one,
+    get_by_course,
     get_one,
     get_all,
     update_one,
     remove_one,
-    remove_all
+    remove_all,
 }

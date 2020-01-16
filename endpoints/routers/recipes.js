@@ -43,6 +43,21 @@ router.get(`/${tbl}`, async (req, res) => {
     }
 })
 
+router.get(`/cookbook`, validate.token, (req, res) => {
+    const course = req.query.course
+    if(req.user.id) {
+        model.get_by_course(req.user.id, course).then(recipes => {
+            if(!recipes.length) {
+                res.status(200).json({message: `You don't have any recipes under this course type.`})
+            } else {
+            res.status(200).json(recipes)
+            }
+        })
+    } else {
+        res.status(500).json({ message: `You don't have permission to view this page.` })
+    }
+})
+
 //update a recipe
 router.put(`/${tbl}/:id`, validate.token, validate.recipe, validate.user_recipe, async (req, res) => {
     try {
@@ -55,6 +70,7 @@ router.put(`/${tbl}/:id`, validate.token, validate.recipe, validate.user_recipe,
         res.status(500).json(err)
     }
 })
+
 
 //terminate a recipe
 router.delete(`/${tbl}/:id`, validate.token, validate.user_recipe, async (req, res) => {
