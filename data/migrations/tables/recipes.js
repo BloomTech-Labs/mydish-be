@@ -17,4 +17,5 @@ module.exports = tbl => {
     tbl.integer('prep_time')
     tbl.integer('cook_time')
     tbl.text('description')
+    tbl.timestamps()
 }
