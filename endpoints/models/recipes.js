@@ -303,8 +303,8 @@ const update_one = async (recipe_id, updated_recipe) => {
             // We loop through our existing instructions from the database.
             // If any updated_instructions have matching step_numbers,
             //     we set them to be updated.
-            // If we have an instruction from the database that doesn't match any
-            //     updated_instructions, that instruction will be deleted.
+            // If we have any instructions from the database that don't match any
+            //     updated_instructions, those instructions will be deleted.
             existing_instructions.forEach(instruction => {
                 const index = updated_instructions.findIndex(
                     check => check.step_number === instruction.step_number
@@ -316,7 +316,7 @@ const update_one = async (recipe_id, updated_recipe) => {
                     )
                 }
             })
-            // Any instructions leftover in our updated_recipe will be added to the database
+            // Any instructions leftover in our updated_recipe will be inserted into the database
             const instructions_to_be_added = updated_instructions.map(instruct => {
                 if (instruct.id) delete instruct.id // ← JUST to make sure. If we're adding
                 return instruct                    // an instruction, it shouldn't have an id.
@@ -325,7 +325,7 @@ const update_one = async (recipe_id, updated_recipe) => {
             if (instructions_to_be_updated.length) {
                 // We use .map() here because .forEach() threw a promise error.
                 // I think this has to do with the fact that .map() returns an array
-                //     and forEach() returns nothing '' '
+                //     and .forEach() returns void '' '
                 await Promise.all(instructions_to_be_updated.map(async instruct => {
                     await trx('instructions')
                         .where({recipe_id})
@@ -347,7 +347,8 @@ const update_one = async (recipe_id, updated_recipe) => {
             //=========================UPDATING RECIPE_INGREDIENTS=======================//
 
             // Map through the array of ingredients we have, changing each ingredient object
-            //     to match the schema { id, recipe_id, ingredient_id, unit_id, quantity },
+            //     to match the 'recipe_ingredients' schema 
+            //     { id, recipe_id, ingredient_id, unit_id, quantity },
             //     including the id, if we have it '' '
             const updated_ingredients = await Promise.all(updated_recipe.ingredients.map(async ingredient => {
                 const ingredient_id = await trx('ingredients')
@@ -374,8 +375,8 @@ const update_one = async (recipe_id, updated_recipe) => {
             // We loop through our existing ingredients from the database.
             // If any updated_ingredients have matching ids,
             //     we set them to be updated.
-            // If we have an ingredient from the database that doesn't match any
-            //     updated_ingredients, that ingredient will be deleted.
+            // If we have any ingredients from the database that don't match any
+            //     updated_ingredients, they will be deleted.
             existing_ingredients.forEach(ingredient => {
                 const index = updated_ingredients.findIndex(
                     check => check.id === ingredient.id
@@ -387,7 +388,7 @@ const update_one = async (recipe_id, updated_recipe) => {
                     )
                 }
             })
-            // Any ingredients leftover in our updated_recipe will be added to the database
+            // Any ingredients leftover in our updated_recipe will be inserted into the database
             const ingredients_to_be_added = updated_ingredients.map(ing => {
                 if (ing.id) delete ing.id // ← JUST to make sure. If we're adding
                 return ing               // an ingredient, it shouldn't have an id.
@@ -413,8 +414,7 @@ const update_one = async (recipe_id, updated_recipe) => {
 
             //======================UPDATING NOTES=========================//
 
-            // Get our existing_notes from the database, as well as our
-            //     updated_notes
+            // Get our existing_notes from the database, as well as our updated_notes.
             const existing_notes = await trx('notes').where({recipe_id})
             const updated_notes = updated_recipe.notes.map(note => ({ ...note, recipe_id }))
 
