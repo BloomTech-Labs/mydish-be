@@ -76,6 +76,9 @@ get_one = search_params => {
             'r.title',
             'r.description',
             'r.forked_from',
+            'r.prep_time',
+            'r.cook_time',
+            'r.img',
             db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
