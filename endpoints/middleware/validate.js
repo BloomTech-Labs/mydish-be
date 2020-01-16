@@ -3,9 +3,10 @@ const decode_jwt = require("jwt-decode");
 const crypt = require("bcryptjs");
 const settings = require("../../config/settings");
 const user_model = require("../models/users");
+const recipe_model = require("../models/recipes");
 
 //PRIVATE
-generate_token = user => {
+const generate_token = user => {
   //token settings
   const payload = {
     username: user.username,
@@ -25,7 +26,7 @@ generate_token = user => {
 
 //PUBLIC
 //create token for user upon login
-user = async (req, res, next) => {
+const user = async (req, res, next) => {
   const { username, password } = req.body;
   //get user from database
   const user = await user_model.get_one({ username });
@@ -40,7 +41,7 @@ user = async (req, res, next) => {
 };
 
 // check if user has token and it's legit
-token = async (req, res, next) => {
+const token = async (req, res, next) => {
   //grab and check for jwt
   const webtoken = req.headers.authorization;
   webtoken
@@ -59,7 +60,7 @@ token = async (req, res, next) => {
       res.status(404).json({ message: `What's the password?` });
 };
 
-admin = (req, res, next) => {
+const admin = (req, res, next) => {
   if (!req.user.roles.includes("admin")) {
     res
       .status(403)
@@ -67,7 +68,7 @@ admin = (req, res, next) => {
   } else next()
 };
 
-recipe = (req, res, next) => {
+const recipe = (req, res, next) => {
   // title, ingredients, instructions, tags are required
   // desc, notes, img, are optional
   // The recipe needs EITHER a prep_time or cook_time
@@ -112,9 +113,31 @@ recipe = (req, res, next) => {
   }
 }
 
+const user_recipe = (req, res, next) => {
+  recipe_id = req.params.id
+  user_id = req.user.id
+  if (!recipe_id) res.status(400).json({ message: 'You need a recipe id for this action!' })
+  if (!user_id) res.status(400).json({ message: 'You need a user id for this action!' })
+  return recipe_model
+    .get_one({id:recipe_id})
+    .then(recipe => {
+      // Recipe doesn't exist? Error!
+      if (!recipe) return res.status(404).json({ message: 'No recipe found with this id.' })
+      // User owns to recipe OR user is the admin? Continue.
+      if (recipe.owner.user_id === user_id || req.user.roles.includes('admin')) {
+        next()
+      } else {
+        // Otherwise - 403
+        return res.status(403).json({ message: 'You must be the owner of this recipe. Shoo.' })
+      }
+    })
+}
+
+
 module.exports = {
   user,
   token,
   admin,
-  recipe
+  recipe,
+  user_recipe
 };
