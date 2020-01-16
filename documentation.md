@@ -132,6 +132,62 @@ res.data:
 <details>
     <summary>
         <strong>
+            <code>GET cookbook/</code>
+        </strong>
+    </summary>
+
+Gets all Recipes linked to the logged user.
+
+Search Query: Search by course
+
+Example Response:
+
+```js
+URL: "baseURL/cookbook?course=breakfast"
+method: GET
+
+res.data:
+
+[
+    {
+    "id": 3,
+    "title": "Scrambled Eggs",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 2,
+      "username": "Lou"
+    }
+  },
+  {
+    "id": 1,
+    "title": "Eggplant",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 2,
+      "username": "Lou"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 1,
+      "username": "Catherine"
+    }
+  }
+]
+
+```
+
+</details>
+
+<details>
+    <summary>
+        <strong>
             <code>POST recipes/</code>
         </strong>
     </summary>
