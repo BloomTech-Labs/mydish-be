@@ -64,10 +64,13 @@ get_one = search_params => {
     return db(`${tbl} as r`)
         .where({'r.id': search_params.id})
         .join('users', {'r.owner_id': 'users.id'})
-        .join('recipe_ingredients as list', {'list.recipe_id': 'r.id'})
-        .join('ingredients', {'list.ingredient_id': 'ingredients.id'})
-        .join('units', {'list.unit_id': 'units.id'})
-        .join('instructions', {'instructions.recipe_id': 'r.id'})
+        .leftJoin('recipe_ingredients as list', {'list.recipe_id': 'r.id'})
+        .leftJoin('ingredients', {'list.ingredient_id': 'ingredients.id'})
+        .leftJoin('units', {'list.unit_id': 'units.id'})
+        .leftJoin('instructions', {'instructions.recipe_id': 'r.id'})
+        .leftJoin('recipe_tags as rt', {'rt.recipe_id': 'r.id'})
+        .leftJoin('tags', {'rt.tag_id': 'tags.id'})
+        .leftJoin('notes', {'notes.recipe_id': 'r.id'})
         .select(
             'r.id',
             'r.title',
@@ -88,7 +91,14 @@ get_one = search_params => {
                 'id', instructions.id,
                 'step_number', instructions.step_number,
                 'instruction', instructions.description
-                )) as instructions`)
+                )) as instructions`),
+            db.raw(`json_agg(distinct jsonb_build_object(
+                'id', tags.id, 'name', tags.name
+                )) as tags`),
+            db.raw(`json_agg(distinct jsonb_build_object(
+                'id', notes.id,
+                'description', notes.description
+                )) as notes`)
         )
         .groupBy('r.id', 'users.id')
         .first()
