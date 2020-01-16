@@ -44,21 +44,20 @@ router.get(`/${tbl}`, async (req, res) => {
 })
 
 //update a recipe
-router.put(`/${tbl}/:id`, async (req, res) => {
-    const {id} = req.params
-    const updates = req.body
+router.put(`/${tbl}/:id`, validate.token, validate.recipe, validate.user_recipe, async (req, res) => {
     try {
-        const recipe = await model.update_one(id, updates)
+        const recipe = await model.update_one(req.params.id, {...res.locals.recipe, owner_id: req.user.id})
         recipe
             ? res.status(200).json(recipe)
             : res.status(404).json(`Couldn't update recipe`)
     } catch(err) {
-        res.status(500).json(err.detail)
+        if (err && err.userError) res.status(400).json(err)
+        res.status(500).json(err)
     }
 })
 
 //terminate a recipe
-router.delete(`/${tbl}/:id`, async (req, res) => {
+router.delete(`/${tbl}/:id`, validate.token, validate.user_recipe, async (req, res) => {
     const {id} = req.params
     try {
         const recipe = await model.remove_one(id)
@@ -71,7 +70,7 @@ router.delete(`/${tbl}/:id`, async (req, res) => {
 })
 
 //terminate all recipes
-router.delete(`/${tbl}`, async (req, res) => {
+router.delete(`/${tbl}`, validate.admin, async (req, res) => {
     try {
         await model.remove_all()
         res.status(200).json('All recipes have been eliminated.')
