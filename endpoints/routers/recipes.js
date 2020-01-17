@@ -48,7 +48,7 @@ router.get(`/cookbook`, validate.token, (req, res) => {
     if(req.user.id) {
         model.get_by_course(req.user.id, course).then(recipes => {
             if(!recipes.length) {
-                res.status(404).json({message: `You don't have any recipes under this course type.`})
+                res.status(200).json({message: `You don't have any recipes under this course type.`})
             } else {
             res.status(200).json(recipes)
             }
