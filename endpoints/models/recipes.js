@@ -492,7 +492,6 @@ const get_by_course = (id, course) => {
                 'user_id', users.id,
                 'username', users.username
                 ) as owner`),
-            db.raw(`json_build_object('course', t.name) as courses`)
         )
         .groupBy('r.id', 'users.id', 't.id')
         .where({ 'users.id': `${id}` })
