@@ -25,7 +25,7 @@ router.get(`/${tbl}/:id`, async (req, res) => {
             : res.status(404).json('No recipe found.')
     } catch(err) {
         console.log('err', err)
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -40,7 +40,7 @@ router.get(`/${tbl}`, async (req, res) => {
             : res.status(404).json('No recipes found.')
     } catch(err) {
         console.log(err)
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -80,7 +80,7 @@ router.delete(`/${tbl}/:id`, validate.token, validate.user_recipe, async (req, r
         // ↑ Returns an array of the recipe, ↓ so we use the [0]th index.
         res.status(200).json(`${recipe[0].title} has been terminated.`)
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -90,7 +90,7 @@ router.delete(`/${tbl}`, validate.admin, async (req, res) => {
         await model.remove_all()
         res.status(200).json('All recipes have been eliminated.')
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
