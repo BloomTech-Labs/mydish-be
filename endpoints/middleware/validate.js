@@ -5,7 +5,17 @@ const settings = require("../../config/settings");
 const user_model = require("../models/users");
 const recipe_model = require("../models/recipes");
 
-//PRIVATE
+/**
+ * @private
+ * Generates a token from the given information.
+ * 
+ * @param {Object}   user - User information
+ * @param {string}   user.username - username of the user
+ * @param {number}   user.id - id of the user form the database
+ * @param {string[]} user.roles - roles the user currently has
+ * 
+ * @returns {Object<string, string>}
+ */
 const generate_token = user => {
   //token settings
   const payload = {
@@ -24,8 +34,23 @@ const generate_token = user => {
   return { token, expiration_date };
 };
 
-//PUBLIC
-//create token for user upon login
+/**
+ * Create token for user upon signup/login.
+ * 
+ * If a user with the given username exists in the database, and the passwords match, this 
+ * function sets the user information to `req.user`, the token information to `req.token`,
+ * and calls `next()`.
+ * 
+ * If no user information is provided, or the user is not verified,
+ * simply call `next()` without setting any information.
+ * 
+ * @param {Object}              req - Express Request object.
+ * @param {Object}              req.body - Body of data from web request.
+ * @param {string}              req.body.username - Username from web request.
+ * @param {string}              req.body.username - Password from web request.
+ * @param {Object<string, any>} res - Express Response object.
+ * @param {Function}            next - Express Next function.
+ */
 const user = async (req, res, next) => {
   const { username, password } = req.body;
   //get user from database
@@ -40,7 +65,20 @@ const user = async (req, res, next) => {
   next();
 };
 
-// check if user has token and it's legit
+/**
+ * Checks the user has a token and it's legit.
+ * 
+ * If a user has a token passed in the request headers, this function verifies the jwt.
+ * If the token is verified, sets the user info to `req.user` and calls `next()`.
+ * 
+ * If no token is provided, or the token is not verified, responds with a `400`/`401` status.
+ * 
+ * @param {Object}              req - Express Request object.
+ * @param {Object}              req.headers - headers from web request.
+ * @param {string}              req.headers.authorization - Authorization within the request headers.
+ * @param {Object<string, any>} res - Express Response object.
+ * @param {Function}            next - Express Next function.
+ */
 const token = async (req, res, next) => {
   //grab and check for jwt
   const webtoken = req.headers.authorization;
@@ -62,6 +100,18 @@ const token = async (req, res, next) => {
       res.status(404).json({ message: `What's the password?` });
 };
 
+/**
+ * Checks the user roles and only allows a user to pass if they have the admin role.
+ * 
+ * REQUIRES the token function to be called before this function, as this needs
+ * access to `req.user`.
+ * 
+ * @param {Object}                 req - Express Request object.
+ * @param {Object}                 req.user - User object created from `validate.token`.
+ * @param {string[]}               req.user.roles - array of roles the logged in user has.
+ * @param {Object<string, any>}    res - Express Response object.
+ * @param {Function}               next - Express Next function.
+ */
 const admin = (req, res, next) => {
   if (!req.user.roles.includes("admin")) {
     res
@@ -70,6 +120,19 @@ const admin = (req, res, next) => {
   } else next();
 };
 
+/**
+ * Validates the incoming request to ensure a full recipe object has been given in the `req.body`.
+ * 
+ * If the recipe is valid, this function sets the recipe information to `res.locals.recipe` 
+ * and calls `next()`.
+ * 
+ * If any required elements are missing from the recipe, responds with a `400` status.
+ * 
+ * @param {Object}                 req - Express Request object.
+ * @param {Object<string, any>}    req.body - Recipe information from web request.
+ * @param {Object<string, any>}    res - Express Response object.
+ * @param {Function}               next - Express Next function.
+ */
 const recipe = (req, res, next) => {
   // title, ingredients, instructions, tags are required
   // desc, notes, img, are optional
