@@ -526,7 +526,9 @@ Gets all versions of a recipe by the recipe's id.
 
 <details>
   <summary>
-    <strong>GET `/recipes/:id/version/:rev_id`
+    <strong>
+      <code>GET /recipes/:id/version/:rev_id</code>
+    </strong>
   </summary>
 
 Gets a single revision based on the revision id.
@@ -583,7 +585,9 @@ Gets a single revision based on the revision id.
 </details>
 <details>
   <summary>
-    <strong>GET `/recipes/:id/version/:rev_number`
+    <strong>
+      <code>GET /recipes/:id/version/:rev_number</code>
+    </strong>
   </summary>
 
 Gets a single revision based on the revision number.
