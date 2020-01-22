@@ -241,6 +241,64 @@ describe('GET "/recipes"', () => {
   });
 });
 
+describe('GET "/cookbook"', () => {
+  // We will use this fake_db in our tests
+  const fake_db = [
+    { title: "test1", course: "breakfast", test: true },
+    { title: "test2", course: "lunch", test: true },
+    { title: "test22", course: "breakfast", test: true },
+    { title: "test3", course: "dinner", test: true }
+  ];
+  test("Returns 200 if cookbook search is successful", async () => {
+    recipes_model.get_by_course = jest.fn(
+      (id, course) =>
+        new Promise(res => {
+          setTimeout(
+            () => res(fake_db.filter(obj => obj.course.match(course))),
+            0
+          );
+        })
+    );
+    const expected_recipes = [
+      { title: "test1", course: "breakfast", test: true },
+      { title: "test22", course: "breakfast", test: true }
+    ];
+
+    const response = await request(server).get("/cookbook?course=breakfast");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(expected_recipes);
+    expect(recipes_model.get_by_course).toHaveBeenCalledTimes(1);
+    recipes_model.get_by_course.mockReset();
+  });
+
+  test("Returns message if the model returns an empty array", async () => {
+    recipes_model.get_by_course = jest.fn(() => []);
+    const expected_message = /don't have any/i;
+
+    const response = await request(server).get("/cookbook?course=snacks");
+
+    expect(response.status).toEqual(200);
+    expect(response.body.message).toMatch(expected_message);
+    expect(recipes_model.get_by_course).toHaveBeenCalledTimes(1);
+    recipes_model.get_by_course.mockReset();
+  });
+
+  test("returns 500 if unsuccessful", async () => {
+    recipes_model.get_by_course = jest.fn(() => {
+      throw { detail: "error" };
+    });
+    const expected_error = { detail: "error" };
+
+    const response = await request(server).get("/cookbook");
+
+    expect(response.status).toEqual(500);
+    expect(response.body).toEqual(expected_error);
+    expect(recipes_model.get_by_course).toHaveBeenCalledTimes(1);
+    recipes_model.get_by_course.mockReset();
+  });
+});
+
 describe("PUT /recipes/:id", () => {
   test("Returns 200 if successful", async () => {
     recipes_model.update_one = jest.fn(
