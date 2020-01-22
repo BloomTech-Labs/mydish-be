@@ -9,8 +9,8 @@ router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
         const new_recipe = await model.add_one({...res.locals.recipe, owner_id: req.user.id})
         res.status(200).json(new_recipe)
     } catch(err) {
-        if (err && err.userError) return res.status(400).json(err)
-        res.status(500).json(err)
+        if (err && err.userError) res.status(400).json(err)
+        else res.status(500).json(err)
     }
 })
 
@@ -67,7 +67,7 @@ router.put(`/${tbl}/:id`, validate.token, validate.recipe, validate.user_recipe,
             : res.status(404).json(`Couldn't update recipe`)
     } catch(err) {
         if (err && err.userError) res.status(400).json(err)
-        res.status(500).json(err)
+        else res.status(500).json(err)
     }
 })
 

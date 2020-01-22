@@ -242,7 +242,74 @@ describe('GET "/recipes"', () => {
 });
 
 describe("PUT /recipes/:id", () => {
+  
   test("Returns 200 if successful", async () => {
-      
+    recipes_model.update_one = jest.fn(
+      () => new Promise(res => setTimeout(() => res(1)), 0)
+    );
+
+    const expected_response = 1; // success = 1
+
+    const response = await request(server)
+      .put("/recipes/2")
+      .send({ body: "updates", test: true })
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(200)
+    expect(response.body).toBe(expected_response)
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1)
+    recipes_model.update_one.mockReset()
+  });
+
+  test("Returns 404 with a falsey return value", async () => {
+    recipes_model.update_one = jest.fn(
+      () => new Promise(res => setTimeout(() => res(false)), 0)
+    );
+
+    const expected_error = /couldn't update/i; // success = 1
+
+    const response = await request(server)
+      .put("/recipes/25")
+      .send({ body: "updates", test: true })
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(404)
+    expect(response.body).toMatch(expected_error)
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1)
+    recipes_model.update_one.mockReset()
+  });
+
+  test("Returns 500 if unsuccessful", async () => {
+    recipes_model.update_one = jest.fn(() => {
+      throw { message: "error" };
+    });
+    const expected_error = { message: "error" };
+
+    const response = await request(server)
+      .put("/recipes/2")
+      .send({ body: "updates", test: true })
+      .set("Accept", "application/json");
+
+    expect(response.status).toEqual(500);
+    expect(response.body).toEqual(expected_error);
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
+    recipes_model.update_one.mockReset();
+  });
+
+  test("returns 400 if there's a custom error", async () => {
+    recipes_model.update_one = jest.fn(() => {
+      throw { userError: true, message: "error" };
+    });
+    const expected_error = { userError: true, message: "error" };
+
+    const response = await request(server)
+      .put("/recipes/2")
+      .send({ body: "updates", test: true })
+      .set("Accept", "application/json");
+
+    expect(response.status).toEqual(400);
+    expect(response.body).toEqual(expected_error);
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
+    recipes_model.update_one.mockReset();
   });
 });
