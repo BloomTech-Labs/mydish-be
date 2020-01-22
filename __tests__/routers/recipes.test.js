@@ -148,13 +148,101 @@ describe('GET "/recipes/:id"', () => {
     });
     // res.status(500).json(err.detail)
     //                       ↓↓↓
-    const expected_error = "error"; 
+    const expected_error = /error/i;
 
     const response = await request(server).get("/recipes/1");
 
     expect(response.status).toEqual(500);
-    expect(response.body).toEqual(expected_error);
+    expect(response.body).toMatch(expected_error);
     expect(recipes_model.get_one).toHaveBeenCalledTimes(1);
     recipes_model.get_one.mockReset();
+  });
+});
+
+describe('GET "/recipes"', () => {
+  // We will use this fake_db in our tests
+  const fake_db = [
+    { title: "test1", test: true },
+    { title: "test2", test: true },
+    { title: "test22", test: true },
+    { title: "test3", test: true }
+  ];
+  test("returns 200 if no search is given", async () => {
+    recipes_model.get_all = jest.fn(
+      title_search =>
+        new Promise(res => {
+          setTimeout(
+            // Actually filter the fake_db to emulate a search
+            () => res(fake_db.filter(obj => obj.title.match(title_search))),
+            0
+          );
+        })
+    );
+    // We should return all of our database on an empty search
+    const expected_recipes = fake_db;
+
+    const response = await request(server).get("/recipes");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(expected_recipes);
+    expect(recipes_model.get_all).toHaveBeenCalledTimes(1);
+    recipes_model.get_all.mockReset();
+  });
+  test("Returns 200 if search is successful", async () => {
+    recipes_model.get_all = jest.fn(
+      title_search =>
+        new Promise(res => {
+          setTimeout(
+            // Actually filter the fake_db to emulate a search
+            () => res(fake_db.filter(obj => obj.title.match(title_search))),
+            0
+          );
+        })
+    );
+    const expected_recipes = [
+      { title: "test2", test: true },
+      { title: "test22", test: true }
+    ];
+
+    const response = await request(server).get("/recipes?title=t2");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(expected_recipes);
+    expect(recipes_model.get_all).toHaveBeenCalledTimes(1);
+    recipes_model.get_all.mockReset();
+  });
+
+  test("Returns 404 if the model returns an empty array", async () => {
+    recipes_model.get_all = jest.fn(() => []);
+    const expected_error = /no recipe/i;
+
+    const response = await request(server).get("/recipes");
+
+    expect(response.status).toEqual(404);
+    expect(response.body).toMatch(expected_error);
+    expect(recipes_model.get_all).toHaveBeenCalledTimes(1);
+    recipes_model.get_all.mockReset();
+  });
+
+  test("returns 500 if unsuccessful", async () => {
+    recipes_model.get_all = jest.fn(() => {
+      throw { detail: "error" };
+    });
+    // res.status(500).json(err.detail)
+    //                       ↓↓↓
+    const expected_error = /error/i;
+
+    const response = await request(server).get("/recipes");
+
+    expect(response.status).toEqual(500);
+    expect(response.body).toMatch(expected_error);
+    expect(recipes_model.get_all).toHaveBeenCalledTimes(1);
+    recipes_model.get_all.mockReset();
+  });
+});
+
+describe("PUT /recipes/:id", () => {
+  test("Returns 200 if successful", async () => {
+      
   });
 });
