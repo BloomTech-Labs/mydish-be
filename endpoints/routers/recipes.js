@@ -85,7 +85,7 @@ router.delete(`/${tbl}/:id`, validate.token, validate.user_recipe, async (req, r
 })
 
 //terminate all recipes
-router.delete(`/${tbl}`, validate.admin, async (req, res) => {
+router.delete(`/${tbl}`, validate.token, validate.admin, async (req, res) => {
     try {
         await model.remove_all()
         res.status(200).json('All recipes have been eliminated.')

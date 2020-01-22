@@ -1,6 +1,9 @@
 const router = require('express').Router()
 const model = require('../models/recipe_ingredients')
 const tbl = 'recipe_ingredients'
+const validate = require("../middleware/validate")
+
+router.use(validate.token, validate.admin)
 
 //add a ingredient
 router.post(`/${tbl}`, async (req, res) => {
