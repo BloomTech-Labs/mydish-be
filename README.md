@@ -348,3 +348,293 @@ req.body:
 ```
 
 </details>
+
+<details>
+  <summary>
+    <strong>
+        <code>GET recipes/:id/versions/</code>
+    </strong>
+  </summary>
+
+Gets all versions of a recipe by the recipe's id.
+
+`res.data`:
+
+```js
+[
+  {
+    id: 1,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: null,
+          units: null,
+          quantity: null,
+          units_short: null,
+          recipe_ingredients_id: null
+        }
+      ],
+      instructions: [
+        {
+          id: null,
+          description: null,
+          step_number: null
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: null,
+          description: null
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 1,
+    author_comment: null
+  },
+  {
+    id: 2,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: "milk",
+          units: "cup",
+          quantity: 1,
+          units_short: "c",
+          recipe_ingredients_id: 2
+        }
+      ],
+      instructions: [
+        {
+          id: 7,
+          description: null,
+          step_number: 1
+        },
+        {
+          id: 8,
+          description: null,
+          step_number: 2
+        },
+        {
+          id: 9,
+          description: null,
+          step_number: 3
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: 3,
+          description:
+            "Cereal is one the most delicate and complex recipes known throughout the history of mankind..."
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 2,
+    author_comment: null
+  },
+  {
+    id: 3,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: "macha",
+          units: "cup",
+          quantity: 1,
+          units_short: "c",
+          recipe_ingredients_id: 3
+        }
+      ],
+      instructions: [
+        {
+          id: 7,
+          description: null,
+          step_number: 1
+        },
+        {
+          id: 8,
+          description: null,
+          step_number: 2
+        },
+        {
+          id: 9,
+          description: null,
+          step_number: 3
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: 4,
+          description:
+            "Cereal is one the most delicate and complex recipes known throughout the history of mankind..."
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 3,
+    author_comment: null
+  }
+];
+```
+
+</details>
+
+<details>
+  <summary>
+    <strong>GET `/recipes/:id/version/:rev_id`
+  </summary>
+
+Gets a single revision based on the revision id.
+
+`res.data`:
+
+```js
+{
+  "id": 1,
+  "recipe_id": 2,
+  "changes": {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "prep_time": 45,
+    "cook_time": null,
+    "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+    "ingredients": [
+      {
+        "name": null,
+        "units": null,
+        "quantity": null,
+        "units_short": null,
+        "recipe_ingredients_id": null
+      }
+    ],
+    "instructions": [
+      {
+        "id": null,
+        "description": null,
+        "step_number": null
+      }
+    ],
+    "tags": [
+      {
+        "id": null,
+        "name": null
+      }
+    ],
+    "notes": [
+      {
+        "id": null,
+        "description": null
+      }
+    ]
+  },
+  "date_modified": "2020-01-21T22:11:10.950Z",
+  "revision_number": 1,
+  "author_comment": null
+}
+```
+
+</details>
+<details>
+  <summary>
+    <strong>GET `/recipes/:id/version/:rev_number`
+  </summary>
+
+Gets a single revision based on the revision number.
+
+`res.data`:
+
+```js
+{
+  "id": 1,
+  "recipe_id": 2,
+  "changes": {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "prep_time": 45,
+    "cook_time": null,
+    "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+    "ingredients": [
+      {
+        "name": null,
+        "units": null,
+        "quantity": null,
+        "units_short": null,
+        "recipe_ingredients_id": null
+      }
+    ],
+    "instructions": [
+      {
+        "id": null,
+        "description": null,
+        "step_number": null
+      }
+    ],
+    "tags": [
+      {
+        "id": null,
+        "name": null
+      }
+    ],
+    "notes": [
+      {
+        "id": null,
+        "description": null
+      }
+    ]
+  },
+  "date_modified": "2020-01-21T22:11:10.950Z",
+  "revision_number": 1,
+  "author_comment": null
+}
+```
+
+</details>

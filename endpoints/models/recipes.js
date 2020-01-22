@@ -500,6 +500,8 @@ const update_one = async (recipe_id, updated_recipe) => {
         .count("id")
         .first();
 
+      await delete existing_recipe.owner;
+
       const previous_version_entry = {
         recipe_id,
         changes: existing_recipe,
