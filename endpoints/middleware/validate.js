@@ -200,6 +200,7 @@ const user_recipe = (req, res, next) => {
 };
 
 module.exports = {
+  generate_token,
   user,
   token,
   admin,
