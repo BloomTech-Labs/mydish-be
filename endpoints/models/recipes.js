@@ -527,7 +527,7 @@ const remove_one = id =>
   db(tbl)
     .where({ id })
     .delete()
-    .returning("*")[0];
+    .returning("*");
 
 const remove_all = () => db(tbl).delete();
 
