@@ -36,7 +36,7 @@ describe('POST "/recipes"', () => {
     recipes_model.add_one = jest.fn(
       req_obj =>
         new Promise(res => {
-          setTimeout(() => res({ ...req_obj, test: true }), 50);
+          setTimeout(() => res({ ...req_obj, test: true }), 0);
         })
     );
     const new_recipe = {
@@ -106,5 +106,55 @@ describe('POST "/recipes"', () => {
     expect(response.body).toEqual(expected_error);
     expect(recipes_model.add_one).toHaveBeenCalledTimes(1);
     recipes_model.add_one.mockReset();
+  });
+});
+
+describe('GET "/recipes/:id"', () => {
+  test("Returns 200 if successful", async () => {
+    recipes_model.get_one = jest.fn(
+      id_obj =>
+        new Promise(res => {
+          setTimeout(() => res({ id: Number(id_obj.id), test: true }), 0);
+        })
+    );
+    const expected_recipe = {
+      id: 1, // We will test for recipe id 1
+      test: true
+    };
+
+    const response = await request(server).get("/recipes/1");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(expected_recipe);
+    expect(recipes_model.get_one).toHaveBeenCalledTimes(1);
+    recipes_model.get_one.mockReset();
+  });
+
+  test("Returns 404 if the model returns nothing", async () => {
+    recipes_model.get_one = jest.fn(() => null);
+    const expected_error = /no recipe/i;
+
+    const response = await request(server).get("/recipes/1");
+
+    expect(response.status).toEqual(404);
+    expect(response.body).toMatch(expected_error);
+    expect(recipes_model.get_one).toHaveBeenCalledTimes(1);
+    recipes_model.get_one.mockReset();
+  });
+
+  test("returns 500 if unsuccessful", async () => {
+    recipes_model.get_one = jest.fn(() => {
+      throw { detail: "error" };
+    });
+    // res.status(500).json(err.detail)
+    //                       ↓↓↓
+    const expected_error = "error"; 
+
+    const response = await request(server).get("/recipes/1");
+
+    expect(response.status).toEqual(500);
+    expect(response.body).toEqual(expected_error);
+    expect(recipes_model.get_one).toHaveBeenCalledTimes(1);
+    recipes_model.get_one.mockReset();
   });
 });
