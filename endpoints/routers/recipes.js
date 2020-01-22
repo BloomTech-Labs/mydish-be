@@ -52,11 +52,9 @@ router.get(`/cookbook`, validate.token, async (req, res) => {
   try {
     recipes = await model.get_by_course(req.user.id, course);
     if (!recipes.length) {
-      res
-        .status(200)
-        .json({
-          message: `You don't have any recipes under this course type.`
-        });
+      res.status(200).json({
+        message: `You don't have any recipes under this course type.`
+      });
     } else {
       res.status(200).json(recipes);
     }

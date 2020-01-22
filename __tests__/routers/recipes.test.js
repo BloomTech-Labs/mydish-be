@@ -144,16 +144,14 @@ describe('GET "/recipes/:id"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipes_model.get_one = jest.fn(() => {
-      throw { detail: "error" };
+      throw { message: "error" };
     });
-    // res.status(500).json(err.detail)
-    //                       ↓↓↓
-    const expected_error = /error/i;
+    const expected_error = { message: "error" };
 
     const response = await request(server).get("/recipes/1");
 
     expect(response.status).toEqual(500);
-    expect(response.body).toMatch(expected_error);
+    expect(response.body).toEqual(expected_error);
     expect(recipes_model.get_one).toHaveBeenCalledTimes(1);
     recipes_model.get_one.mockReset();
   });
@@ -226,16 +224,14 @@ describe('GET "/recipes"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipes_model.get_all = jest.fn(() => {
-      throw { detail: "error" };
+      throw { message: "error" };
     });
-    // res.status(500).json(err.detail)
-    //                       ↓↓↓
-    const expected_error = /error/i;
+    const expected_error = { message: "error" };
 
     const response = await request(server).get("/recipes");
 
     expect(response.status).toEqual(500);
-    expect(response.body).toMatch(expected_error);
+    expect(response.body).toEqual(expected_error);
     expect(recipes_model.get_all).toHaveBeenCalledTimes(1);
     recipes_model.get_all.mockReset();
   });
@@ -391,16 +387,14 @@ describe('DELETE "/recipes"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipes_model.remove_one = jest.fn(() => {
-      throw { detail: "error" };
+      throw { message: "error" };
     });
-    // res.status(500).json(err.detail)
-    //                       ↓↓↓
-    const expected_error = /error/i;
+    const expected_error = { message: "error" };
 
     const response = await request(server).delete("/recipes/1");
 
     expect(response.status).toEqual(500);
-    expect(response.body).toMatch(expected_error);
+    expect(response.body).toEqual(expected_error);
     expect(recipes_model.remove_one).toHaveBeenCalledTimes(1);
     recipes_model.remove_one.mockReset();
   });
@@ -426,16 +420,14 @@ describe('DELETE "/recipes/:id"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipes_model.remove_all = jest.fn(() => {
-      throw { detail: "error" };
+      throw { message: "error" };
     });
-    // res.status(500).json(err.detail)
-    //                       ↓↓↓
-    const expected_error = /error/i;
+    const expected_error = { message: "error" };
 
     const response = await request(server).delete("/recipes");
 
     expect(response.status).toEqual(500);
-    expect(response.body).toMatch(expected_error);
+    expect(response.body).toEqual(expected_error);
     expect(recipes_model.remove_all).toHaveBeenCalledTimes(1);
     recipes_model.remove_all.mockReset();
   });

@@ -21,6 +21,11 @@ server.use(require("./endpoints/routers/notes"));
 server.use(require("./endpoints/routers/units"));
 server.use(require("./endpoints/routers/pervious_versions"));
 
+//catchall endpoint
+server.get("/", (req, res) => {
+  res.status(200).json("Yup, it working.");
+});
+
 //signal that the server is in fact running
 server.listen(port, () => {
   console.clear();
