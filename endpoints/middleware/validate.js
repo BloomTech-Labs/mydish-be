@@ -6,7 +6,6 @@ const user_model = require("../models/users");
 const recipe_model = require("../models/recipes");
 
 /**
- * @private
  * Generates a token from the given information.
  * 
  * @param {Object}   user - User information
