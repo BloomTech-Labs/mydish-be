@@ -10,7 +10,7 @@ const m = {
 //add a user
 router.post(`/${tbl}/register`, async (req, res) => {
   if (!req.body || !req.body.username.length || !req.body.password.length) {
-    return res.status(400).json({message: "Please provide a username and password"})
+    return res.status(400).json({message: "Please provide a username and password."})
   }
   const new_user = {
     username: req.body.username,
@@ -18,7 +18,7 @@ router.post(`/${tbl}/register`, async (req, res) => {
   };
   try {
     const user = await model.add_one(new_user);
-    const token = m.validate.token(user);
+    const token = m.validate.generate_token(user);
     res.status(200).json({
       message: `Welcome, new user.`,
       user: { id: user.id, username: user.username },
