@@ -20,13 +20,13 @@ server.use(require('./endpoints/routers/ingredients'))
 server.use(require('./endpoints/routers/notes'))
 server.use(require('./endpoints/routers/units'))
 
+//catchall endpoint
+server.get('/', (req, res) => {
+    res.status(200).json('Yup, it working.')
+})
+
 //signal that the server is in fact running
 server.listen(port, () => {
     console.clear()
     console.log(`\n*** Go ahead, take my port ${port} **\n`)
-})
-
-//catchall endpoint
-server.get('/', (req, res) => {
-    res.status(200).json('Yup, it working.')
 })
