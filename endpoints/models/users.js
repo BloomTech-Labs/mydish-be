@@ -1,12 +1,23 @@
 const db = require("../../data/dbConfig");
 const tbl = "users";
 
-add_one = async obj =>
-  (
-    await db(tbl)
-      .insert(obj)
-      .returning("*")
-  )[0];
+add_one = async obj => {
+  return await db.transaction(async trx => {
+    try {
+      const return_user = await trx(tbl)
+        .insert(obj)
+        .returning("*");
+      const user_roles_entry = {
+        user_id: return_user[0].id,
+        role_id: 1
+      };
+      await trx("user_roles").insert(user_roles_entry);
+      return return_user[0];
+    } catch (err) {
+      throw err;
+    }
+  });
+};
 
 get_by_id = id =>
   db(tbl)
