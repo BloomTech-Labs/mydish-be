@@ -8,12 +8,21 @@ const m = {
 };
 
 //add a user
-router.post(`/${tbl}/register`, m.encrypt.password, async (req, res) => {
-  const { username, password } = req.body;
+router.post(`/${tbl}/register`, async (req, res) => {
+  const new_user = {
+    username: req.body.username,
+    password: m.encrypt.password(req.body.password)
+  };
   try {
-    const new_user = await model.add_one({ username, password });
-    res.status(200).json(new_user);
+    const user = await model.add_one(new_user);
+    const token = m.validate.token(user);
+    res.status(200).json({
+      message: `Welcome, new user.`,
+      user: { id: user.id, username: user.username },
+      token
+    });
   } catch (err) {
+    console.log("err", err);
     res.status(500).json(err.detail);
   }
 });
