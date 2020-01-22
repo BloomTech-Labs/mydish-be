@@ -242,7 +242,6 @@ describe('GET "/recipes"', () => {
 });
 
 describe("PUT /recipes/:id", () => {
-  
   test("Returns 200 if successful", async () => {
     recipes_model.update_one = jest.fn(
       () => new Promise(res => setTimeout(() => res(1)), 0)
@@ -255,10 +254,10 @@ describe("PUT /recipes/:id", () => {
       .send({ body: "updates", test: true })
       .set("Accept", "application/json");
 
-    expect(response.status).toBe(200)
-    expect(response.body).toBe(expected_response)
-    expect(recipes_model.update_one).toHaveBeenCalledTimes(1)
-    recipes_model.update_one.mockReset()
+    expect(response.status).toBe(200);
+    expect(response.body).toBe(expected_response);
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
+    recipes_model.update_one.mockReset();
   });
 
   test("Returns 404 with a falsey return value", async () => {
@@ -273,10 +272,10 @@ describe("PUT /recipes/:id", () => {
       .send({ body: "updates", test: true })
       .set("Accept", "application/json");
 
-    expect(response.status).toBe(404)
-    expect(response.body).toMatch(expected_error)
-    expect(recipes_model.update_one).toHaveBeenCalledTimes(1)
-    recipes_model.update_one.mockReset()
+    expect(response.status).toBe(404);
+    expect(response.body).toMatch(expected_error);
+    expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
+    recipes_model.update_one.mockReset();
   });
 
   test("Returns 500 if unsuccessful", async () => {
@@ -311,5 +310,40 @@ describe("PUT /recipes/:id", () => {
     expect(response.body).toEqual(expected_error);
     expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
     recipes_model.update_one.mockReset();
+  });
+});
+
+describe('DELETE "/recipes/:id"', () => {
+  test("Returns 200 if successful", async () => {
+    recipes_model.remove_one = jest.fn(
+      () =>
+        new Promise(res => {
+          setTimeout(() => res([{ title: "test_title" }]), 0);
+        })
+    );
+    const expected_response = /test_title/i;
+
+    const response = await request(server).delete("/recipes/1");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toMatch(expected_response);
+    expect(recipes_model.remove_one).toHaveBeenCalledTimes(1);
+    recipes_model.remove_one.mockReset();
+  });
+
+  test("returns 500 if unsuccessful", async () => {
+    recipes_model.remove_one = jest.fn(() => {
+      throw { detail: "error" };
+    });
+    // res.status(500).json(err.detail)
+    //                       ↓↓↓
+    const expected_error = /error/i;
+
+    const response = await request(server).delete("/recipes/1");
+
+    expect(response.status).toEqual(500);
+    expect(response.body).toMatch(expected_error);
+    expect(recipes_model.remove_one).toHaveBeenCalledTimes(1);
+    recipes_model.remove_one.mockReset();
   });
 });
