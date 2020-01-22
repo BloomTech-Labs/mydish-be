@@ -9,6 +9,7 @@ router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
         const new_recipe = await model.add_one({...res.locals.recipe, owner_id: req.user.id})
         res.status(200).json(new_recipe)
     } catch(err) {
+        console.log('err', err)
         if (err && err.userError) res.status(400).json(err)
         else res.status(500).json(err)
     }
@@ -77,9 +78,8 @@ router.delete(`/${tbl}/:id`, validate.token, validate.user_recipe, async (req, r
     const {id} = req.params
     try {
         const recipe = await model.remove_one(id)
-        recipe
-            ? res.status(200).json(`${recipe.title} has been terminated.`)
-            : res.status(404).json(`Couldn't find recipe ${id}.`)
+        // ↑ Returns an array of the recipe, ↓ so we use the [0]th index.
+        res.status(200).json(`${recipe[0].title} has been terminated.`)
     } catch(err) {
         res.status(500).json(err.detail)
     }
