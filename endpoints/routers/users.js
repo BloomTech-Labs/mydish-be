@@ -22,6 +22,9 @@ router.post(`/${tbl}/register`, async (req, res) => {
       token
     });
   } catch (err) {
+    if (typeof err.detail === "string" && err.detail.match(/(\(username\)).*(already exists)/i)) {
+      return res.status(400).json("That username already exists.")
+    }
     console.log("err", err);
     res.status(500).json(err.detail);
   }
@@ -40,7 +43,7 @@ router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
       });
     } else
       res.status(404).json({
-        message: `Wrong password, dumbass.`
+        message: `Incorrect password or username.`
       });
   } catch (err) {
     res.status(500).json(err.detail);
