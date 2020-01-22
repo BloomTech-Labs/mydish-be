@@ -9,6 +9,9 @@ const m = {
 
 //add a user
 router.post(`/${tbl}/register`, async (req, res) => {
+  if (!req.body || !req.body.username.length || !req.body.password.length) {
+    return res.status(400).json({message: "Please provide a username and password"})
+  }
   const new_user = {
     username: req.body.username,
     password: m.encrypt.password(req.body.password)
@@ -23,7 +26,7 @@ router.post(`/${tbl}/register`, async (req, res) => {
     });
   } catch (err) {
     if (typeof err.detail === "string" && err.detail.match(/(\(username\)).*(already exists)/i)) {
-      return res.status(400).json("That username already exists.")
+      return res.status(400).json({message: "That username already exists." })
     }
     console.log("err", err);
     res.status(500).json(err.detail);
