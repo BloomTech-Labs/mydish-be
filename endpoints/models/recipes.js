@@ -261,6 +261,7 @@ const update_one = async (recipe_id, updated_recipe) => {
     if (!existing_recipe) {
       return false;
     }
+
     //======================PREPPING INGREDIENTS AND UNITS=============================//
 
     //creates a query that finds ingredients not already existing in our database
@@ -492,7 +493,8 @@ const update_one = async (recipe_id, updated_recipe) => {
         await trx("notes").insert(notes_to_be_added);
       }
 
-      //=========================YOU DID IT, YOU'RE DONE=======================//
+      //=========================SAVE PREVIOUS VERSION ENTRY=======================//
+
       const total_revisions = await trx("previous_versions")
         .where({ recipe_id })
         .count("id")
@@ -506,6 +508,8 @@ const update_one = async (recipe_id, updated_recipe) => {
       };
 
       await trx("previous_versions").insert(previous_version_entry);
+      //=========================YOU DID IT, YOU'RE DONE=======================//
+
       success = 1;
     });
   } catch (e) {
