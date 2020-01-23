@@ -1,33 +1,37 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+require("dotenv").config();
 
+//setup
+const express = require("express");
 const server = express();
+const router = express.Router();
+const port = process.env.PORT || 4447;
 
-server.use(cors());
-
+//import and use middleware
+server.use(require("cors")());
+server.use(require("helmet")());
 server.use(express.json());
 
-const CooksRouter = require('./routers/cooks.js');
-const RecipeRouter = require('./routers/recipes.js');
-const CookbookRouter = require('./routers/cookbook.js');
-const LikesRouter = require('./routers/likes.js');
-const EditsRouter = require('./routers/edits.js');
+//routers
+server.use(require("./endpoints/routers/users"));
+server.use(require("./endpoints/routers/recipes"));
+server.use(require("./endpoints/routers/pervious_versions"));
 
-server.use("/", (req, res, next) => {
-  let outputString = req.method;
-  outputString += " " + req.originalUrl;
-  console.log(outputString)
-  next()
-})
-server.use('/cooks', CooksRouter);
-server.use('/recipes', RecipeRouter);
-server.use('/cookbook', CookbookRouter);
-server.use('/likes', LikesRouter);
-server.use('/edits', EditsRouter); 
+// Admin only routes
+const validate = require("./endpoints/middleware/validate")
+server.use(validate.token, validate.admin)
+server.use(require("./endpoints/routers/instructions"));
+server.use(require("./endpoints/routers/recipe_ingredients"));
+server.use(require("./endpoints/routers/ingredients"));
+server.use(require("./endpoints/routers/notes"));
+server.use(require("./endpoints/routers/units"));
 
-server.get('/', (req, res) => {
-  res.status(200).json({ hello: 'world' });
+//catchall endpoint
+server.get("/", (req, res) => {
+  res.status(200).json("Yup, it working.");
 });
 
-module.exports = server;
+//signal that the server is in fact running
+server.listen(port, () => {
+  console.clear();
+  console.log(`\n*** Go ahead, take my port ${port} **\n`);
+});
