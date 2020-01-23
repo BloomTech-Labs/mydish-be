@@ -268,14 +268,14 @@ describe('GET "/cookbook"', () => {
     recipes_model.get_by_course.mockReset();
   });
 
-  test("Returns message if the model returns an empty array", async () => {
-    recipes_model.get_by_course = jest.fn(() => []);
-    const expected_message = /don't have any/i;
+  test("Returns empty array if the model returns empty", async () => {
+    recipes_model.get_by_course = jest.fn(() => ([]));
+    const expected_response = [];
 
     const response = await request(server).get("/cookbook?course=snacks");
 
     expect(response.status).toEqual(200);
-    expect(response.body.message).toMatch(expected_message);
+    expect(response.body).toEqual(expected_response);
     expect(recipes_model.get_by_course).toHaveBeenCalledTimes(1);
     recipes_model.get_by_course.mockReset();
   });

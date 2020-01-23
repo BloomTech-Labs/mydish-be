@@ -28,7 +28,7 @@ router.get(`/${tbl}/:id`, async (req, res) => {
       : res.status(404).json("No recipe found.");
   } catch (err) {
     console.log("err", err);
-    res.status(500).json(err.detail);
+    res.status(500).json(err);
   }
 });
 
@@ -43,7 +43,7 @@ router.get(`/${tbl}`, async (req, res) => {
       : res.status(404).json("No recipes found.");
   } catch (err) {
     console.log(err);
-    res.status(500).json(err.detail);
+    res.status(500).json(err);
   }
 });
 
@@ -51,13 +51,7 @@ router.get(`/cookbook`, validate.token, async (req, res) => {
   const course = req.query.course;
   try {
     recipes = await model.get_by_course(req.user.id, course);
-    if (!recipes.length) {
-      res.status(200).json({
-        message: `You don't have any recipes under this course type.`
-      });
-    } else {
-      res.status(200).json(recipes);
-    }
+    res.status(200).json(recipes);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -97,19 +91,19 @@ router.delete(
       // ↑ Returns an array of the recipe, ↓ so we use the [0]th index.
       res.status(200).json(`${recipe[0].title} has been terminated.`);
     } catch (err) {
-      res.status(500).json(err.detail);
+      res.status(500).json(err);
     }
   }
 );
 
 //terminate all recipes
 router.delete(`/${tbl}`, validate.token, validate.admin, async (req, res) => {
-    try {
-        await model.remove_all()
-        res.status(200).json('All recipes have been eliminated.')
-    } catch(err) {
-        res.status(500).json(err)
-    }
-})
+  try {
+    await model.remove_all();
+    res.status(200).json("All recipes have been eliminated.");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
