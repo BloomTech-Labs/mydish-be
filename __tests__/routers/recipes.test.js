@@ -269,7 +269,7 @@ describe('GET "/cookbook"', () => {
   });
 
   test("Returns empty array if the model returns empty", async () => {
-    recipes_model.get_by_course = jest.fn(() => ([]));
+    recipes_model.get_by_course = jest.fn(() => []);
     const expected_response = [];
 
     const response = await request(server).get("/cookbook?course=snacks");
@@ -297,11 +297,22 @@ describe('GET "/cookbook"', () => {
 
 describe("PUT /recipes/:id", () => {
   test("Returns 200 if successful", async () => {
+
+    // When we update successfully, we then get_one from the database
+    // So... we need to mock two functions
+    //     One to "update", and one to "get".
+    // Our expected response is the "get" response
     recipes_model.update_one = jest.fn(
       () => new Promise(res => setTimeout(() => res(1)), 0)
     );
+    recipes_model.get_one = jest.fn(
+      () =>
+        new Promise(res =>
+          setTimeout(() => res({ title: "test", test: true }), 0)
+        )
+    );
 
-    const expected_response = 1; // success = 1
+    const expected_response = { title: "test", test: true }; // success = 1
 
     const response = await request(server)
       .put("/recipes/2")
@@ -309,7 +320,7 @@ describe("PUT /recipes/:id", () => {
       .set("Accept", "application/json");
 
     expect(response.status).toBe(200);
-    expect(response.body).toBe(expected_response);
+    expect(response.body).toEqual(expected_response);
     expect(recipes_model.update_one).toHaveBeenCalledTimes(1);
     recipes_model.update_one.mockReset();
   });

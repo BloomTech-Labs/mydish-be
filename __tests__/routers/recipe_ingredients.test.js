@@ -245,7 +245,7 @@ describe("PUT /recipe_ingredients/:id", () => {
   });
 });
 
-describe('DELETE "/recipe_ingredients"', () => {
+describe('DELETE "/recipe_ingredients/:id"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.remove_one = jest.fn(
       () =>
@@ -258,6 +258,22 @@ describe('DELETE "/recipe_ingredients"', () => {
     const response = await request(server).delete("/recipe_ingredients/1");
 
     expect(response.status).toEqual(200);
+    expect(response.body).toMatch(expected_response);
+    expect(recipe_ingredients_model.remove_one).toHaveBeenCalledTimes(1);
+    recipe_ingredients_model.remove_one.mockReset();
+  });
+  test("Returns 404 if not successful", async () => {
+    recipe_ingredients_model.remove_one = jest.fn(
+      () =>
+        new Promise(res => {
+          setTimeout(() => res(false), 0);
+        })
+    );
+    const expected_response = /couldn't find.*id 1/i;
+
+    const response = await request(server).delete("/recipe_ingredients/1");
+
+    expect(response.status).toEqual(404);
     expect(response.body).toMatch(expected_response);
     expect(recipe_ingredients_model.remove_one).toHaveBeenCalledTimes(1);
     recipe_ingredients_model.remove_one.mockReset();
@@ -278,7 +294,7 @@ describe('DELETE "/recipe_ingredients"', () => {
   });
 });
 
-describe('DELETE "/recipe_ingredients/:id"', () => {
+describe('DELETE "/recipe_ingredients/"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.remove_all = jest.fn(
       () =>
@@ -296,7 +312,7 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
     recipe_ingredients_model.remove_all.mockReset();
   });
 
-  test("returns 500 if unsuccessful", async () => {
+  test("returns 500 if an error is thrown", async () => {
     recipe_ingredients_model.remove_all = jest.fn(() => {
       throw { message: "error" };
     });
