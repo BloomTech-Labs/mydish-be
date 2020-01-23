@@ -7,9 +7,20 @@ const db = require("../../data/dbConfig");
  
  */
 const get_version_by_num = (recipe_id, revision_num) => {
-  return db("previous_versions")
-    .where({ recipe_id })
-    .andWhere({ revision_number: revision_num })
+  return db("previous_versions as pv")
+    .where({ "pv.recipe_id": recipe_id })
+    .andWhere({ "pv.revision_number": revision_num })
+    .join("recipes as r", { "r.id": "pv.recipe_id" })
+    .join("users as u", { "u.id": "r.owner_id" })
+    .select(
+      "pv.id",
+      "pv.changes",
+      "pv.revision_number",
+      "pv.date_modified",
+      db.raw(
+        `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
+      )
+    )
     .first();
 };
 
@@ -20,9 +31,20 @@ const get_version_by_num = (recipe_id, revision_num) => {
  * then returns the matching revision.
  */
 const get_version_by_id = (recipe_id, revision_id) => {
-  return db("previous_versions")
-    .where({ id: revision_id })
-    .andWhere({ recipe_id })
+  return db("previous_versions as pv")
+    .where({ "pv.recipe_id": recipe_id })
+    .andWhere({ "pv.id": revision_id })
+    .join("recipes as r", { "r.id": "pv.recipe_id" })
+    .join("users as u", { "u.id": "r.owner_id" })
+    .select(
+      "pv.id",
+      "pv.changes",
+      "pv.revision_number",
+      "pv.date_modified",
+      db.raw(
+        `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
+      )
+    )
     .first();
 };
 
@@ -33,7 +55,19 @@ const get_version_by_id = (recipe_id, revision_id) => {
  */
 
 const get_all_versions = recipe_id => {
-  return db("previous_versions").where({ recipe_id });
+  return db("previous_versions as pv")
+    .where({ "pv.recipe_id": recipe_id })
+    .join("recipes as r", { "r.id": "pv.recipe_id" })
+    .join("users as u", { "u.id": "r.owner_id" })
+    .select(
+      "pv.id",
+      "pv.changes",
+      "pv.revision_number",
+      "pv.date_modified",
+      db.raw(
+        `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
+      )
+    );
 };
 
 module.exports = {
