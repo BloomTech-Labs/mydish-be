@@ -33,22 +33,22 @@ To get the server running locally:
 #### Table of Contents
 
 - [Accounts](#accounts)
-  - [Register](#post-/users/register)
-  - [Login](#post-/users/login)
+  - [Register](#users-register)
+  - [Login](#users-login)
 - [Recipe Routes](#recipe-routes)
   - [GET recipes/](#get-recipes)
-  - [GET recipes/:id](#get-recipes/:id)
+  - [GET recipes/:id](#recipes-by-id)
   - [GET /cookbook](#get-cookbook)
-  - [POST recipes/](#post-recipes/)
-  - [PUT recipes/:id](#put-recipes/:id)
+  - [POST recipes/](#post-recipes)
+  - [PUT recipes/:id](#put-recipes)
 - [Version History](#version-history-endpoints)
-  - [GET recipes/:id/versions](#get-by-recipe-id)
-  - [GET recipes/:id/version/:rev_id](#get-by-recipe-id-and-version-id)
-  - [GET recipes/:id/versions/:rev_num](#get-by-recipe-id-and-revision-number)
+  - [GET recipes/:id/versions](#all-versions-by-recipe-id)
+  - [GET recipes/:id/version/:rev_id](#version-by-recipe-and-revision-id)
+  - [GET recipes/:id/versions/:rev_num](#version-by-recipe-id-and-revision-number)
 
-## Accounts
+# Accounts
 
-# POST /users/register/
+## Users Register
 
 ```js
 URL: "baseURL/users/register/",
@@ -83,7 +83,7 @@ Allows a user to register.
 
   </details>
 
-# POST /users/register/
+## Users Login
 
 ```js
 URL: "baseURL/users/login/",
@@ -170,7 +170,7 @@ res.data:
 
 ---
 
-## GET recipes/:id
+## Recipe By ID
 
 ```js
 URL: "baseURL/recipes/1"
@@ -488,7 +488,7 @@ req.body:
 
 # Version History Endpoints
 
-## GET by recipe id
+## All Versions By Recipe ID
 
 ```js
 URL: "baseURL/recipes/1/versions/"
@@ -670,7 +670,7 @@ Example Response:
 
 ---
 
-## GET by recipe id and version id
+## Version By Recipe and Revision ID
 
 ```js
 URL: "baseURL/recipes/1/version/1"
@@ -737,7 +737,7 @@ Gets a single revision based on the revision id.
 
 ---
 
-## GET by recipe id and revision number
+## Version By Recipe ID and Revision Number
 
 ```js
 URL: "baseURL/recipes/1/versions/2"
