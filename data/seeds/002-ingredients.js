@@ -103,21 +103,21 @@ const seed_data = [
   { name: "fish (all types)", category: "protein" }, // id: 97,
   { name: "fish (salmon)", category: "protein" }, // id: 98,
   { name: "fish (tuna)", category: "protein" }, // id: 99,
-  { name: "lentils", category: "protein" }, // id: 101,
-  { name: "split peas", category: "protein" }, // id: 102,
-  { name: "nut butters", category: "protein" }, // id: 103,
-  { name: "nuts and seeds", category: "protein" }, // id: 104,
-  { name: "porking", category: "protein" }, // id: 105,
-  { name: "refried beans", category: "protein" }, // id: 106,
-  { name: "sausage", category: "protein" }, // id: 107,
-  { name: "tofu", category: "protein" }, // id: 108,
-  { name: "turkey", category: "protein" }, // id: 109,
+  { name: "lentils", category: "protein" }, // id: 100,
+  { name: "split peas", category: "protein" }, // id: 101,
+  { name: "nut butters", category: "protein" }, // id: 102,
+  { name: "nuts and seeds", category: "protein" }, // id: 103,
+  { name: "porking", category: "protein" }, // id: 104,
+  { name: "refried beans", category: "protein" }, // id: 105,
+  { name: "sausage", category: "protein" }, // id: 106,
+  { name: "tofu", category: "protein" }, // id: 107,
+  { name: "turkey", category: "protein" }, // id: 108,
   //other
-  { name: "cheerios" }, // id: 110
-  { name: "oil", category: "fats" }, // id: 111
-  { name: "italian seasoning", category: "seasoning" }, // id: 112
-  { name: "butter", category: "fats" }, // id: 113
-  { name: "cheddar", category: "dairy" }, // id: 114
+  { name: "cheerios" }, // id: 109
+  { name: "oil", category: "fats" }, // id: 110
+  { name: "italian seasoning", category: "seasoning" }, // id: 111
+  { name: "butter", category: "fats" }, // id: 112
+  { name: "cheddar", category: "dairy" }, // id: 113
 ];
 
 // So we can import seed_data for testing
