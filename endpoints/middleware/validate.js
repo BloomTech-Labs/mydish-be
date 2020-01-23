@@ -199,7 +199,6 @@ const recipe = (req, res, next) => {
       cook_time: cook_time || null,
       img: img || null
     };
-    console.log(res.locals.recipe)
     next();
   }
 };
