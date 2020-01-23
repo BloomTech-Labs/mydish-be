@@ -65,13 +65,14 @@ router.put(
   validate.user_recipe,
   async (req, res) => {
     try {
-      const recipe = await model.update_one(req.params.id, {
+      const success = await model.update_one(req.params.id, {
         ...res.locals.recipe,
         owner_id: req.user.id
       });
-      recipe
-        ? res.status(200).json(recipe)
-        : res.status(404).json(`Couldn't update recipe`);
+      if (success) {
+        const recipe = await model.get_one({id: req.params.id})
+        return res.status(200).json(recipe)
+      } else res.status(404).json(`Couldn't update recipe`);
     } catch (err) {
       if (err && err.userError) res.status(400).json(err);
       else res.status(500).json(err);
