@@ -15,7 +15,7 @@ const seed_data = [
   //weight
   { name: "pound", abbreviation: "lbs", type: "weight" }, // id: 13,
   { name: "ounce", abbreviation: "oz", type: "weight" }, // id: 14,
-  { name: "miligram", abbreviation: "mg", type: "weight" }, // id: 15,
+  { name: "milligram", abbreviation: "mg", type: "weight" }, // id: 15,
   { name: "gram", abbreviation: "g", type: "weight" }, // id: 16,
   { name: "kilogram", abbreviation: "kg", type: "weight" }, // id: 17,
   //length
