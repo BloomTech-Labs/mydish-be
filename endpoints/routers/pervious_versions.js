@@ -44,7 +44,9 @@ router.get("/recipes/:id/version/:rev_num", async (req, res) => {
     if (!version) {
       res
         .status(400)
-        .json({ message: `You don't have a version that matches this id.` });
+        .json({
+          message: `You don't have a version that matches this version number.`
+        });
     } else {
       res.status(200).json(version);
     }
