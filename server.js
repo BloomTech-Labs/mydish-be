@@ -11,6 +11,11 @@ server.use(require("cors")());
 server.use(require("helmet")());
 server.use(express.json());
 
+//catchall endpoint
+server.get("/", (req, res) => {
+  res.status(200).json("Yup, it working.");
+});
+
 //routers
 server.use(require("./endpoints/routers/users"));
 server.use(require("./endpoints/routers/recipes"));
@@ -24,11 +29,7 @@ server.use(require("./endpoints/routers/recipe_ingredients"));
 server.use(require("./endpoints/routers/ingredients"));
 server.use(require("./endpoints/routers/notes"));
 server.use(require("./endpoints/routers/units"));
-
-//catchall endpoint
-server.get("/", (req, res) => {
-  res.status(200).json("Yup, it working.");
-});
+server.use(require("./endpoints/routers/tags"));
 
 //signal that the server is in fact running
 server.listen(port, () => {

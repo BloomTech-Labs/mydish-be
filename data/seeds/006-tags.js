@@ -1,10 +1,10 @@
 const seed_data = [
-  { name: 'breakfast' }, // id: 1, 
-  { name: 'brunch' }, // id: 2, 
-  { name: 'lunch' }, // id: 3, 
-  { name: 'dinner' }, // id: 4, 
-  { name: 'snacks' }, // id: 5, 
-  { name: 'dessert' }, // id: 6, 
+  { name: 'Breakfast' }, // id: 1, 
+  { name: 'Brunch' }, // id: 2, 
+  { name: 'Lunch' }, // id: 3, 
+  { name: 'Dinner' }, // id: 4, 
+  { name: 'Snacks' }, // id: 5, 
+  { name: 'Dessert' }, // id: 6, 
 ]
 exports.tags_data = seed_data;
 
