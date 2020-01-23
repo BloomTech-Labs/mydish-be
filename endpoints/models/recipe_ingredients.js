@@ -14,7 +14,7 @@ update_one = async (id, obj) =>
     (await db(tbl).where({id}).update(obj).returning('*'))[0]
 
 remove_one = async (id) =>
-    (await db(tbl).where({id}).delete().returning('*'))[0]
+    (await db(tbl).where({id}).delete().returning('id'))[0]
 
 remove_all = async () =>
     await db(tbl).delete()

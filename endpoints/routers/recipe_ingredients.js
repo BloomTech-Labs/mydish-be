@@ -4,12 +4,12 @@ const tbl = 'recipe_ingredients'
 
 //add a ingredient
 router.post(`/${tbl}`, async (req, res) => {
-    const {name, description} = req.body
+    const {recipe_id, ingredient_id, unit_id, quantity} = req.body
     try {
-        const new_ingredient = await model.add_one({name, description})
+        const new_ingredient = await model.add_one({recipe_id, ingredient_id, unit_id, quantity})
         res.status(200).json(new_ingredient)
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -20,9 +20,9 @@ router.get(`/${tbl}/:id`, async (req, res) => {
         const ingredient = await model.get_one({id})
         ingredient
             ? res.status(200).json(ingredient)
-            : res.status(404).json('No ingredient found.')
+            : res.status(404).json('No recipe_ingredients entry found.')
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -32,9 +32,9 @@ router.get(`/${tbl}`, async (req, res) => {
         const ingredients = await model.get_all()
         ingredients.length > 0
             ? res.status(200).json(ingredients)
-            : res.status(404).json('No ingredients found.')
+            : res.status(404).json('No recipe_ingredients found.')
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
@@ -48,30 +48,30 @@ router.put(`/${tbl}/:id`, async (req, res) => {
             ? res.status(200).json(ingredient)
             : res.status(404).json(`Couldn't update ingredient`)
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
-//terminate a ingredient
+//terminate a recipe_ingredients entry
 router.delete(`/${tbl}/:id`, async (req, res) => {
     const {id} = req.params
     try {
         const ingredient = await model.remove_one(id)
         ingredient
-            ? res.status(200).json(`${ingredient.name} has been terminated.`)
-            : res.status(404).json(`Couldn't find ingredient ${id}.`)
+            ? res.status(200).json(`recipe_ingredient id ${id} has been terminated.`)
+            : res.status(404).json(`Couldn't find recipe_ingredients entry with id ${id}.`)
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
-//terminate all ingredients
+//terminate all recipe_ingredients entries
 router.delete(`/${tbl}`, async (req, res) => {
     try {
         await model.remove_all()
-        res.status(200).json('All ingredients have been eliminated.')
+        res.status(200).json('All recipe_ingredients have been eliminated.')
     } catch(err) {
-        res.status(500).json(err.detail)
+        res.status(500).json(err)
     }
 })
 
