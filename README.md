@@ -1,14 +1,16 @@
-# API Documentation
-
-#### Back-end deployed at Heroku (https://recipeshare-development.herokuapp.com/)
-
-## Contributors
+# Contributors
 
 |                                                  [Lou](https://github.com/antilou86)                                                  |                                        [Catherine](https://github.com/Katerinjo)                                        |                                         [Yurika](https://github.com/yuri77)                                          |
 | :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
 |        [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86)        | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) | [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
 |                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86)                         |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77)                  |
 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)      |    [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Backend Framework](#back-end-framework)
+- [Endpoints](#endpoints)
 
 # Getting started
 
@@ -21,339 +23,781 @@ To get the server running locally:
 
 ## Back-end Framework
 
-NodeJs/Express/knex
-
-- At the beginning of the project about half the devs knew Node/express and half knew Java/spring. Team consensus was that Node would be easier to learn for the Java folks.
-- Sticking to a JavaScript language framework on the front end and back end would make transitioning between front and back end teams easier when roles would need to change.
+- NodeJS
+- Express
+- KnexJS
+- Postgres
 
 # Endpoints
 
-## Account
+#### Table of Contents
 
-POST `/cooks/register`
+- [Accounts](#accounts)
+  - [Register](#post-/users/register)
+  - [Login](#post-/users/login)
+- [Recipe Routes](#recipe-routes)
+  - [GET recipes/](#get-recipes)
+  - [GET recipes/:id](#get-recipes/:id)
+  - [GET /cookbook](#get-cookbook)
+  - [POST recipes/](#post-recipes/)
+  - [PUT recipes/:id](#put-recipes/:id)
+- [Version History](#version-history-endpoints)
+  - [GET recipes/:id/versions](#get-by-recipe-id)
+  - [GET recipes/:id/version/:rev_id](#get-by-recipe-id-and-version-id)
+  - [GET recipes/:id/versions/:rev_num](#get-by-recipe-id-and-revision-number)
 
-```js
-body = {
-  username,
-  password
-};
-res = {
-  message: "registration successful",
-  id: "(number) the ID of the user/cook",
-  token: "authentication token for the session"
-};
-```
+## Accounts
 
-POST `/cooks/login`
-
-```js
-body = {
-  username,
-  password
-};
-res = {
-  message: "You have logged in",
-  id: "(number) the ID of the user/cook",
-  token: "authentication token for the session"
-};
-```
-
-PUT `/cooks/self` Modify account details e.g. password. (auth)
+# POST /users/register/
 
 ```js
-body = {
-  username: "(optional string)",
-  password: "(optional string)"
-};
-res = {
-  message: `cook has been updated`,
-  id
-};
+URL: "baseURL/users/register/",
+Method: POST
 ```
 
-DELETE `/cooks/self` Delete account. (auth)
+Allows a user to register.
+
+**Required Fields:**
+
+- Username
+- Password
+
+<details>
+  <summary>
+    Example Successful Response:
+  </summary>
 
 ```js
-res = {}; // (status code 204 OK)
-```
-
-GET `/cooks` Get brief info on all cooks.
-
-```js
-res = {
-  cooks: [
-    {
-      id,
-      username
-    }
-  ]
-};
-```
-
-GET `/cooks/:id` Get detailed info about one cook.
-
-## Recipes
-
-GET `/recipes` or `/recipes?title=foo` Get brief information for all recipes with given string in the name. Replace "foo" with a recipe title query. A bare search returns all recipes in the database.
-
-```js
-res = {
-  recipes: [
-    {
-      id,
-      title,
-      img: "(string) URL for a photo of food",
-      minutes,
-      innovator_id: "(number) the ID of the innovator who created this recipe",
-      total_saves,
-      username
-    }
-  ]
-};
-```
-
-POST `/recipes` Add a new recipe. (auth)
-
-```js
-  body = {
-    title,
-    minutes: "(optional number) time to make, adding more types of minutes in the works",
-    img: "(optional string) URL of an image of the food"
-    notes: "(optional string) free-form notes about the recipe",
-    categories: [
-      "(string) category/tag name"
-    ],
-    ingredients: [
-      {
-        name,
-        quantity: "(number)",
-        unit: "(string) example- ml or g or cups"
-      }
-    ],
-    steps: [
-      body: "(string) step 1 blah blah blah"
-    ],
-    ancestor: "(optional number) the ID of the previous version of this recipe"
-  };
-
-  res = {
-    message: 'Recipe created',
-    recipe_id
-  };
-```
-
-GET `/recipes/:id` Get detailed info about one recipe.
-
-```js
-res = {
-  title,
-  minutes: "(optional number) preparation time in minutes",
-  img: "(string) URL of an image of food prepared with the recipe"
-  notes: "(optional) free-form notes about the recipe",
-  "(optional) categories": [
-    "(string) category/tag name"
-  ],
-  ingredients: [
-    {
-      name,
-      quantity: "(number)",
-      unit: "(string) example- ml or g or cups"
-    }
-  ],
-  total_saves: "(number) total saves",
-  steps: [
-    "(string) list of steps in order"
-  ],
-  innovator: "(number) ID of innovator who created or last edited this recipe",
-  ancestor: "(optional number) the ID of the previous version of this recipe",
-  innovator_name: "(string) the username of the innovator"
-};
-```
-
-PUT `/recipes/` Takes the id from the object being passed in and returns the recipe with any changes made.
-
-````json
 {
-  "id": 2,
-  "title": "Cereal",
-  "minutes": 45,
-  "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+  "message": "Welcome, new user.",
+  "user": {
+    "id": 8,
+    "username": "Testing35"
+  },
+  "token": {
+    "token": "user token",
+    "expiration_date": "2020-01-24T19:30:44.000Z"
+  }
+}
+```
+
+  </details>
+
+# POST /users/register/
+
+```js
+URL: "baseURL/users/login/",
+Method: POST
+```
+
+Allows a user to login.
+
+**Required Fields:**
+
+- Username
+- Password
+
+<details>
+  <summary>
+    Example Successful Response:
+  </summary>
+
+```js
+{
+  "message": "Welcome, new user.",
+  "user": {
+    "id": 8,
+    "username": "Testing35"
+  },
+  "token": {
+    "token": "user token",
+    "expiration_date": "2020-01-24T19:30:44.000Z"
+  }
+}
+```
+
+  </details>
+
+---
+
+# Recipe Routes
+
+## GET recipes/
+
+```js
+URL: "baseURL/recipes?title=c"
+method: GET
+```
+
+Gets all Recipes from the database.
+
+Search Query: Search by Title
+
+<details>
+  <summary>
+  Example Response:
+  </summary>
+
+```js
+res.data:
+
+[
+  {
+    "id": 3,
+    "title": "Scrambled Eggs",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 2,
+      "username": "Lou"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 1,
+      "username": "Catherine"
+    }
+  }
+]
+
+```
+
+</details>
+
+---
+
+## GET recipes/:id
+
+```js
+URL: "baseURL/recipes/1"
+method: GET
+```
+
+Gets one Recipe from the database, with ingredients, instructions, tags, and notes.
+
+Request Params: id of the single recipe to receive
+
+<details>
+<summary>
+Example Response:
+</summary>
+
+```js
+res.data:
+
+{
+  "id": 1,
+  "title": "Eggplant",
+  "description": null,
+  "forked_from": null,
+  "prep_time": null,
+  "cook_time": 15,
+  "img": "https://image.shutterstock.com/image-photo/grilled-eggplants-seasoned-olive-oil-260nw-87708241.jpg",
+  "owner": {
+    "user_id": 2,
+    "username": "Lou"
+  },
   "ingredients": [
     {
-      "name": "milk",
+      "name": "eggplant",
+      "units": "whole",
       "quantity": 1,
-      "unit": "cup"
+      "units_short": null,
+      "recipe_ingredients_id": 1
     }
   ],
-  "steps": [
+  "instructions": [
     {
-      "ordinal": 1,
-      "body": "pour your crunchy people food into a bowl"
+      "id": 1,
+      "description": "take eggplant",
+      "step_number": 1
     },
     {
-      "ordinal": 2,
-      "body": "smother your crunchy people food with processed cows lacrimal essence"
+      "id": 2,
+      "description": "cook eggplant",
+      "step_number": 2
     },
     {
-      "ordinal": 3,
-      "body": "shovel your milky people food into your mouth in easy to manage bite-sized spoonfuls"
+      "id": 3,
+      "description": "eat eggplant",
+      "step_number": 3
     }
   ],
-  "notes": "Cereal is one the most delicate and complex recipes known throughout the history of mankind...",
-  "categories": [
-    "Breakfast",
-    "Brunch",
-    "Quick meals"
+  "tags": [
+    {
+      "id": 1,
+      "name": "breakfast"
+    },
+    {
+      "id": 2,
+      "name": "brunch"
+    }
   ],
-  "total_saves": 3,
-  "innovator": 1,
-  "ancestor": 1,
-  "innovator_name": "Catherine"
-}```
+  "notes": [
+    {
+      "id": 1,
+      "description": "Eggplant is healthy."
+    },
+    {
+      "id": 2,
+      "description": "Edit recipe to add parmesan"
+    }
+  ]
+}
 
-## Cookbook
+```
 
-POST `/cookbook/:id` Save a recipe to the logged-in user's cookbook.
+</details>
+
+---
+
+## GET /cookbook
 
 ```js
-  res = {
-    message: 'Recipe Successfully Saved to Cookbook.',
-    total_saves
+URL: "baseURL/cookbook?course=breakfast"
+method: GET
+```
+
+Gets all Recipes linked to the logged user.
+
+Search Query: Search by course
+
+<details>
+    <summary>
+        <strong>
+            Example Response:
+        </strong>
+    </summary>
+
+```js
+
+res.data:
+
+[
+    {
+    "id": 3,
+    "title": "Scrambled Eggs",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 2,
+      "username": "Lou"
+    }
+  },
+  {
+    "id": 1,
+    "title": "Eggplant",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 2,
+      "username": "Lou"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "owner": {
+      "user_id": 1,
+      "username": "Catherine"
+    }
   }
-````
+]
 
-DELETE `/cookbook/:id` Delete a recipe from the database if the user is the only person who has the recipe in a cookbook. If another user has it saved in a different cookbook, this removes the recipe from the currently logged in user's cookbook.
-
-```js
-res = {
-  total_saves
-};
 ```
 
-GET `/cookbook` or `/cookbook?category=foo` Find recipes saved by the logged in user as long as the category matches a current category tag. In the given example, replace "foo" with the desired category. If category is left empty it returns users entire cookbook.
+</details>
+
+---
+
+## POST recipes/
 
 ```js
-res = {
-  recipes: [
+URL: "baseURL/recipes/"
+method: POST
+```
+
+Adds a new recipe to the database.
+
+**Required Fields:**
+
+- Title
+- _Either_ prep_time or cook_time
+- Tags (Array of strings)
+- Ingredients (Array of objects)
+- Instructions (Array of objects)
+
+**Optional Fields:**
+
+- Description (recipe description)
+- Notes (Array of Strings)
+- prep_time or cook_time (Can have both properties)
+- img (url linking to a recipe image)
+
+<details>
+<summary>
+Example Request:
+</summary>
+
+```js
+req.body:
+
+{
+	"title": "Test Recipe",
+	"img": "http://naturopathyclinic.ie/wp-content/uploads/2012/12/foodintolerance.jpg",
+	"cook_time": 12,
+	"description": "Creating a test recipe",
+	"ingredients": [
+		{
+			"name": "eggs",
+			"quantity": 3,
+			"unit": "whole"
+		},
+		{
+			"name": "matcha",
+			"quantity": 3,
+			"unit": "g"
+		}
+	],
+	"instructions": [
+		{
+			"step_number": 1,
+			"description": "cook them"
+		}
+	],
+	"tags": ["breakfast", "lunch"],
+	"notes": ["Eat healthy.", "Be mighty", "Drink orange juice"]
+}
+```
+
+</details>
+
+---
+
+## PUT recipes/
+
+```js
+URL: "baseURL/recipes/1"
+method: PUT
+```
+
+Updates an existing recipe in the database.
+
+**Required Fields:**
+
+- Title
+- _Either_ prep_time or cook_time
+- Tags (Array of strings)
+- Ingredients (Array of objects)
+- Instructions (Array of objects)
+
+**Optional Fields:**
+
+- Description (recipe description)
+- Notes (Array of Strings)
+- prep_time or cook_time (Can have both properties)
+- img (url linking to a recipe image)
+
+### Differences from a POST request:
+
+|                                                                        |
+| ---------------------------------------------------------------------- |
+| Existing ingredients need their `id` included in the object            |
+| Existing notes need their `id` included in the object                  |
+| Existing tags need their `id` included in the object                   |
+| Existing instructions **don't** need their `id` included in the object |
+| New entries do not need an `id`                                        |
+
+<details>
+    <summary>
+      Example Request:
+    </summary>
+
+```js
+req.body:
+
+{
+  "id": 1,
+  "title": "Eggplant",
+  "cook_time": 15,
+  "ingredients": [
     {
-      id,
-      title,
-      img: "(string) URL for a photo of food",
-      minutes,
-      innovator_id: "(number) the ID of the innovator who created this recipe",
-      total_saves,
-      username
+      "name": "eggplant",
+      "units": "whole",
+      "quantity": 1,
+      "units_short": null,
+      "recipe_ingredients_id": 1
+    },
+    {
+        "name": "parmesan",
+        "units": "cup",
+        "quantity": 0.5
+    }
+  ],
+  "instructions": [
+    {
+      "id": 1,
+      "description": "takem eggplant",
+      "step_number": 1
+    },
+    {
+      "id": 2,
+      "description": "cook eggplant",
+      "step_number": 2
+    },
+    {
+        "description": "EATEM",
+        "step_number": 3
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "breakfast"
+    },
+    {
+      "id": 2,
+      "name": "brunch"
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "description": "Eggplants are healthy."
+    },
+    {
+      "id": 2,
+      "description": "Edit the recipe recipe to add parmesan"
+    },
+    {
+        "description": "new note"
     }
   ]
-};
+}
 ```
 
-GET `/edits/:ancestor_id` Gets an array of recipe objects containing the below details.
+</details>
+
+---
+
+# Version History Endpoints
+
+## GET by recipe id
 
 ```js
-res = {
-  recipes: [
-    {
-      id,
-      title,
-      img: "(string) URL for a photo of food",
-      minutes,
-      innovator_id: "(number) the ID of the innovator who created this recipe",
-      total_saves,
-      username
-    }
-  ]
-};
+URL: "baseURL/recipes/1/versions/"
+method: GET
 ```
 
-# Data Model
+Gets all versions of a recipe by the recipe's id.
 
-<img src="./db9.png" width = "600" />
+<details>
+<summary>
+Example Response:
+</summary>
 
-# Actions
+`res.data`:
 
-## cooks
+```js
+;[
+  {
+    id: 1,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: null,
+          units: null,
+          quantity: null,
+          units_short: null,
+          recipe_ingredients_id: null
+        }
+      ],
+      instructions: [
+        {
+          id: null,
+          description: null,
+          step_number: null
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: null,
+          description: null
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 1,
+    author_comment: null
+  },
+  {
+    id: 2,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: "milk",
+          units: "cup",
+          quantity: 1,
+          units_short: "c",
+          recipe_ingredients_id: 2
+        }
+      ],
+      instructions: [
+        {
+          id: 7,
+          description: null,
+          step_number: 1
+        },
+        {
+          id: 8,
+          description: null,
+          step_number: 2
+        },
+        {
+          id: 9,
+          description: null,
+          step_number: 3
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: 3,
+          description:
+            "Cereal is one the most delicate and complex recipes known throughout the history of mankind..."
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 2,
+    author_comment: null
+  },
+  {
+    id: 3,
+    recipe_id: 2,
+    changes: {
+      id: 2,
+      title: "Cereal",
+      description: null,
+      forked_from: null,
+      prep_time: 45,
+      cook_time: null,
+      img:
+        "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+      ingredients: [
+        {
+          name: "macha",
+          units: "cup",
+          quantity: 1,
+          units_short: "c",
+          recipe_ingredients_id: 3
+        }
+      ],
+      instructions: [
+        {
+          id: 7,
+          description: null,
+          step_number: 1
+        },
+        {
+          id: 8,
+          description: null,
+          step_number: 2
+        },
+        {
+          id: 9,
+          description: null,
+          step_number: 3
+        }
+      ],
+      tags: [
+        {
+          id: null,
+          name: null
+        }
+      ],
+      notes: [
+        {
+          id: 4,
+          description:
+            "Cereal is one the most delicate and complex recipes known throughout the history of mankind..."
+        }
+      ]
+    },
+    date_modified: "2020-01-21T22:11:10.950Z",
+    revision_number: 3,
+    author_comment: null
+  }
+]
+```
 
-`insert(cook)` -> adds a cook to cooks table
+</details>
 
-`findByUsername(username)` -> returns a single cook by username
+---
 
-`all()` -> returns the all cooks
+## GET by recipe id and version id
 
-`findById(id)` -> returns a single cook by ID
+```js
+URL: "baseURL/recipes/1/version/1"
+method: GET
+```
 
-`remove(id)` -> deletes a cook by ID
+Gets a single revision based on the revision id.
 
-`update(id, changes)` -> finds a user by ID and update by specified changes
+<details>
+  <summary>
+    Example Response
+  </summary>
 
-## recipes
+`res.data`:
 
-`insertRecipe({ steps, ingredients, ancestor, innovator, categories, ...recipesEntry })` -> adds recipe to the appropriate tables on the DB
+```js
+{
+  "id": 1,
+  "recipe_id": 2,
+  "changes": {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "prep_time": 45,
+    "cook_time": null,
+    "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+    "ingredients": [
+      {
+        "name": null,
+        "units": null,
+        "quantity": null,
+        "units_short": null,
+        "recipe_ingredients_id": null
+      }
+    ],
+    "instructions": [
+      {
+        "id": null,
+        "description": null,
+        "step_number": null
+      }
+    ],
+    "tags": [
+      {
+        "id": null,
+        "name": null
+      }
+    ],
+    "notes": [
+      {
+        "id": null,
+        "description": null
+      }
+    ]
+  },
+  "date_modified": "2020-01-21T22:11:10.950Z",
+  "revision_number": 1,
+  "author_comment": null
+}
+```
 
-`findRecipeById(id)` -> returns a single recipe by recipe ID
+</details>
 
-`findByTitle(title)` -> returns a recipe by exact title match
+---
 
-`searchByTitle(title)` -> returns all recipes that match a fuzzy search
+## GET by recipe id and revision number
 
-## cookbook
+```js
+URL: "baseURL/recipes/1/versions/2"
+method: GET
+```
 
-`cookbookFindById(cookId)` -> returns an array of recipeIDs for recipes saved by cook id
+Gets a single revision based on the revision number.
 
-`cookbookInsert(recipeId, cookId)` -> adds recipe_id and cook_id to saves table
+<details>
+  <summary>
+    Example Response:
+  </summary>
 
-`cookbookRecipeDelete(recipeId, cookId)` -> deletes entry from the saves table
+`res.data`:
 
-# Environment Variables
+```js
+{
+  "id": 1,
+  "recipe_id": 2,
+  "changes": {
+    "id": 2,
+    "title": "Cereal",
+    "description": null,
+    "forked_from": null,
+    "prep_time": 45,
+    "cook_time": null,
+    "img": "https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg",
+    "ingredients": [
+      {
+        "name": null,
+        "units": null,
+        "quantity": null,
+        "units_short": null,
+        "recipe_ingredients_id": null
+      }
+    ],
+    "instructions": [
+      {
+        "id": null,
+        "description": null,
+        "step_number": null
+      }
+    ],
+    "tags": [
+      {
+        "id": null,
+        "name": null
+      }
+    ],
+    "notes": [
+      {
+        "id": null,
+        "description": null
+      }
+    ]
+  },
+  "date_modified": "2020-01-21T22:11:10.950Z",
+  "revision_number": 1,
+  "author_comment": null
+}
+```
 
-In order for the app to function correctly, the user must set up their own environment variables.
-
-create a `.env` file that includes the following:
-  
- _ PORT - local port for development
-_ NODE_ENV - set to "development" until ready for "production"
-_ DB_NAME - set to the name of your local development database
-_ DB_USERNAME - set to the name of your local development database username, in production this is set in heroku settings
-_ DB_PASSWORD - set to the name of your local development database password, in production this is set in heroku settings
-_ DATABASE_URL - set to your localhost and port number in development and deployment URL in production
-
-# Contributing
-
-When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
-
-Please note we have a [code of conduct](./code_of_conduct.md). Please follow it in all your interactions with the project.
-
-## Issue/Bug Request
-
-**If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
-
-- Check first to see if your issue has already been reported.
-- Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
-- Create a live example of the problem.
-- Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes, where you believe the issue is originating from, and any potential solutions you have considered.
-
-## Feature Requests
-
-We would love to hear from you about new features which would improve this app and further the aims of our project. Please provide as much detail and information as possible to show us why you think your new feature should be implemented.
-
-## Pull Requests
-
-If you have developed a patch, bug fix, or new feature that would improve this app, please submit a pull request. It is best to communicate your ideas with the developers first before investing a great deal of time into a pull request to ensure that it will mesh smoothly with the project.
-
-Remember that this project is licensed under the MIT license, and by submitting a pull request, you agree that your work will be, too.
-
-### Pull Request Guidelines
-
-- Ensure any install or build dependencies are removed before the end of the layer when doing a build.
-- Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
-- Ensure that your code conforms to our existing code conventions and test coverage.
-- Include the relevant issue number, if applicable.
-- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
-
-## Attribution
-
-These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
-
-# Documentation
-
-See [Frontend Documentation](https://github.com/Lambda-School-Labs/cooking-recipe-source-control-fe/blob/master/README.md) for details on the front-end of our project.
+</details>
