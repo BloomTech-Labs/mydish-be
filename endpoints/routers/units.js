@@ -4,11 +4,12 @@ const tbl = 'units'
 
 //add a unit
 router.post(`/${tbl}`, async (req, res) => {
-    const {name, abbreviation} = req.body
+    const {name, abbreviation, type} = req.body
     try {
-        const new_unit = await model.add_one({name, abbreviation})
+        const new_unit = await model.add_one({name, abbreviation, type})
         res.status(200).json(new_unit)
     } catch(err) {
+        console.log("err", err)
         res.status(500).json(err.detail)
     }
 })
