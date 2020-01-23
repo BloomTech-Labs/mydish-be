@@ -216,6 +216,7 @@ const add_one = async new_recipe => {
       const instructions_to_be_added = new_recipe.instructions.map(
         instruction => ({ ...instruction, recipe_id: added_recipe_id[0] })
       );
+      await trx("instructions").insert(instructions_to_be_added);
 
       //==============================ADDING NOTES===============================//
 
