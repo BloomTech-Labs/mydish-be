@@ -586,7 +586,7 @@ Gets a single revision based on the revision id.
 <details>
   <summary>
     <strong>
-      <code>GET /recipes/:id/version/:rev_number</code>
+      <code>GET /recipes/:id/versions/:rev_number</code>
     </strong>
   </summary>
 

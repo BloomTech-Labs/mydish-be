@@ -36,17 +36,15 @@ router.get("/recipes/:id/version/:rev_id", async (req, res) => {
   }
 });
 
-router.get("/recipes/:id/version/:rev_num", async (req, res) => {
+router.get("/recipes/:id/versions/:rev_num", async (req, res) => {
   try {
     const { id, rev_num } = req.params;
     const version = await model.get_version_by_num(id, rev_num);
 
     if (!version) {
-      res
-        .status(400)
-        .json({
-          message: `You don't have a version that matches this version number.`
-        });
+      res.status(400).json({
+        message: `You don't have a version that matches this version number.`
+      });
     } else {
       res.status(200).json(version);
     }
