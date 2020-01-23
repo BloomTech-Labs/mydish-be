@@ -6,11 +6,15 @@ const validate = require("../middleware/validate");
 //add a recipe
 router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
   try {
-    const new_recipe = await model.add_one({
+    const new_recipe_id = await model.add_one({
       ...res.locals.recipe,
       owner_id: req.user.id
     });
-    res.status(200).json(new_recipe);
+    const new_recipe = await model.get_one({id: new_recipe_id})
+    if (!new_recipe) throw {message: "There was an error adding a new recipe."}
+    else {
+      res.status(200).json(new_recipe);
+    }
   } catch (err) {
     console.log("err", err);
     if (err && err.userError) res.status(400).json(err);
