@@ -93,6 +93,8 @@ const get_all = title => {
       .where("r.title", "ilike", `%${title}%`)
       .join("users", { "r.owner_id": "users.id" })
       .select(
+        "r.prep_time",
+        "r.cook_time",
         "r.img",
         "r.id",
         "r.title",
@@ -103,7 +105,7 @@ const get_all = title => {
                 'username', users.username
                 ) as owner`)
       )
-      .groupBy("r.id", "r.img", "users.id")
+      .groupBy("r.id", "r.img", "r.prep_time", "r.cook_time", "users.id")
   );
 };
 
@@ -543,6 +545,8 @@ const get_by_course = (id, course) => {
       .join("recipe_tags as rt", { "r.id": "rt.recipe_id" })
       .join("tags as t", { "rt.tag_id": "t.id" })
       .select(
+        "r.prep_time",
+        "r.cook_time",
         "r.img",
         "r.id",
         "r.title",
@@ -553,7 +557,14 @@ const get_by_course = (id, course) => {
                 'username', users.username
                 ) as owner`)
       )
-      .groupBy("r.id", "users.id", "r.img", "t.id")
+      .groupBy(
+        "r.id",
+        "users.id",
+        "r.prep_time",
+        "r.cook_time",
+        "r.img",
+        "t.id"
+      )
       .where({ "users.id": `${id}` })
       .andWhere({ "t.name": `${course}` })
   );
