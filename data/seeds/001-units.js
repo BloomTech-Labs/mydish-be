@@ -9,9 +9,9 @@ const seed_data = [
   {name: 'pint', abbreviation: 'pt', type: 'volume'}, // id: 7, 
   {name: 'quart', abbreviation: 'qt', type: 'volume'}, // id: 8, 
   {name: 'gallon', abbreviation: 'gal', type: 'volume'}, // id: 9, 
-  {name: 'milliliter', abbreviation: 'ml', type: 'volume'}, // id: 10, 
-  {name: 'liter', abbreviation: 'l', type: 'volume'}, // id: 11, 
-  {name: 'deciliter', abbreviation: 'dl', type: 'volume'}, // id: 12, 
+  {name: 'milliliter', abbreviation: 'mL', type: 'volume'}, // id: 10, 
+  {name: 'liter', abbreviation: 'L', type: 'volume'}, // id: 11, 
+  {name: 'deciliter', abbreviation: 'dL', type: 'volume'}, // id: 12, 
   //weight
   {name: 'pound', abbreviation: 'lb', type: 'weight'}, // id: 13, 
   {name: 'ounce', abbreviation: 'oz', type: 'weight'}, // id: 14, 
