@@ -33,20 +33,31 @@ test("We are in the test environment", () => {
 
 describe('POST "/recipes"', () => {
   test("Returns 200 if successful", async () => {
-    recipes_model.add_one = jest.fn(
-      req_obj =>
-        new Promise(res => {
-          setTimeout(() => res({ ...req_obj, test: true }), 0);
-        })
-    );
     const new_recipe = {
       title: "John",
       prep_time: 45,
       ingredients: ["matcha"],
       instructions: ["cook"]
     };
+    recipes_model.add_one = jest.fn(
+      () =>
+        new Promise(res => {
+          setTimeout(() => res(1), 0);
+        })
+    );
+    recipes_model.get_one = jest.fn(
+      req_id =>
+        new Promise(res => {
+          setTimeout(
+            () =>
+              res({ ...new_recipe, owner_id: 1, id: req_id.id, test: true }),
+            0
+          );
+        })
+    );
     const expected_recipe = {
       ...new_recipe,
+      id: 1,       // New id that's been added to our object
       owner_id: 1, // From our mocked middleware token()
       test: true
     };
@@ -58,6 +69,38 @@ describe('POST "/recipes"', () => {
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual(expected_recipe);
+    expect(recipes_model.add_one).toHaveBeenCalledTimes(1);
+    recipes_model.add_one.mockReset();
+  });
+
+  test("Returns 500 if no new_recipe is returned", async () => {
+    const new_recipe = {
+      title: "John",
+      prep_time: 45,
+      ingredients: ["matcha"],
+      instructions: ["cook"]
+    };
+    recipes_model.add_one = jest.fn(
+      () =>
+        new Promise(res => {
+          setTimeout(() => res(1), 0);
+        })
+    );
+    recipes_model.get_one = jest.fn(
+      req_id =>
+        new Promise(res => {
+          setTimeout(() => res(null), 0);
+        })
+    );
+    const expected_error = /error.*adding.*recipe/i;
+
+    const response = await request(server)
+      .post("/recipes")
+      .send(new_recipe)
+      .set("Accept", "application/json");
+
+    expect(response.status).toEqual(500);
+    expect(response.body.message).toMatch(expected_error);
     expect(recipes_model.add_one).toHaveBeenCalledTimes(1);
     recipes_model.add_one.mockReset();
   });
@@ -297,7 +340,6 @@ describe('GET "/cookbook"', () => {
 
 describe("PUT /recipes/:id", () => {
   test("Returns 200 if successful", async () => {
-
     // When we update successfully, we then get_one from the database
     // So... we need to mock two functions
     //     One to "update", and one to "get".
