@@ -1,4 +1,4 @@
-const db = require("../../data/dbConfig");
+const db = require("../../data/dbConfig")
 /** 
  * @param  {Number} recipe_id
  * @param  {Number} revision_num
@@ -16,13 +16,13 @@ const get_version_by_num = (recipe_id, revision_num) => {
       "pv.id",
       "pv.changes",
       "pv.revision_number",
-      "pv.date_modified",
+      "pv.created_at as date_modified",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
     )
-    .first();
-};
+    .first()
+}
 
 /**
  * @param  {Number} recipe_id
@@ -40,13 +40,13 @@ const get_version_by_id = (recipe_id, revision_id) => {
       "pv.id",
       "pv.changes",
       "pv.revision_number",
-      "pv.date_modified",
+      "pv.created_at as date_modified",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
     )
-    .first();
-};
+    .first()
+}
 
 /**
  *
@@ -63,15 +63,15 @@ const get_all_versions = recipe_id => {
       "pv.id",
       "pv.changes",
       "pv.revision_number",
-      "pv.date_modified",
+      "pv.created_at as date_modified",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
-    );
-};
+    )
+}
 
 module.exports = {
   get_version_by_num,
   get_version_by_id,
   get_all_versions
-};
+}
