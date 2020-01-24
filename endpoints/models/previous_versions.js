@@ -1,9 +1,9 @@
-const db = require("../../data/dbConfig");
+const db = require("../../data/dbConfig")
 /** 
- * @param  {Number} recipe_id
- * @param  {Number} revision_num
  * checks params against the database, 
  * then returns the matching revision.
+ * @param  {Number} recipe_id
+ * @param  {Number} revision_num
  
  */
 const get_version_by_num = (recipe_id, revision_num) => {
@@ -14,21 +14,23 @@ const get_version_by_num = (recipe_id, revision_num) => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
+      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
     )
-    .first();
-};
+    .first()
+}
 
 /**
- * @param  {Number} recipe_id
- * @param  {Number} revision_id
  * checks params against the database,
  * then returns the matching revision.
+ * @param  {Number} recipe_id
+ * @param  {Number} revision_id
  */
 const get_version_by_id = (recipe_id, revision_id) => {
   return db("previous_versions as pv")
@@ -38,20 +40,22 @@ const get_version_by_id = (recipe_id, revision_id) => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
+      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
     )
-    .first();
-};
+    .first()
+}
 
 /**
  *
- * @param {Number} recipe_id
  * grabs all revisions for a specified recipe.
+ * @param {Number} recipe_id
  */
 
 const get_all_versions = recipe_id => {
@@ -61,17 +65,19 @@ const get_all_versions = recipe_id => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
+      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
-    );
-};
+    )
+}
 
 module.exports = {
   get_version_by_num,
   get_version_by_id,
   get_all_versions
-};
+}
