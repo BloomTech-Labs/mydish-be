@@ -1,9 +1,9 @@
 const db = require("../../data/dbConfig")
 /** 
- * @param  {Number} recipe_id
- * @param  {Number} revision_num
  * checks params against the database, 
  * then returns the matching revision.
+ * @param  {Number} recipe_id
+ * @param  {Number} revision_num
  
  */
 const get_version_by_num = (recipe_id, revision_num) => {
@@ -27,10 +27,10 @@ const get_version_by_num = (recipe_id, revision_num) => {
 }
 
 /**
- * @param  {Number} recipe_id
- * @param  {Number} revision_id
  * checks params against the database,
  * then returns the matching revision.
+ * @param  {Number} recipe_id
+ * @param  {Number} revision_id
  */
 const get_version_by_id = (recipe_id, revision_id) => {
   return db("previous_versions as pv")
@@ -54,8 +54,8 @@ const get_version_by_id = (recipe_id, revision_id) => {
 
 /**
  *
- * @param {Number} recipe_id
  * grabs all revisions for a specified recipe.
+ * @param {Number} recipe_id
  */
 
 const get_all_versions = recipe_id => {
