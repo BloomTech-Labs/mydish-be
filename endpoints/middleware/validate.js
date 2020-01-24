@@ -145,7 +145,8 @@ const recipe = (req, res, next) => {
     notes,
     prep_time,
     cook_time,
-    img
+    img,
+    author_comment,
   } = req.body;
 
   // Sometimes when we GET, we'll receive objects with null properties like
@@ -199,7 +200,8 @@ const recipe = (req, res, next) => {
       notes: sanitized_notes,
       prep_time: prep_time || null,
       cook_time: cook_time || null,
-      img: img || null
+      img: img || null,
+      author_comment: author_comment
     };
     next();
   }
