@@ -7,12 +7,12 @@ const recipe_model = require("../models/recipes");
 
 /**
  * Generates a token from the given information.
- * 
+ *
  * @param {Object}   user - User information
  * @param {string}   user.username - username of the user
  * @param {number}   user.id - id of the user form the database
  * @param {string[]} user.roles - roles the user currently has
- * 
+ *
  * @returns {Object<string, string>}
  */
 const generate_token = user => {
@@ -35,14 +35,14 @@ const generate_token = user => {
 
 /**
  * Create token for user upon signup/login.
- * 
- * If a user with the given username exists in the database, and the passwords match, this 
+ *
+ * If a user with the given username exists in the database, and the passwords match, this
  * function sets the user information to `req.user`, the token information to `req.token`,
  * and calls `next()`.
- * 
+ *
  * If no user information is provided, or the user is not verified,
  * simply call `next()` without setting any information.
- * 
+ *
  * @param {Object}              req - Express Request object.
  * @param {Object}              req.body - Body of data from web request.
  * @param {string}              req.body.username - Username from web request.
@@ -66,12 +66,12 @@ const user = async (req, res, next) => {
 
 /**
  * Checks the user has a token and it's legit.
- * 
+ *
  * If a user has a token passed in the request headers, this function verifies the jwt.
  * If the token is verified, sets the user info to `req.user` and calls `next()`.
- * 
+ *
  * If no token is provided, or the token is not verified, responds with a `400`/`401` status.
- * 
+ *
  * @param {Object}              req - Express Request object.
  * @param {Object}              req.headers - headers from web request.
  * @param {string}              req.headers.authorization - Authorization within the request headers.
@@ -101,10 +101,10 @@ const token = async (req, res, next) => {
 
 /**
  * Checks the user roles and only allows a user to pass if they have the admin role.
- * 
+ *
  * REQUIRES the token function to be called before this function, as this needs
  * access to `req.user`.
- * 
+ *
  * @param {Object}                 req - Express Request object.
  * @param {Object}                 req.user - User object created from `validate.token`.
  * @param {string[]}               req.user.roles - array of roles the logged in user has.
@@ -121,12 +121,12 @@ const admin = (req, res, next) => {
 
 /**
  * Validates the incoming request to ensure a full recipe object has been given in the `req.body`.
- * 
- * If the recipe is valid, this function sets the recipe information to `res.locals.recipe` 
+ *
+ * If the recipe is valid, this function sets the recipe information to `res.locals.recipe`
  * and calls `next()`.
- * 
+ *
  * If any required elements are missing from the recipe, responds with a `400` status.
- * 
+ *
  * @param {Object}                 req - Express Request object.
  * @param {Object<string, any>}    req.body - Recipe information from web request.
  * @param {Object<string, any>}    res - Express Response object.
@@ -145,15 +145,45 @@ const recipe = (req, res, next) => {
     notes,
     prep_time,
     cook_time,
-    img
+    img,
+    author_comment,
   } = req.body;
+
+  // Sometimes when we GET, we'll receive objects with null properties like
+  //     tags: [{ id:null, name:null }]
+  // If this is inserted into our database, that's no bueno! Error 500 all over the place x.x
+  // These sanitized inputs make sure that we only take the objects with the props that will fit in the database '' '
+  // These ternarys make sure that the code doesn't break if the user fails to send these properties in the req.body 
+  //     and still returns a proper response below.
+  const sanitized_ingredients = ingredients ? ingredients.filter(
+    ing => ing.name && ing.units
+  ) : [];
+  const sanitized_instructions = instructions ? instructions.filter(
+    ins => ins.step_number && ins.description
+  ) : [];
+  const sanitized_tags = tags ? tags.filter(tag => {
+    // Do we have a String[] ? Do our strings exist?
+    if (typeof tag === "string") return tag.length;
+
+    // Do we have an Object[] ? Do our objects have name properties?
+    else return tag.name; 
+  }) : [];
+  const sanitized_notes = notes ? notes.filter(note => {
+    // Do we have a String[] ? Do our strings exist?
+    if (typeof note === "string") return note.length;
+    
+    // Do we have an Object[] ? Do our objects have name properties?
+    else return note.description; 
+  }) : []
 
   // Check the required props. If they don't exist, put them in the array
   const missing = [];
   if (!title || !title.length) missing.push("title");
-  if (!ingredients || !ingredients.length) missing.push("ingredients");
-  if (!instructions || !instructions.length) missing.push("instructions");
-  if (!tags || !tags.length) missing.push("tags");
+  if (!sanitized_ingredients || !sanitized_ingredients.length)
+    missing.push("ingredients");
+  if (!sanitized_instructions || !sanitized_instructions.length)
+    missing.push("instructions");
+  if (!sanitized_tags || !sanitized_tags.length) missing.push("tags");
   if (!prep_time && !cook_time) missing.push("prep_time and/or cook_time");
 
   // If the array has stuff, respond saying "Yo, we need the stuff"
@@ -163,14 +193,15 @@ const recipe = (req, res, next) => {
     // Otherwise, save our good ol recipe and go to the next() thing
     res.locals.recipe = {
       title,
-      ingredients,
-      instructions,
-      tags,
+      ingredients: sanitized_ingredients,
+      instructions: sanitized_instructions,
+      tags: sanitized_tags,
       description: description || null,
-      notes: notes,
+      notes: sanitized_notes,
       prep_time: prep_time || null,
       cook_time: cook_time || null,
-      img: img || null
+      img: img || null,
+      author_comment: author_comment
     };
     next();
   }

@@ -1,22 +1,144 @@
-# Main Endpoints
+# Contributors
+
+|                                                  [Lou](https://github.com/antilou86)                                                  |                                        [Catherine](https://github.com/Katerinjo)                                        |                                         [Yurika](https://github.com/yuri77)                                          |
+| :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
+|        [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86)        | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) | [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
+|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86)                         |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77)                  |
+| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)      |    [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Backend Framework](#back-end-framework)
+- [Endpoints](#endpoints)
+
+# Getting started
+
+To get the server running locally:
+
+- Clone this repo
+- **npm i** to install all required dependencies
+- **npm run server** to start the local server
+- **npm run test** to start server using testing environment
+
+## Back-end Framework
+
+- NodeJS
+- Express
+- KnexJS
+- Postgres
+
+# Endpoints
+
+#### Table of Contents
+
+- [Accounts](#accounts)
+  - [Register](#users-register)
+  - [Login](#users-login)
+- [Recipe Routes](#recipe-routes)
+  - [GET recipes/](#get-recipes)
+  - [GET recipes/:id](#recipes-by-id)
+  - [GET /cookbook](#get-cookbook)
+  - [POST recipes/](#post-recipes)
+  - [PUT recipes/:id](#put-recipes)
+- [Version History](#version-history-endpoints)
+  - [GET recipes/:id/versions](#all-versions-by-recipe-id)
+  - [GET recipes/:id/version/:rev_id](#version-by-recipe-and-revision-id)
+  - [GET recipes/:id/versions/:rev_num](#version-by-recipe-id-and-revision-number)
+
+# Accounts
+
+## Users Register
+
+```js
+URL: "baseURL/users/register/",
+Method: POST
+```
+
+Allows a user to register.
+
+**Required Fields:**
+
+- Username
+- Password
 
 <details>
-    <summary>
-        <strong>
-            <code>GET recipes/</code>
-        </strong>
-    </summary>
+  <summary>
+    Example Successful Response:
+  </summary>
+
+```js
+{
+  "message": "Welcome, new user.",
+  "user": {
+    "id": 8,
+    "username": "Testing35"
+  },
+  "token": {
+    "token": "user token",
+    "expiration_date": "2020-01-24T19:30:44.000Z"
+  }
+}
+```
+
+  </details>
+
+## Users Login
+
+```js
+URL: "baseURL/users/login/",
+Method: POST
+```
+
+Allows a user to login.
+
+**Required Fields:**
+
+- Username
+- Password
+
+<details>
+  <summary>
+    Example Successful Response:
+  </summary>
+
+```js
+{
+  "message": "Welcome, new user.",
+  "user": {
+    "id": 8,
+    "username": "Testing35"
+  },
+  "token": {
+    "token": "user token",
+    "expiration_date": "2020-01-24T19:30:44.000Z"
+  }
+}
+```
+
+  </details>
+
+---
+
+# Recipe Routes
+
+## GET recipes/
+
+```js
+URL: "baseURL/recipes?title=c"
+method: GET
+```
 
 Gets all Recipes from the database.
 
 Search Query: Search by Title
 
-Example Response:
+<details>
+  <summary>
+  Example Response:
+  </summary>
 
 ```js
-URL: "baseURL/recipes?title=c"
-method: GET
-
 res.data:
 
 [
@@ -46,23 +168,25 @@ res.data:
 
 </details>
 
-<details>
-    <summary>
-        <strong>
-            <code>GET recipes/:id</code>
-        </strong>
-    </summary>
+---
+
+## Recipe By ID
+
+```js
+URL: "baseURL/recipes/1"
+method: GET
+```
 
 Gets one Recipe from the database, with ingredients, instructions, tags, and notes.
 
 Request Params: id of the single recipe to receive
 
+<details>
+<summary>
 Example Response:
+</summary>
 
 ```js
-URL: "baseURL/recipes/1"
-method: GET
-
 res.data:
 
 {
@@ -129,22 +253,27 @@ res.data:
 
 </details>
 
-<details>
-    <summary>
-        <strong>
-            <code>GET cookbook/</code>
-        </strong>
-    </summary>
+---
+
+## GET /cookbook
+
+```js
+URL: "baseURL/cookbook?course=breakfast"
+method: GET
+```
 
 Gets all Recipes linked to the logged user.
 
 Search Query: Search by course
 
-Example Response:
+<details>
+    <summary>
+        <strong>
+            Example Response:
+        </strong>
+    </summary>
 
 ```js
-URL: "baseURL/cookbook?course=breakfast"
-method: GET
 
 res.data:
 
@@ -185,16 +314,18 @@ res.data:
 
 </details>
 
-<details>
-    <summary>
-        <strong>
-            <code>POST recipes/</code>
-        </strong>
-    </summary>
+---
+
+## POST recipes/
+
+```js
+URL: "baseURL/recipes/"
+method: POST
+```
 
 Adds a new recipe to the database.
 
-Required Fields:
+**Required Fields:**
 
 - Title
 - _Either_ prep_time or cook_time
@@ -202,19 +333,19 @@ Required Fields:
 - Ingredients (Array of objects)
 - Instructions (Array of objects)
 
-Optional Fields:
+**Optional Fields:**
 
 - Description (recipe description)
 - Notes (Array of Strings)
 - prep_time or cook_time (Can have both properties)
 - img (url linking to a recipe image)
 
+<details>
+<summary>
 Example Request:
+</summary>
 
 ```js
-URL: "baseURL/recipes/"
-method: POST
-
 req.body:
 
 {
@@ -247,16 +378,18 @@ req.body:
 
 </details>
 
-<details>
-    <summary>
-        <strong>
-            <code>PUT recipes/</code>
-        </strong>
-    </summary>
+---
+
+## PUT recipes/
+
+```js
+URL: "baseURL/recipes/1"
+method: PUT
+```
 
 Updates an existing recipe in the database.
 
-Required Fields:
+**Required Fields:**
 
 - Title
 - _Either_ prep_time or cook_time
@@ -264,27 +397,29 @@ Required Fields:
 - Ingredients (Array of objects)
 - Instructions (Array of objects)
 
-Optional Fields:
+**Optional Fields:**
 
 - Description (recipe description)
 - Notes (Array of Strings)
 - prep_time or cook_time (Can have both properties)
 - img (url linking to a recipe image)
 
-**Differences from a POST request:**
+### Differences from a POST request:
 
-- Existing ingredients need their `id` included in the object
-- Existing notes need their `id` included in the object
-- Existing tags need their `id` included in the object
-- Existing instructions **don't** need their `id` included in the object
-- New entries do not need an `id`
+|                                                                        |
+| ---------------------------------------------------------------------- |
+| Existing ingredients need their `id` included in the object            |
+| Existing notes need their `id` included in the object                  |
+| Existing tags need their `id` included in the object                   |
+| Existing instructions **don't** need their `id` included in the object |
+| New entries do not need an `id`                                        |
 
-Example Request:
+<details>
+    <summary>
+      Example Request:
+    </summary>
 
 ```js
-URL: "baseURL/recipes/1"
-method: PUT
-
 req.body:
 
 {
@@ -349,19 +484,28 @@ req.body:
 
 </details>
 
-<details>
-  <summary>
-    <strong>
-        <code>GET recipes/:id/versions/</code>
-    </strong>
-  </summary>
+---
+
+# Version History Endpoints
+
+## All Versions By Recipe ID
+
+```js
+URL: "baseURL/recipes/1/versions/"
+method: GET
+```
 
 Gets all versions of a recipe by the recipe's id.
+
+<details>
+<summary>
+Example Response:
+</summary>
 
 `res.data`:
 
 ```js
-[
+;[
   {
     id: 1,
     recipe_id: 2,
@@ -519,19 +663,26 @@ Gets all versions of a recipe by the recipe's id.
     revision_number: 3,
     author_comment: null
   }
-];
+]
 ```
 
 </details>
 
-<details>
-  <summary>
-    <strong>
-      <code>GET /recipes/:id/version/:rev_id</code>
-    </strong>
-  </summary>
+---
+
+## Version By Recipe and Revision ID
+
+```js
+URL: "baseURL/recipes/1/version/1"
+method: GET
+```
 
 Gets a single revision based on the revision id.
+
+<details>
+  <summary>
+    Example Response
+  </summary>
 
 `res.data`:
 
@@ -583,14 +734,22 @@ Gets a single revision based on the revision id.
 ```
 
 </details>
-<details>
-  <summary>
-    <strong>
-      <code>GET /recipes/:id/versions/:rev_number</code>
-    </strong>
-  </summary>
+
+---
+
+## Version By Recipe ID and Revision Number
+
+```js
+URL: "baseURL/recipes/1/versions/2"
+method: GET
+```
 
 Gets a single revision based on the revision number.
+
+<details>
+  <summary>
+    Example Response:
+  </summary>
 
 `res.data`:
 
