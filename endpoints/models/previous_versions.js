@@ -14,6 +14,7 @@ const get_version_by_num = (recipe_id, revision_num) => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
@@ -39,6 +40,7 @@ const get_version_by_id = (recipe_id, revision_id) => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
@@ -63,6 +65,7 @@ const get_all_versions = recipe_id => {
     .join("users as u", { "u.id": "r.owner_id" })
     .select(
       "pv.id",
+      "pv.recipe_id",
       "pv.changes",
       "pv.revision_number",
       "pv.date_modified",
