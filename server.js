@@ -31,6 +31,11 @@ server.use(require("./endpoints/routers/notes"));
 server.use(require("./endpoints/routers/units"));
 server.use(require("./endpoints/routers/tags"));
 
+server.use((req, res, next, err) => {
+  console.log(err)
+  res.status(500).json(err)
+})
+
 //signal that the server is in fact running
 server.listen(port, () => {
   console.clear();
