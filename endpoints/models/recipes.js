@@ -57,6 +57,7 @@ const get_one = search_params => {
       "r.prep_time",
       "r.cook_time",
       "r.img",
+      "r.author_comment",
       db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
@@ -81,7 +82,7 @@ const get_one = search_params => {
                 'description', notes.description
                 )) as notes`)
     )
-    .groupBy("r.id", "users.id")
+    .groupBy("r.id", "users.id", "r.author_comment")
     .first();
 };
 
@@ -307,7 +308,8 @@ const update_one = async (recipe_id, updated_recipe) => {
         owner_id: updated_recipe.owner_id,
         prep_time: updated_recipe.prep_time || undefined,
         cook_time: updated_recipe.cook_time || undefined,
-        description: updated_recipe.description || undefined
+        description: updated_recipe.description || undefined,
+        author_comment: updated_recipe.author_comment,
       };
       await trx("recipes")
         .where({ id: recipe_id })
@@ -504,13 +506,12 @@ const update_one = async (recipe_id, updated_recipe) => {
         .count("id")
         .first();
 
-      await delete existing_recipe.owner;
+      delete existing_recipe.owner;
 
       const previous_version_entry = {
         recipe_id,
         changes: existing_recipe,
         revision_number: Number(total_revisions.count) + 1,
-        author_comment: updated_recipe.author_comment
       };
 
       await trx("previous_versions").insert(previous_version_entry);
