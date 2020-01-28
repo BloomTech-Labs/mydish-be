@@ -49,6 +49,8 @@ const get_one = search_params => {
     .leftJoin("recipe_tags as rt", { "rt.recipe_id": "r.id" })
     .leftJoin("tags", { "rt.tag_id": "tags.id" })
     .leftJoin("notes", { "notes.recipe_id": "r.id" })
+    .leftJoin("previous_versions as pv", { "pv.recipe_id": "r.id" })
+    .countDistinct("pv.id as previous_versions_count")
     .select(
       "r.id",
       "r.title",
