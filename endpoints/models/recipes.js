@@ -60,6 +60,7 @@ const get_one = search_params => {
       "r.cook_time",
       "r.img",
       "r.author_comment",
+      "r.updated_at as date_modified",
       db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
@@ -84,7 +85,7 @@ const get_one = search_params => {
                 'description', notes.description
                 )) as notes`)
     )
-    .groupBy("r.id", "users.id", "r.author_comment")
+    .groupBy("r.id", "users.id", "r.author_comment", "date_modified")
     .first();
 };
 
