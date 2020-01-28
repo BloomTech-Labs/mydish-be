@@ -166,7 +166,8 @@ const add_one = async new_recipe => {
         owner_id: new_recipe.owner_id,
         prep_time: new_recipe.prep_time || null,
         cook_time: new_recipe.cook_time || null,
-        description: new_recipe.description || null
+        description: new_recipe.description || null,
+        author_comment: new_recipe.author_comment,
       };
       const added_recipe_id = await trx("recipes")
         .insert(recipe_info)
