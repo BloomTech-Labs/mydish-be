@@ -301,24 +301,6 @@ const update_one = async (recipe_id, updated_recipe) => {
       if (new_ingredient_entries.length)
         await trx("ingredients").insert(new_ingredient_entries);
 
-      //=====================UPDATING MAIN RECIPE INFO===========================//
-      // Create our recipe object, and add it to the database.
-      // We set optional values as undefined to make sure that, if they already
-      //     exist in the database, we don't override them as "null"
-      const recipe_info = {
-        title: updated_recipe.title,
-        img: updated_recipe.img || undefined,
-        forked_from: updated_recipe.forked_from || undefined,
-        owner_id: updated_recipe.owner_id,
-        prep_time: updated_recipe.prep_time || undefined,
-        cook_time: updated_recipe.cook_time || undefined,
-        description: updated_recipe.description || undefined,
-        author_comment: updated_recipe.author_comment,
-      };
-      await trx("recipes")
-        .where({ id: recipe_id })
-        .update(recipe_info);
-
       //==========================UPDATING RECIPE_TAGS=============================//
 
       // Currently not implemented.
@@ -516,9 +498,40 @@ const update_one = async (recipe_id, updated_recipe) => {
         recipe_id,
         changes: existing_recipe,
         revision_number: Number(total_revisions.count) + 1,
+        created_at: existing_recipe.date_modified,
       };
-
+      // ↑ This "existing_recipe.date_modified" property is the last time the recipe was edited.
+      // We set this to the "created_at" time because this is the time when this version of the 
+      //     recipe was created.
+      // Example: I make a recipe at 4pm, and then edit it at 6pm. knex would default this entry 
+      //          to be "created_at: 6pm".
+      //          BUT - We want this previous entry to match when we created the author_comment.
+      //          In other words, we want the UPDATED recipe to say 6pm,
+      //          and we want this older version to say 4pm.
       await trx("previous_versions").insert(previous_version_entry);
+
+      //=====================UPDATING MAIN RECIPE INFO===========================//
+      // Create our recipe object, and add it to the database.
+      // We set optional values as undefined to make sure that, if they already
+      //     exist in the database, we don't override them as "null"
+      // We're updating the recipe last because we need to update the "updated_at" field.
+      // For some reason, this field isnt auto-updating,
+      //     so we'll create a new Date() and add it in manually :thumbsup:
+      const recipe_info = {
+        title: updated_recipe.title,
+        img: updated_recipe.img || undefined,
+        forked_from: updated_recipe.forked_from || undefined,
+        owner_id: updated_recipe.owner_id,
+        prep_time: updated_recipe.prep_time || undefined,
+        cook_time: updated_recipe.cook_time || undefined,
+        description: updated_recipe.description || undefined,
+        author_comment: updated_recipe.author_comment,
+        updated_at: new Date().toISOString()
+      };
+      await trx("recipes")
+        .where({ id: recipe_id })
+        .update(recipe_info);
+
       //=========================YOU DID IT, YOU'RE DONE=======================//
 
       success = 1;
