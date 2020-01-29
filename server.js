@@ -31,7 +31,7 @@ server.use(require("./endpoints/routers/notes"));
 server.use(require("./endpoints/routers/units"));
 server.use(require("./endpoints/routers/tags"));
 
-server.use((req, res, next, err) => {
+server.use((err, req, res, next) => {
   console.log(err)
   res.status(500).json(err)
 })
