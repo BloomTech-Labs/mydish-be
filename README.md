@@ -362,8 +362,6 @@ req.body:
       "name": "eggplant",
       "units": "whole",
       "quantity": 1,
-      "units_short": null,
-      "recipe_ingredients_id": 1
     }
   ],
   "instructions": [
@@ -381,12 +379,8 @@ req.body:
     }
   ],
   "tags": [
-    {
-      "name": "Breakfast"
-    },
-    {
-      "name": "Brunch"
-    }
+    "Breakfast"
+    "Brunch"
   ],
   "notes": [
     "Eggplant is healthy.",
