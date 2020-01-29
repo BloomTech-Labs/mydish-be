@@ -10,5 +10,4 @@ module.exports = tbl => {
   tbl.json("changes")
   tbl.timestamps(true, true)
   tbl.integer("revision_number").notNullable()
-  tbl.text("author_comment")
 }

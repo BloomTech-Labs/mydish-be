@@ -26,6 +26,7 @@ const seed_data = [
 
   { name: "pinch", type: "volume" }, // id: 22,
   { name: "package", abbreviation: "pkg", type: "volume" } // id: 23,
+  { name: "can", type: "volume" } // id: 23,
 ];
 // So we can import seed_data for testing
 exports.units_data = seed_data;

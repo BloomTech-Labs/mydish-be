@@ -18,7 +18,6 @@ const get_version_by_num = (recipe_id, revision_num) => {
       "pv.changes",
       "pv.revision_number",
       "pv.created_at as date_modified",
-      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
@@ -44,7 +43,6 @@ const get_version_by_id = (recipe_id, revision_id) => {
       "pv.changes",
       "pv.revision_number",
       "pv.created_at as date_modified",
-      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
@@ -69,7 +67,6 @@ const get_all_versions = recipe_id => {
       "pv.changes",
       "pv.revision_number",
       "pv.created_at as date_modified",
-      "pv.author_comment",
       db.raw(
         `json_build_object('user_id', r.owner_id, 'username', u.username) as owner`
       )
