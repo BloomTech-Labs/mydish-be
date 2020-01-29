@@ -146,35 +146,53 @@ const recipe = (req, res, next) => {
     prep_time,
     cook_time,
     img,
-    author_comment,
+    author_comment
   } = req.body;
 
   // Sometimes when we GET, we'll receive objects with null properties like
   //     tags: [{ id:null, name:null }]
   // If this is inserted into our database, that's no bueno! Error 500 all over the place x.x
   // These sanitized inputs make sure that we only take the objects with the props that will fit in the database '' '
-  // These ternarys make sure that the code doesn't break if the user fails to send these properties in the req.body 
+  // These ternarys make sure that the code doesn't break if the user fails to send these properties in the req.body
   //     and still returns a proper response below.
-  const sanitized_ingredients = ingredients ? ingredients.filter(
-    ing => ing.name && ing.units
-  ) : [];
-  const sanitized_instructions = instructions ? instructions.filter(
-    ins => ins.step_number && ins.description
-  ) : [];
-  const sanitized_tags = tags ? tags.filter(tag => {
-    // Do we have a String[] ? Do our strings exist?
-    if (typeof tag === "string") return tag.length;
+  const sanitized_ingredients = ingredients
+    ? ingredients
+        .filter(ing => ing.name && ing.units)
+        .map(val => ({ ...val, name: val.name.trim() })) // Remove whitespace
+    : [];
 
-    // Do we have an Object[] ? Do our objects have name properties?
-    else return tag.name; 
-  }) : [];
-  const sanitized_notes = notes ? notes.filter(note => {
-    // Do we have a String[] ? Do our strings exist?
-    if (typeof note === "string") return note.length;
-    
-    // Do we have an Object[] ? Do our objects have name properties?
-    else return note.description; 
-  }) : []
+  const sanitized_instructions = instructions
+    ? instructions
+        .filter(ins => ins.step_number && ins.description.trim()) // Filter
+        .map((val, i) => ({
+          ...val,
+          description: val.description.trim(), // Remove whitespace
+          step_number: i + 1 // Re-number instructions
+        }))
+    : [];
+
+  const sanitized_tags = tags
+    ? tags.filter(tag => {
+        // Do we have a String[] ? Do our strings exist?
+        if (typeof tag === "string") return tag.length;
+        // Do we have an Object[] ? Do our objects have name properties?
+        else return tag.name;
+      })
+    : [];
+
+  const sanitized_notes = notes
+    ? notes
+        .filter(note => {
+          // Do we have a String[] ? Do our strings exist?
+          if (typeof note === "string") return note.trim().length;
+          // Do we have an Object[] ? Do our objects have name properties?
+          else return note.description && note.description.trim().length;
+        })
+        .map(note => {
+          if (typeof note == "string") return note.trim();
+          else return { ...note, description: note.description.trim() };
+        })
+    : [];
 
   // Check the required props. If they don't exist, put them in the array
   const missing = [];
