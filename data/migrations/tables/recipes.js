@@ -17,5 +17,6 @@ module.exports = tbl => {
     tbl.integer('prep_time')
     tbl.integer('cook_time')
     tbl.text('description')
-    tbl.timestamps()
+    tbl.timestamps(true, true)
+    tbl.text('author_comment')
 }
