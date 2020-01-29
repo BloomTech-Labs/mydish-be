@@ -12,11 +12,16 @@ unique_query_builder = async (table, array, unique_fields) => {
     return query
 }
 
-//takes an array of objects to be posts
-//determines if all required fields for each item is provided
-//determines if all unique fields are remarkable
-//if problems are found, an array of each problem object including whats wrong with them is also provided
-//returns a boolean inticating if everything can be posted
+/**
+ * Takes an array of objects to be posted and checks if they can be posted.
+ * Determines if all required fields for each item is provided
+ * Determines if all unique fields are remarkable
+ * If problems are found, an array of each problem object including what is wrong with the object is also provided.
+ * Returns a boolean indicating if everything can be posted or not.
+ *
+ * @param {string}              table - Name of table you want a list of unique fields form.
+ * @param {array}               array - An array of objects you want to post to the given table.
+ */
 module.exports = async (table, array = []) => {
     const required_keys = await schema.required(table)
     const unique_fields = await schema.unique(table)
