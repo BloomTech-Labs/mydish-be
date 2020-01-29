@@ -361,7 +361,7 @@ req.body:
     {
       "name": "eggplant",
       "units": "whole",
-      "quantity": 1,
+      "quantity": 1
     }
   ],
   "instructions": [
@@ -379,7 +379,7 @@ req.body:
     }
   ],
   "tags": [
-    "Breakfast"
+    "Breakfast",
     "Brunch"
   ],
   "notes": [
