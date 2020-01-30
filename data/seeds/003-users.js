@@ -19,7 +19,7 @@ const seed_data = [
   {
     // id: 4,
     username: 'adminUser',
-    password: `${bcrypt.hashSync('when i was a young boy my father took me into the city all lowercase with no punctuation', 8)}`
+    password: `${bcrypt.hashSync(process.env.ADMIN_PASSWORD, 8)}`
   }
 ]
 exports.users_data = seed_data
