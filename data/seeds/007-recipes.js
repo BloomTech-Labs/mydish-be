@@ -4,7 +4,7 @@ const seed_data = [
         title: 'Eggplant',
         owner_id: 2,
         cook_time: 15,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9M8IT_KlmpMp0LVQrr2hZ2mysqIqjIJvtxkG9k32GA1Ssb1eQ&s',
+        img: 'https://images.pexels.com/photos/772513/pexels-photo-772513.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
@@ -12,15 +12,16 @@ const seed_data = [
         title: 'Cereal',
         owner_id: 1,
         prep_time: 45,
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4uDnnPb5pgDy1qxmyG_GWEx3RPR2Wb00ndhoFfE7AE97kb90a&s',
+        img: 'https://images.pexels.com/photos/135525/pexels-photo-135525.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
         // id: 3,
-        title: 'Scrambled Eggs',
+        title: 'Hard Boiled Eggs',
         owner_id: 2,
-        cook_time: 2,
-        img: 'https://www.tasteofhome.com/wp-content/uploads/2017/10/Fluffy-Scrambled-Eggs_exps12235_SD143206C04_08_3bC_RMS-3.jpg',
+        cook_time: 15,
+        prep_time: 5,
+        img: 'https://images.pexels.com/photos/806457/pexels-photo-806457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
@@ -28,7 +29,7 @@ const seed_data = [
         title: 'Home Fries',
         owner_id: 3,
         cook_time: 20,
-        img: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2015/3/2/2/FNM_040115-Home-Fries-Recipe_s4x3.jpg.rend.hgtvcom.826.620.suffix/1425493279415.jpeg',
+        img: 'https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
 ]
