@@ -17,7 +17,7 @@ const seed_data = [
     },
     {
         // id: 3,
-        title: 'Hard Boiled Eggs',
+        title: 'Hard Boiled Egg',
         owner_id: 2,
         cook_time: 15,
         prep_time: 5,
