@@ -4,7 +4,7 @@ const seed_data = [
         title: 'Eggplant',
         owner_id: 2,
         cook_time: 15,
-        img: 'https://image.shutterstock.com/image-photo/grilled-eggplants-seasoned-olive-oil-260nw-87708241.jpg',
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9M8IT_KlmpMp0LVQrr2hZ2mysqIqjIJvtxkG9k32GA1Ssb1eQ&s',
         author_comment: "Original Recipe",
     },
     {
@@ -12,7 +12,7 @@ const seed_data = [
         title: 'Cereal',
         owner_id: 1,
         prep_time: 45,
-        img: 'https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg',
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4uDnnPb5pgDy1qxmyG_GWEx3RPR2Wb00ndhoFfE7AE97kb90a&s',
         author_comment: "Original Recipe",
     },
     {
@@ -20,7 +20,7 @@ const seed_data = [
         title: 'Scrambled Eggs',
         owner_id: 2,
         cook_time: 2,
-        img: 'https://image.shutterstock.com/image-photo/mexican-food-recipes-revoltillo-de-600w-752977636.jpg',
+        img: 'https://www.tasteofhome.com/wp-content/uploads/2017/10/Fluffy-Scrambled-Eggs_exps12235_SD143206C04_08_3bC_RMS-3.jpg',
         author_comment: "Original Recipe",
     },
     {
@@ -28,7 +28,7 @@ const seed_data = [
         title: 'Home Fries',
         owner_id: 3,
         cook_time: 20,
-        img: 'https://image.shutterstock.com/z/stock-photo-fried-potatoes-147539354.jpg',
+        img: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2015/3/2/2/FNM_040115-Home-Fries-Recipe_s4x3.jpg.rend.hgtvcom.826.620.suffix/1425493279415.jpeg',
         author_comment: "Original Recipe",
     },
 ]
