@@ -26,39 +26,39 @@ const seed_data = [
     // id: 7
     recipe_id: 3,
     step_number: 1,
-    description: "get egg and crack into a bowl"
+    description: "Heat a pot of water over the stove until it's about to boil"
   },
   {
     // id: 8
     recipe_id: 3,
     step_number: 2,
     description:
-      "add small amount of milk and whisk the ever-loving devil out of those eggs"
+      "add in your egg while the water is hot, but don't let it boil or else your egg could pop"
   },
   {
     // id: 9
     recipe_id: 3,
     step_number: 3,
-    description: "pour milky egg mixture into a well greased sizzly hot pan"
+    description: "Turn the heat down and let that egg sit for about 15 minutes"
   },
   {
     // id: 10
     recipe_id: 3,
     step_number: 4,
-    description: "stir with rubber spatula whilst the eggs solidify"
+    description:
+      "Pour out the hot water and replace with cold. Let's cool our egg down"
   },
   {
     // id: 11
     recipe_id: 3,
     step_number: 5,
-    description: "cheese those eggy bois, if you are so inclined."
+    description: "Peel the eggy boi so you don't munch down on its shell"
   },
   {
     // id: 12
     recipe_id: 3,
     step_number: 6,
-    description:
-      "serve while they're still hot or you will end up hating yourself"
+    description: "serve fresh or chilled with a little salt and/or pepper"
   },
   {
     // id: 13

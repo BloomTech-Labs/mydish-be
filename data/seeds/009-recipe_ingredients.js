@@ -25,7 +25,7 @@ const seed_data = [
         recipe_id: 3,
         ingredient_id: 96,
         unit_id: 1,
-        quantity: 4
+        quantity: 1
     },
     {
         // id: 5,

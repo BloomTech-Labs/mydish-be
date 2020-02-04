@@ -4,7 +4,7 @@ const seed_data = [
         title: 'Eggplant',
         owner_id: 2,
         cook_time: 15,
-        img: 'https://image.shutterstock.com/image-photo/grilled-eggplants-seasoned-olive-oil-260nw-87708241.jpg',
+        img: 'https://images.pexels.com/photos/772513/pexels-photo-772513.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
@@ -12,15 +12,16 @@ const seed_data = [
         title: 'Cereal',
         owner_id: 1,
         prep_time: 45,
-        img: 'https://image.shutterstock.com/z/stock-photo-cornflakes-with-milk-in-the-white-bowl-322906217.jpg',
+        img: 'https://images.pexels.com/photos/135525/pexels-photo-135525.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
         // id: 3,
-        title: 'Scrambled Eggs',
+        title: 'Hard Boiled Egg',
         owner_id: 2,
-        cook_time: 2,
-        img: 'https://image.shutterstock.com/image-photo/mexican-food-recipes-revoltillo-de-600w-752977636.jpg',
+        cook_time: 15,
+        prep_time: 5,
+        img: 'https://images.pexels.com/photos/806457/pexels-photo-806457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
     {
@@ -28,7 +29,7 @@ const seed_data = [
         title: 'Home Fries',
         owner_id: 3,
         cook_time: 20,
-        img: 'https://image.shutterstock.com/z/stock-photo-fried-potatoes-147539354.jpg',
+        img: 'https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         author_comment: "Original Recipe",
     },
 ]

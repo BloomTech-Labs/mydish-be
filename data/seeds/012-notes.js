@@ -10,21 +10,18 @@ const seed_data = [
   {
     // id: 4
     recipe_id: 3,
-    description:
-      "if you are a human, then the only proper way to consume scrambled eggs is with ketchup"
+    description: "Feel free to add mayo if you are so inclined"
   },
   {
     // id: 5
     recipe_id: 4,
-    description:
-      "Cook a few minutes longer to get them crisp"
+    description: "Cook a few minutes longer to get them crisp"
   },
   {
     // id: 6
     recipe_id: 4,
-    description:
-      "Great with homemade wings"
-  },
+    description: "Great with homemade wings"
+  }
 ];
 exports.notes_data = seed_data;
 
