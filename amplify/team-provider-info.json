@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-mydish-be-dev-181025-authRole",
+            "UnauthRoleArn": "arn:aws:iam::826563635174:role/amplify-mydish-be-dev-181025-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::826563635174:role/amplify-mydish-be-dev-181025-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-mydish-be-dev-181025-deployment",
+            "UnauthRoleName": "amplify-mydish-be-dev-181025-unauthRole",
+            "StackName": "amplify-mydish-be-dev-181025",
+            "StackId": "arn:aws:cloudformation:us-east-2:826563635174:stack/amplify-mydish-be-dev-181025/305435a0-58ed-11ea-9aaa-0213e0bd929e",
+            "AmplifyAppId": "dq8a22sy17ekt"
+        }
+    }
+}
