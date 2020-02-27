@@ -6,7 +6,7 @@ const multers3 = require("multer-s3");
 const bucketName = `amplify-mydish-be-dev-174150-deployment`;
 
 var credentials = new aws.SharedIniFileCredentials({
-  profile: "finalpuppy"
+  profile: "mydishaws"
 });
 aws.config.credentials = credentials;
 
