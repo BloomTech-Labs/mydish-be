@@ -5,11 +5,6 @@ const multers3 = require("multer-s3");
 
 const bucketName = process.env.S3_BUCKET_NAME;
 
-// var credentials = new aws.SharedIniFileCredentials({
-//   profile: "mydishaws"
-// });
-// aws.config.credentials = credentials;
-
 aws.config.credentials = {
   expired: false,
   expireTime: null,
@@ -25,7 +20,7 @@ aws.config.credentials = {
 
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_IAM_USER_KEY,
-  secretAccessKey: process.env.s3_IAM_USER_SECRET
+  secretAccessKey: process.env.S3_IAM_USER_SECRET
 });
 
 const fileFilter = (request, file, cb) => {
