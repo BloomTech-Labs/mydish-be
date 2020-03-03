@@ -10,9 +10,22 @@ const bucketName = process.env.S3_BUCKET_NAME;
 // });
 // aws.config.credentials = credentials;
 
+aws.config.credentials = {
+  expired: false,
+  expireTime: null,
+  refreshCallbacks: [],
+  accessKeyId: process.env.S3_IAM_USER_KEY,
+  sessionToken: undefined,
+  filename: undefined,
+  disableAssumeRole: false,
+  preferStaticCredentials: false,
+  tokenCodeFn: null,
+  httpOptions: null
+};
+
 const s3 = new aws.S3({
-  accesKeyId: process.env.S3_IAM_USER_KEY,
-  secretAccessKey: process.env.S3_IAM_USER_SECRET
+  accessKeyId: process.env.S3_IAM_USER_KEY,
+  secretAccessKey: process.env.s3_IAM_USER_SECRET
 });
 
 const fileFilter = (request, file, cb) => {
