@@ -20,10 +20,11 @@ server.get("/", (req, res) => {
 server.use(require("./endpoints/routers/users"));
 server.use(require("./endpoints/routers/recipes"));
 server.use(require("./endpoints/routers/pervious_versions"));
+server.use(require("./endpoints/routers/images"));
 
 // Admin only routes
-const validate = require("./endpoints/middleware/validate")
-server.use(validate.token, validate.admin)
+const validate = require("./endpoints/middleware/validate");
+server.use(validate.token, validate.admin);
 server.use(require("./endpoints/routers/instructions"));
 server.use(require("./endpoints/routers/recipe_ingredients"));
 server.use(require("./endpoints/routers/ingredients"));
@@ -32,9 +33,9 @@ server.use(require("./endpoints/routers/units"));
 server.use(require("./endpoints/routers/tags"));
 
 server.use((err, req, res, next) => {
-  console.log(err)
-  res.status(500).json(err)
-})
+  console.log(err);
+  res.status(500).json(err);
+});
 
 //signal that the server is in fact running
 server.listen(port, () => {
