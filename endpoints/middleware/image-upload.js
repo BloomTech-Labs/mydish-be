@@ -15,7 +15,10 @@ const s3 = new aws.S3();
 const fileFilter = (request, file, cb) => {
   console.log("fileFilter executing");
   console.log("file:", file);
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (
+    file &&
+    (file.mimetype === "image/jpeg" || file.mimetype === "image/png")
+  ) {
     cb(null, true);
   } else {
     cb(new Error("Invalid file type, only JPEG and PNG is allowed!"), false);
