@@ -1,7 +1,4 @@
 const images_router = require("../../endpoints/routers/images");
-const recipes_model = require("../../endpoints/models/recipes");
-const validate = require("../../endpoints/middleware/validate");
-const imageUpload = require("../../endpoints/middleware/image-upload");
 
 // Set up our test server
 const request = require("supertest");
