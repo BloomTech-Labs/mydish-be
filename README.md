@@ -1,10 +1,10 @@
 # Contributors
 
-|                                                  [Lou](https://github.com/antilou86)                                                  |                                        [Catherine](https://github.com/Katerinjo)                                        |                                         [Yurika](https://github.com/yuri77)                                          |
-| :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
-|        [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86)        | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) | [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
-|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86)                         |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77)                  |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)      |    [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |
+|                                         [Tanner](https://github.com/Dournbrood)                                          |                                           [Dan](https://github.com/dlhauer)                                           |                                        [Indigo](https://github.com/domesticdingo)                                        |
+| :----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars2.githubusercontent.com/u/19560915?s=400&v=4" width = "200" />](https://github.com/Dournbrood) | [<img src="https://avatars0.githubusercontent.com/u/50860480?s=460&v=4" width = "200" />](https://github.com/dlhauer) | [<img src="https://avatars2.githubusercontent.com/u/56006416?s=460&v=4" width="200"/>](https://github.com/domesticdingo) |
+|                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Dournbrood)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/dlhauer)                  |                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/domesticdingo)                |
+|      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |
 
 ## Table of Contents
 
@@ -42,6 +42,7 @@ To get the server running locally:
   - [POST recipes/](#post-recipes)
   - [PUT recipes/:id](#put-recipes)
   - [DELETE recipes/:id](#delete-recipe-by-id)
+  - [POST /image-upload](#post-image-via-file)
 - [Version History](#version-history-endpoints)
   - [GET recipes/:id/versions](#all-versions-by-recipe-id)
   - [GET recipes/:id/version/:rev_id](#version-by-recipe-and-revision-id)
@@ -126,8 +127,8 @@ Allows a user to login.
 ## GET recipes/
 
 ```js
-URL: "baseURL/recipes?title=c"
-method: GET
+URL: "baseURL/recipes?title=c";
+method: GET;
 ```
 
 Gets all Recipes from the database.
@@ -174,8 +175,8 @@ res.data:
 ## Recipe By ID
 
 ```js
-URL: "baseURL/recipes/1"
-method: GET
+URL: "baseURL/recipes/1";
+method: GET;
 ```
 
 Gets one Recipe from the database, with ingredients, instructions, tags, and notes.
@@ -259,8 +260,8 @@ res.data:
 ## GET /cookbook
 
 ```js
-URL: "baseURL/cookbook?course=breakfast"
-method: GET
+URL: "baseURL/cookbook?course=breakfast";
+method: GET;
 ```
 
 Gets all Recipes linked to the logged user.
@@ -320,8 +321,8 @@ res.data:
 ## POST recipes/
 
 ```js
-URL: "baseURL/recipes/"
-method: POST
+URL: "baseURL/recipes/";
+method: POST;
 ```
 
 Adds a new recipe to the database.
@@ -466,8 +467,8 @@ res.data:
 ## PUT recipes/
 
 ```js
-URL: "baseURL/recipes/1"
-method: PUT
+URL: "baseURL/recipes/1";
+method: PUT;
 ```
 
 Updates an existing recipe in the database.
@@ -567,11 +568,41 @@ req.body:
 
 ---
 
+## POST image via file
+
+```js
+URL: "baseURL/image_upload"
+method: POST
+body: form-data {
+  image: "Path to image on the local machine"
+}
+```
+
+Allows a user to add an image to the recipe, or overwrite an existing one.
+Image path MUST be sent in the body as `form-data`.
+
+<details>
+<summary>
+Example Response:
+</summary>
+
+```js
+//Response body will be an object:
+{
+    "message": "Success!",
+    "url": "your-hosted-image-location-here"
+}
+```
+
+</details>
+
+---
+
 ## DELETE Recipe By ID
 
 ```js
-URL: "baseURL/recipes/1"
-method: DELETE
+URL: "baseURL/recipes/1";
+method: DELETE;
 ```
 
 Allows a logged in user that owns the recipe to delete it from the database.
@@ -582,8 +613,8 @@ Example Response:
 </summary>
 
 ```js
-res.data
-;("Recipe Name has been terminated.")
+res.data;
+("Recipe Name has been terminated.");
 ```
 
 </details>
@@ -595,8 +626,8 @@ res.data
 ## All Versions By Recipe ID
 
 ```js
-URL: "baseURL/recipes/1/versions/"
-method: GET
+URL: "baseURL/recipes/1/versions/";
+method: GET;
 ```
 
 Gets all versions of a recipe by the recipe's id.
@@ -609,7 +640,7 @@ Example Response:
 `res.data`:
 
 ```js
-;[
+[
   // First one in the array is the most current version of the recipe.
   {
     revision_number: 14,
@@ -1287,7 +1318,7 @@ Example Response:
       username: "Testing123"
     }
   }
-]
+];
 ```
 
 </details>
@@ -1297,8 +1328,8 @@ Example Response:
 ## Version By Recipe and Revision ID
 
 ```js
-URL: "baseURL/recipes/1/version/1"
-method: GET
+URL: "baseURL/recipes/1/version/1";
+method: GET;
 ```
 
 Gets a single revision based on the revision id.
@@ -1368,8 +1399,8 @@ Gets a single revision based on the revision id.
 ## Version By Recipe ID and Revision Number
 
 ```js
-URL: "baseURL/recipes/1/versions/2"
-method: GET
+URL: "baseURL/recipes/1/versions/2";
+method: GET;
 ```
 
 Gets a single revision based on the revision number.
