@@ -21,6 +21,25 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
+# Setting up with AWS:
+
+Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
+
+- Create a new AWS account, navigate to S3, and create a new bucket. Leave the settings at their default values.
+- Create a file in the root directory of this project called `.env`.
+- In the top-right of the AWS management window, go to `[user.name @ xxxx-xxxx] > My Security Credentials`,
+- `Create access key` and copy both keys.
+- In the `.env` file:
+
+```
+S3_BUCKET_NAME=your-exact-bucket-name
+S3_IAM_USER_KEY=SOMEPUBLICKEYASDFGHJ
+S3_IAM_USER_SECRET=yOUr+sUPER+s3cr3t+k3y+HER3+alkjLEKJRhsrh
+```
+
+As long as those values are set to the right keys and everything is saved, it will work without issue.
+EVERYONE working on the backend needs to place the exact same credentials in their `.env` file.
+
 ## Back-end Framework
 
 - NodeJS
