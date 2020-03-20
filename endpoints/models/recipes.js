@@ -167,7 +167,7 @@ const add_one = async new_recipe => {
         prep_time: new_recipe.prep_time || null,
         cook_time: new_recipe.cook_time || null,
         description: new_recipe.description || null,
-        author_comment: new_recipe.author_comment,
+        author_comment: new_recipe.author_comment
       };
       const added_recipe_id = await trx("recipes")
         .insert(recipe_info)
@@ -498,12 +498,12 @@ const update_one = async (recipe_id, updated_recipe) => {
         recipe_id,
         changes: existing_recipe,
         revision_number: Number(total_revisions.count) + 1,
-        created_at: existing_recipe.date_modified,
+        created_at: existing_recipe.date_modified
       };
       // ↑ This "existing_recipe.date_modified" property is the last time the recipe was edited.
-      // We set this to the "created_at" time because this is the time when this version of the 
+      // We set this to the "created_at" time because this is the time when this version of the
       //     recipe was created.
-      // Example: I make a recipe at 4pm, and then edit it at 6pm. knex would default this entry 
+      // Example: I make a recipe at 4pm, and then edit it at 6pm. knex would default this entry
       //          to be "created_at: 6pm".
       //          BUT - We want this previous entry to match when we created the author_comment.
       //          In other words, we want the UPDATED recipe to say 6pm,
@@ -589,9 +589,35 @@ const get_by_course = (id, course) => {
   );
 };
 
+const get_user_cookbook = user => {
+  return db(`${tbl} as r`)
+    .join("users", { "r.owner_id": "users.id" })
+    .join("recipe_tags as rt", { "r.id": "rt.recipe_id" })
+    .join("tags as t", { "rt.tag_id": "t.id" })
+    .select(
+      "r.prep_time",
+      "r.cook_time",
+      "r.img",
+      "r.id",
+      "r.title",
+      "r.description",
+      "r.forked_from",
+      db.raw(`json_agg(distinct jsonb_build_object(
+        'id', t.id, 'name', t.name
+        )) as tags`),
+      db.raw(`json_build_object(
+                'user_id', users.id,
+                'username', users.username
+                ) as owner`)
+    )
+    .groupBy("r.id", "users.id", "r.prep_time", "r.cook_time", "r.img", "rt.id")
+    .where({ "users.id": `${user}` });
+};
+
 module.exports = {
   add_one,
   get_by_course,
+  get_user_cookbook,
   get_one,
   get_all,
   update_one,
