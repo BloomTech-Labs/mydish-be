@@ -57,7 +57,7 @@ describe('POST "/recipes"', () => {
     );
     const expected_recipe = {
       ...new_recipe,
-      id: 1,       // New id that's been added to our object
+      id: 1, // New id that's been added to our object
       owner_id: 1, // From our mocked middleware token()
       test: true
     };
@@ -315,7 +315,7 @@ describe('GET "/cookbook"', () => {
     recipes_model.get_by_course = jest.fn(() => []);
     const expected_response = [];
 
-    const response = await request(server).get("/cookbook?course=snacks");
+    const response = await request(server).get("/cookbook?course=snack");
 
     expect(response.status).toEqual(200);
     expect(response.body).toEqual(expected_response);
