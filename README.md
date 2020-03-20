@@ -25,6 +25,16 @@ To get the server running locally:
 
 ### Install PSQL
 
+> If you already have PSQL installed, you can skip this step.
+
+For Windows follow the steps in [this link](https://www.2ndquadrant.com/en/blog/pginstaller-install-postgresql/).
+
+- [pgAdmin](https://www.pgadmin.org/) is recommended as the PSQL GUI for windows users
+
+For Mac follow the steps in [this link](https://www.robinwieruch.de/postgres-sql-macos-setup).
+
+- [Postico](https://eggerapps.at/postico/) is recommended as the PSQL GUI for Mac users
+
 ### Set up local database
 
 - Create a database locally with your psql username and password, name it `mydishdb`
