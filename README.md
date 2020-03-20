@@ -21,6 +21,21 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
+# Setting up a local Postgres database
+
+### Install PSQL
+
+### Set up local database
+
+- Create a database locally with your psql username and password, name it `mydishdb`
+- Add `DB_NAME=mydishdb` `DB_USER=yourpsqlusername` and `DB_PASSWORD=yourpsqlpassword` to your .env file
+- Add `ADMIN_PASSWORD=admin1234` to your .env file
+- Make sure you have knex installed globally (run `nmp i -g knex` if not)
+- Run `knex migrate:latest`
+- Run `knex seed:run`
+
+Now you should be set up with a development database
+
 # Setting up with AWS:
 
 Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
