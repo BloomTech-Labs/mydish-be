@@ -303,7 +303,17 @@ const update_one = async (recipe_id, updated_recipe) => {
 
       //==========================UPDATING RECIPE_TAGS=============================//
 
-      // Currently not implemented.
+      const tag_ids = await db("tags")
+        .whereIn("name", updated_recipe.tags)
+        .select("id");
+      const recipe_tags_to_be_updated = tag_ids.map(tag => ({
+        recipe_id: recipe_id,
+        tag_id: tag.id
+      }));
+      await trx("recipe_tags")
+        .delete("recipe_tags")
+        .where("recipe_id", recipe_id);
+      await trx("recipe_tags").insert(recipe_tags_to_be_updated);
 
       //=======================UPDATING RECIPE_INSTRUCTIONS===========================//
 
