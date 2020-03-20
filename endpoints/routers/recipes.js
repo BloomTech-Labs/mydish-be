@@ -10,8 +10,9 @@ router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
       ...res.locals.recipe,
       owner_id: req.user.id
     });
-    const new_recipe = await model.get_one({id: new_recipe_id})
-    if (!new_recipe) throw {message: "There was an error adding a new recipe."}
+    const new_recipe = await model.get_one({ id: new_recipe_id });
+    if (!new_recipe)
+      throw { message: "There was an error adding a new recipe." };
     else {
       res.status(200).json(new_recipe);
     }
@@ -51,13 +52,24 @@ router.get(`/${tbl}`, async (req, res) => {
   }
 });
 
+//Get a user's cookbook. If a course parameter is sent, will give back all recipes with that course. If no parameter is sent, will get all recipes associated with user ID.
 router.get(`/cookbook`, validate.token, async (req, res) => {
   const course = req.query.course;
-  try {
-    recipes = await model.get_by_course(req.user.id, course);
-    res.status(200).json(recipes);
-  } catch (err) {
-    res.status(500).json(err);
+  const user = req.user.id;
+  if (!req.params.length) {
+    try {
+      cookbook = await model.get_user_cookbook(user);
+      res.status(200).json(cookbook);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    try {
+      recipes = await model.get_by_course(user, course);
+      res.status(200).json(recipes);
+    } catch (err) {
+      res.status(500).json(err);
+    }
   }
 });
 
@@ -74,8 +86,8 @@ router.put(
         owner_id: req.user.id
       });
       if (success) {
-        const recipe = await model.get_one({id: req.params.id})
-        return res.status(200).json(recipe)
+        const recipe = await model.get_one({ id: req.params.id });
+        return res.status(200).json(recipe);
       } else res.status(404).json(`Couldn't update recipe`);
     } catch (err) {
       if (err && err.userError) res.status(400).json(err);
