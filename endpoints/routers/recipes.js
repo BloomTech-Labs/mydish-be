@@ -52,11 +52,11 @@ router.get(`/${tbl}`, async (req, res) => {
   }
 });
 
-//Get a user's cookbook. If a course parameter is sent, will give back all recipes with that course. If no parameter is sent, will get all recipes associated with user ID.
+//Get a user's cookbook. If a course query is sent, will give back all recipes with that course. If no query is sent, will get all recipes associated with user ID.
 router.get(`/cookbook`, validate.token, async (req, res) => {
   const course = req.query.course;
   const user = req.user.id;
-  if (!req.params.length) {
+  if (!course) {
     try {
       cookbook = await model.get_user_cookbook(user);
       res.status(200).json(cookbook);
