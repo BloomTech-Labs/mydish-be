@@ -1,14 +1,28 @@
 # Contributors
 
-|                                         [Tanner](https://github.com/Dournbrood)                                          |                                           [Dan](https://github.com/dlhauer)                                           |                                        [Indigo](https://github.com/domesticdingo)                                        |
+|                                                       [Katie Embrey-Farquhar](https://github.com/kmcknight1)                                                        |                                                             [Dan Hauer](https://github.com/dlhauer)                                                              |                                                           [Tanner Hawkins](https://github.com/dournbrood)                                                           |                                                          [Indigo Richards](https://github.com/domesticdingo)                                                           |                                                           [Devin Warrick](https://github.com/DevWarr)                                                            |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars1.githubusercontent.com/u/47987809?s=460&u=16775e454c44054b8c7c88b4a2a899e78228df35&v=4" width = "200" />](https://github.com/kmcknight1) | [<img src="https://avatars0.githubusercontent.com/u/50860480?s=460&u=ab6997720219f59a214336ceb6088c308749c1f8&v=4" width = "200" />](https://github.com/dlhauer) | [<img src="https://avatars2.githubusercontent.com/u/19560915?s=460&u=9c3a07269ef4ab793a5f1029466e25d41d75ad49&v=4" width = "200" />](https://github.com/dournbrood) | [<img src="https://avatars2.githubusercontent.com/u/56006416?s=460&u=1e38c38a72eabbdb8ce8c596af3213ce58cbcc3b&v=4" width = "200" />](https://github.com/domesticdingo) | [<img src="https://avatars2.githubusercontent.com/u/49497246?s=460&u=2a0231a3d8358559c3bc7eb6c5617b1549da7582&v=4" width = "200" />](https://github.com/DevWarr) |
+
+<br>
+
+|                                                           [Megan Miller](https://github.com/smolDev-ai)                                                            |                                                           [James Bishop](https://github.com/jambis)                                                            |                                                            [Dustin Snoap](https://github.com/dustinsnoap)                                                            |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars1.githubusercontent.com/u/9338502?s=460&u=556b4dcad4d97e008787cd1d378984354559e8f3&v=4" width = "200" />](https://github.com/smolDev-ai) | [<img src="https://avatars0.githubusercontent.com/u/4674568?s=460&u=35069fc6456a2be448962d1643462cac596c6828&v=4" width = "200" />](https://github.com/jambis) | [<img src="https://avatars3.githubusercontent.com/u/45376430?s=460&u=2182ed52785e18d3044bd21a39bf7e3697cc9cf0&v=4" width = "200" />](https://github.com/dustinsnoap) |
+
+<br>
+<br>
+
+<!-- |                                         [Tanner](https://github.com/Dournbrood)                                          |                                           [Dan](https://github.com/dlhauer)                                           |                                        [Indigo](https://github.com/domesticdingo)                                        |
 | :----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------: |
 | [<img src="https://avatars2.githubusercontent.com/u/19560915?s=400&v=4" width = "200" />](https://github.com/Dournbrood) | [<img src="https://avatars0.githubusercontent.com/u/50860480?s=460&v=4" width = "200" />](https://github.com/dlhauer) | [<img src="https://avatars2.githubusercontent.com/u/56006416?s=460&v=4" width="200"/>](https://github.com/domesticdingo) |
 |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Dournbrood)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/dlhauer)                  |                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/domesticdingo)                |
-|      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |
+|      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       | -->
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+- [Setting up a local database](#setting-up-a-local-postgresql-database)
 - [Backend Framework](#back-end-framework)
 - [Endpoints](#endpoints)
 
@@ -21,7 +35,7 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
-# Setting up a local Postgres database
+# Setting up a local PostgreSQL database
 
 ### Install PSQL
 
@@ -46,7 +60,7 @@ For Mac follow the steps in [this link](https://www.robinwieruch.de/postgres-sql
 
 Now you should be set up with a development database
 
-# Setting up with AWS:
+# Setting up AWS S3:
 
 Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
 
@@ -65,12 +79,12 @@ S3_IAM_USER_SECRET=yOUr+sUPER+s3cr3t+k3y+HER3+alkjLEKJRhsrh
 As long as those values are set to the right keys and everything is saved, it will work without issue.
 EVERYONE working on the backend needs to place the exact same credentials in their `.env` file.
 
-## Back-end Framework
+## Tech Stack
 
-- NodeJS
-- Express
-- KnexJS
-- Postgres
+- [NodeJS](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [KnexJS](http://knexjs.org/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 # Endpoints
 
