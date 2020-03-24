@@ -532,8 +532,8 @@ const update_one = async (recipe_id, updated_recipe) => {
         img: updated_recipe.img || undefined,
         forked_from: updated_recipe.forked_from || undefined,
         owner_id: updated_recipe.owner_id,
-        prep_time: updated_recipe.prep_time || undefined,
-        cook_time: updated_recipe.cook_time || undefined,
+        prep_time: updated_recipe.prep_time || 0,
+        cook_time: updated_recipe.cook_time || 0,
         description: updated_recipe.description || undefined,
         author_comment: updated_recipe.author_comment,
         updated_at: new Date().toISOString()
