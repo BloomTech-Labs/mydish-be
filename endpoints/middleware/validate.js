@@ -22,15 +22,11 @@ const generate_token = user => {
     id: user.id,
     roles: user.roles
   };
-  const options = {
-    expiresIn: settings.token_expiration_time
-  };
   //create user token
-  const token = jwt.sign(payload, settings.token_secret, options);
-  //extract expiration date from token
-  const expiration_date = new Date(decode_jwt(token).exp * 1000).toISOString();
-  //return token and expiration date as object
-  return { token, expiration_date };
+  const token = jwt.sign(payload, settings.token_secret);
+
+  //return token
+  return { token };
 };
 
 /**
