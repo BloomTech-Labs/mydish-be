@@ -22,9 +22,9 @@ const generate_token = user => {
     id: user.id,
     roles: user.roles
   };
-  const options = {
-    expiresIn: settings.token_expiration_time
-  };
+  // const options = {
+  //   expiresIn: settings.token_expiration_time
+  // };
   //create user token
   const token = jwt.sign(payload, settings.token_secret, options);
   //extract expiration date from token
