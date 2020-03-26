@@ -318,13 +318,11 @@ res.data:
 ## GET /cookbook
 
 ```js
-URL: "baseURL/cookbook?course=breakfast";
+URL: "baseURL/cookbook;
 method: GET;
 ```
 
-Gets all Recipes linked to the logged user.
-
-Search Query: Search by course
+Gets all Recipes linked to the logged user. If a recipe has more than one course tag, it will return once with each tag.
 
 <details>
     <summary>
@@ -338,35 +336,111 @@ Search Query: Search by course
 res.data:
 
 [
-    {
-    "id": 3,
-    "title": "Scrambled Eggs",
-    "description": null,
-    "forked_from": null,
-    "owner": {
-      "user_id": 2,
-      "username": "Lou"
-    }
+  {
+      "prep_time": null,
+      "cook_time": 15,
+      "img": "",
+      "id": 1,
+      "title": "Eggplant",
+      "description": null,
+      "forked_from": null,
+      "tags": [
+          {
+              "id": 1,
+              "name": "Breakfast"
+          }
+      ],
+      "owner": {
+          "user_id": 2,
+          "username": "Lou"
+      }
   },
   {
-    "id": 1,
-    "title": "Eggplant",
-    "description": null,
-    "forked_from": null,
-    "owner": {
-      "user_id": 2,
-      "username": "Lou"
-    }
+      "prep_time": null,
+      "cook_time": 15,
+      "img": "",
+      "id": 1,
+      "title": "Eggplant",
+      "description": null,
+      "forked_from": null,
+      "tags": [
+          {
+              "id": 2,
+              "name": "Brunch"
+          }
+      ],
+      "owner": {
+          "user_id": 2,
+          "username": "Lou"
+      }
+  },
+]
+
+```
+
+</details>
+
+---
+
+## GET Cookbook courses
+
+```js
+URL: "baseURL/cookbook?course={courseName};
+method: GET;
+```
+
+Query with the name of a course to get back all recipes associated with the user with that course tag.
+
+<details>
+    <summary>
+        <strong>
+            Example Response:
+        </strong>
+    </summary>
+
+```js
+
+res.data:
+
+[
+  {
+      "prep_time": 2,
+      "cook_time": 10,
+      "img": "",
+      "id": 3,
+      "title": "Hard Boiled Egg",
+      "description": "Hard boil your eggs.",
+      "forked_from": null,
+      "owner": {
+          "user_id": 2,
+          "username": "Lou"
+      }
   },
   {
-    "id": 2,
-    "title": "Cereal",
-    "description": null,
-    "forked_from": null,
-    "owner": {
-      "user_id": 1,
-      "username": "Catherine"
-    }
+      "prep_time": 30,
+      "cook_time": 15,
+      "img": "",
+      "id": 4,
+      "title": "New York Style Pizza",
+      "description": "Pizza in the New York style.",
+      "forked_from": null,
+      "owner": {
+          "user_id": 2,
+          "username": "Lou"
+      }
+  },
+  {
+      "prep_time": 20,
+      "cook_time": 1,
+      "img": "",
+      "id": 5,
+      "title": "Caesar Salad",
+      "description": "A lotta leaves.",
+      "forked_from": null,
+      "owner": {
+          "user_id": 2,
+          "username": "Lou"
+      }
   }
 ]
 
