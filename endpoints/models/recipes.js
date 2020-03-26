@@ -557,12 +557,12 @@ const update_one = async (recipe_id, updated_recipe) => {
 };
 
 const remove_one = id =>
-  db(tbl)
+  db("recipes")
     .where({ id })
     .delete()
     .returning("*");
 
-const remove_all = () => db(tbl).delete();
+const remove_all = () => db("recipes").delete();
 
 const get_by_course = (id, course) => {
   return (
@@ -599,7 +599,7 @@ const get_by_course = (id, course) => {
 };
 
 const get_user_cookbook = user => {
-  return db(`${tbl} as r`)
+  return db(`recipes as r`)
     .join("users", { "r.owner_id": "users.id" })
     .join("recipe_tags as rt", { "r.id": "rt.recipe_id" })
     .join("tags as t", { "rt.tag_id": "t.id" })

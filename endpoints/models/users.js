@@ -1,10 +1,9 @@
 const db = require("../../data/dbConfig");
-const tbl = "users";
 
 add_one = async obj => {
   return await db.transaction(async trx => {
     try {
-      const return_user = await trx(tbl)
+      const return_user = await trx("users")
         .insert(obj)
         .returning("*");
       const user_roles_entry = {
@@ -20,7 +19,7 @@ add_one = async obj => {
 };
 
 get_by_id = id =>
-  db(tbl)
+  db("users")
     .where("users.id", id)
     .join("user_roles as ur", "users.id", "=", "ur.user_id")
     .join("roles", "ur.role_id", "=", "roles.id")
@@ -34,7 +33,7 @@ get_by_id = id =>
     .first();
 
 get_one = async search_params =>
-  await db(tbl)
+  await db("users")
     .where(search_params)
     .join("user_roles as ur", "users.id", "=", "ur.user_id")
     .join("roles", "ur.role_id", "=", "roles.id")
@@ -47,11 +46,11 @@ get_one = async search_params =>
     .groupBy("users.id", "users.username", "users.password")
     .first();
 
-get_all = async (search_params = {}) => await db(tbl).where(search_params);
+get_all = async (search_params = {}) => await db("users").where(search_params);
 
 update_one = async (id, obj) =>
   (
-    await db(tbl)
+    await db("users")
       .where({ id })
       .update(obj)
       .returning("*")
@@ -59,13 +58,13 @@ update_one = async (id, obj) =>
 
 remove_one = async id =>
   (
-    await db(tbl)
+    await db("users")
       .where({ id })
       .delete()
       .returning("*")
   )[0];
 
-remove_all = async () => await db(tbl).delete();
+remove_all = async () => await db("users").delete();
 
 module.exports = {
   add_one,

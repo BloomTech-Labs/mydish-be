@@ -1,29 +1,42 @@
-const db = require('../../data/dbConfig')
-const tbl = 'notes'
+const db = require("../../data/dbConfig");
 
-add_one = async (obj) => 
-    (await db(tbl).insert(obj).returning('*'))[0]
+add_one = async obj =>
+  (
+    await db("notes")
+      .insert(obj)
+      .returning("*")
+  )[0];
 
-get_one = async (search_params) =>
-    await db(tbl).where(search_params).first()
+get_one = async search_params =>
+  await db("notes")
+    .where(search_params)
+    .first();
 
-get_all = async (search_params = {}) =>
-    await db(tbl).where(search_params)
+get_all = async (search_params = {}) => await db("notes").where(search_params);
 
 update_one = async (id, obj) =>
-    (await db(tbl).where({id}).update(obj).returning('*'))[0]
+  (
+    await db("notes")
+      .where({ id })
+      .update(obj)
+      .returning("*")
+  )[0];
 
-remove_one = async (id) =>
-    (await db(tbl).where({id}).delete().returning('*'))[0]
+remove_one = async id =>
+  (
+    await db("notes")
+      .where({ id })
+      .delete()
+      .returning("*")
+  )[0];
 
-remove_all = async () =>
-    await db(tbl).delete()
+remove_all = async () => await db("notes").delete();
 
 module.exports = {
-    add_one,
-    get_one,
-    get_all,
-    update_one,
-    remove_one,
-    remove_all
-}
+  add_one,
+  get_one,
+  get_all,
+  update_one,
+  remove_one,
+  remove_all
+};
