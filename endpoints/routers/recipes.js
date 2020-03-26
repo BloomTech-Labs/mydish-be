@@ -1,10 +1,9 @@
 const router = require("express").Router();
 const model = require("../models/recipes");
-const tbl = "recipes";
 const validate = require("../middleware/validate");
 
 //add a recipe
-router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
+router.post(`/recipes`, validate.token, validate.recipe, async (req, res) => {
   try {
     const new_recipe_id = await model.add_one({
       ...res.locals.recipe,
@@ -24,7 +23,7 @@ router.post(`/${tbl}`, validate.token, validate.recipe, async (req, res) => {
 });
 
 //get one recipe
-router.get(`/${tbl}/:id`, async (req, res) => {
+router.get(`/recipes/:id`, async (req, res) => {
   const { id } = req.params;
   try {
     const recipe = await model.get_one({ id });
@@ -38,7 +37,7 @@ router.get(`/${tbl}/:id`, async (req, res) => {
 });
 
 //get all recipes
-router.get(`/${tbl}`, async (req, res) => {
+router.get(`/recipes`, async (req, res) => {
   try {
     // If there is a search, use it. If no search, use an empty string
     const recipes = await model.get_all(req.query.title || "");
@@ -75,7 +74,7 @@ router.get(`/cookbook`, validate.token, async (req, res) => {
 
 //update a recipe
 router.put(
-  `/${tbl}/:id`,
+  `/recipes/:id`,
   validate.token,
   validate.recipe,
   validate.user_recipe,
@@ -98,7 +97,7 @@ router.put(
 
 //terminate a recipe
 router.delete(
-  `/${tbl}/:id`,
+  `/recipes/:id`,
   validate.token,
   validate.user_recipe,
   async (req, res) => {
@@ -114,7 +113,7 @@ router.delete(
 );
 
 //terminate all recipes
-router.delete(`/${tbl}`, validate.token, validate.admin, async (req, res) => {
+router.delete(`/recipes`, validate.token, validate.admin, async (req, res) => {
   try {
     await model.remove_all();
     res.status(200).json("All recipes have been eliminated.");

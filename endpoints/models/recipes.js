@@ -4,7 +4,6 @@ const models = {
   units: require("./units"),
   tags: require("./tags")
 };
-const tbl = "recipes";
 const helper = {
   find_matching: require("../helpers/find_matches"),
   can_post: require("../helpers/can_post")
@@ -39,7 +38,7 @@ const helper = {
 //   };
 
 const get_one = search_params => {
-  return db(`${tbl} as r`)
+  return db(`recipes as r`)
     .where({ "r.id": search_params.id })
     .join("users", { "r.owner_id": "users.id" })
     .leftJoin("recipe_ingredients as list", { "list.recipe_id": "r.id" })
@@ -91,7 +90,7 @@ const get_one = search_params => {
 
 const get_all = title => {
   return (
-    db(`${tbl} as r`)
+    db(`recipes as r`)
       // ilike = fuzzy search, ignore case
       // WHERE r.title LIKE %cerea%
       .where("r.title", "ilike", `%${title}%`)
@@ -567,7 +566,7 @@ const remove_all = () => db(tbl).delete();
 
 const get_by_course = (id, course) => {
   return (
-    db(`${tbl} as r`)
+    db(`recipes as r`)
       // ilike = fuzzy search, ignore case
       // WHERE r.title LIKE %cerea%
       .join("users", { "r.owner_id": "users.id" })

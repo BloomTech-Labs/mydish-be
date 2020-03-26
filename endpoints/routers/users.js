@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const model = require("../models/users");
-const tbl = "users";
 const m = {
   //middleware
   encrypt: require("../middleware/encrypt"),
@@ -8,9 +7,11 @@ const m = {
 };
 
 //add a user
-router.post(`/${tbl}/register`, async (req, res) => {
+router.post(`/users/register`, async (req, res) => {
   if (!req.body || !req.body.username.length || !req.body.password.length) {
-    return res.status(400).json({message: "Please provide a username and password."})
+    return res
+      .status(400)
+      .json({ message: "Please provide a username and password." });
   }
   const new_user = {
     username: req.body.username,
@@ -25,8 +26,11 @@ router.post(`/${tbl}/register`, async (req, res) => {
       token
     });
   } catch (err) {
-    if (typeof err.detail === "string" && err.detail.match(/(\(username\)).*(already exists)/i)) {
-      return res.status(400).json({message: "That username already exists." })
+    if (
+      typeof err.detail === "string" &&
+      err.detail.match(/(\(username\)).*(already exists)/i)
+    ) {
+      return res.status(400).json({ message: "That username already exists." });
     }
     console.log("err", err);
     res.status(500).json(err.detail);
@@ -34,7 +38,7 @@ router.post(`/${tbl}/register`, async (req, res) => {
 });
 
 //login a user
-router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
+router.post(`/users/login`, m.validate.user, async (req, res) => {
   try {
     if (req.user) {
       const user = req.user;
@@ -55,7 +59,7 @@ router.post(`/${tbl}/login`, m.validate.user, async (req, res) => {
 
 //get one user
 router.get(
-  `/${tbl}/:id`,
+  `/users/:id`,
   m.validate.token,
   m.validate.admin,
   async (req, res) => {
@@ -73,7 +77,7 @@ router.get(
 );
 
 //get all users
-router.get(`/${tbl}`, m.validate.token, m.validate.admin, async (req, res) => {
+router.get(`/users`, m.validate.token, m.validate.admin, async (req, res) => {
   console.log(req.user);
 
   try {
@@ -88,7 +92,7 @@ router.get(`/${tbl}`, m.validate.token, m.validate.admin, async (req, res) => {
 
 //update a user
 router.put(
-  `/${tbl}/:id`,
+  `/users/:id`,
   m.validate.token,
   m.validate.admin,
   async (req, res) => {
@@ -107,7 +111,7 @@ router.put(
 
 //terminate a user
 router.delete(
-  `/${tbl}/:id`,
+  `/users/:id`,
   m.validate.token,
   m.validate.admin,
   async (req, res) => {
@@ -125,7 +129,7 @@ router.delete(
 
 //terminate all users
 router.delete(
-  `/${tbl}`,
+  `/users`,
   m.validate.token,
   m.validate.admin,
   async (req, res) => {
