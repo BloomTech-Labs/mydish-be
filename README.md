@@ -1,14 +1,28 @@
 # Contributors
 
-|                                                  [Lou](https://github.com/antilou86)                                                  |                                        [Catherine](https://github.com/Katerinjo)                                        |                                         [Yurika](https://github.com/yuri77)                                          |
-| :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
-|        [<img src="https://avatars2.githubusercontent.com/u/26258589?s=460&v=4" width = "200" />](https://github.com/antilou86)        | [<img src="https://avatars1.githubusercontent.com/u/36314601?s=460&v=4" width = "200" />](https://github.com/Katerinjo) | [<img src="https://avatars1.githubusercontent.com/u/12836541?s=460&v=4" width = "200" />](https://github.com/yuri77) |
-|                        [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/antilou86)                         |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Katerinjo)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/yuri77)                  |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/luis-guzman-52b93b73/) |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)      |    [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |
+|                                                       [Katie Embrey-Farquhar](https://github.com/kmcknight1)                                                        |                                                             [Dan Hauer](https://github.com/dlhauer)                                                              |                                                           [Tanner Hawkins](https://github.com/dournbrood)                                                           |                                                          [Indigo Richards](https://github.com/domesticdingo)                                                           |                                                           [Devin Warrick](https://github.com/DevWarr)                                                            |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars1.githubusercontent.com/u/47987809?s=460&u=16775e454c44054b8c7c88b4a2a899e78228df35&v=4" width = "200" />](https://github.com/kmcknight1) | [<img src="https://avatars0.githubusercontent.com/u/50860480?s=460&u=ab6997720219f59a214336ceb6088c308749c1f8&v=4" width = "200" />](https://github.com/dlhauer) | [<img src="https://avatars2.githubusercontent.com/u/19560915?s=460&u=9c3a07269ef4ab793a5f1029466e25d41d75ad49&v=4" width = "200" />](https://github.com/dournbrood) | [<img src="https://avatars2.githubusercontent.com/u/56006416?s=460&u=1e38c38a72eabbdb8ce8c596af3213ce58cbcc3b&v=4" width = "200" />](https://github.com/domesticdingo) | [<img src="https://avatars2.githubusercontent.com/u/49497246?s=460&u=2a0231a3d8358559c3bc7eb6c5617b1549da7582&v=4" width = "200" />](https://github.com/DevWarr) |
+
+<br>
+
+|                                                           [Megan Miller](https://github.com/smolDev-ai)                                                            |                                                           [James Bishop](https://github.com/jambis)                                                            |                                                            [Dustin Snoap](https://github.com/dustinsnoap)                                                            |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars1.githubusercontent.com/u/9338502?s=460&u=556b4dcad4d97e008787cd1d378984354559e8f3&v=4" width = "200" />](https://github.com/smolDev-ai) | [<img src="https://avatars0.githubusercontent.com/u/4674568?s=460&u=35069fc6456a2be448962d1643462cac596c6828&v=4" width = "200" />](https://github.com/jambis) | [<img src="https://avatars3.githubusercontent.com/u/45376430?s=460&u=2182ed52785e18d3044bd21a39bf7e3697cc9cf0&v=4" width = "200" />](https://github.com/dustinsnoap) |
+
+<br>
+<br>
+
+<!-- |                                         [Tanner](https://github.com/Dournbrood)                                          |                                           [Dan](https://github.com/dlhauer)                                           |                                        [Indigo](https://github.com/domesticdingo)                                        |
+| :----------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------: |
+| [<img src="https://avatars2.githubusercontent.com/u/19560915?s=400&v=4" width = "200" />](https://github.com/Dournbrood) | [<img src="https://avatars0.githubusercontent.com/u/50860480?s=460&v=4" width = "200" />](https://github.com/dlhauer) | [<img src="https://avatars2.githubusercontent.com/u/56006416?s=460&v=4" width="200"/>](https://github.com/domesticdingo) |
+|                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Dournbrood)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/dlhauer)                  |                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/domesticdingo)                |
+|      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       | -->
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+- [Setting up a local database](#setting-up-a-local-postgresql-database)
 - [Backend Framework](#back-end-framework)
 - [Endpoints](#endpoints)
 
@@ -21,12 +35,56 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
-## Back-end Framework
+# Setting up a local PostgreSQL database
 
-- NodeJS
-- Express
-- KnexJS
-- Postgres
+### Install PSQL
+
+> If you already have PSQL installed, you can skip this step.
+
+For Windows follow the steps in [this link](https://www.2ndquadrant.com/en/blog/pginstaller-install-postgresql/).
+
+- [pgAdmin](https://www.pgadmin.org/) is recommended as the PSQL GUI for windows users
+
+For Mac follow the steps in [this link](https://www.robinwieruch.de/postgres-sql-macos-setup).
+
+- [Postico](https://eggerapps.at/postico/) is recommended as the PSQL GUI for Mac users
+
+### Set up local database
+
+- Create a database locally with your psql username and password, name it `mydishdb`
+- Add `DB_NAME=mydishdb` `DB_USER=yourpsqlusername` and `DB_PASSWORD=yourpsqlpassword` to your .env file
+- Add `ADMIN_PASSWORD=admin1234` to your .env file
+- Make sure you have knex installed globally (run `nmp i -g knex` if not)
+- Run `knex migrate:latest`
+- Run `knex seed:run`
+
+Now you should be set up with a development database
+
+# Setting up AWS S3:
+
+Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
+
+- Create a new AWS account, navigate to S3, and create a new bucket. Leave the settings at their default values.
+- Create a file in the root directory of this project called `.env`.
+- In the top-right of the AWS management window, go to `[user.name @ xxxx-xxxx] > My Security Credentials`,
+- `Create access key` and copy both keys.
+- In the `.env` file:
+
+```
+S3_BUCKET_NAME=your-exact-bucket-name
+S3_IAM_USER_KEY=SOMEPUBLICKEYASDFGHJ
+S3_IAM_USER_SECRET=yOUr+sUPER+s3cr3t+k3y+HER3+alkjLEKJRhsrh
+```
+
+As long as those values are set to the right keys and everything is saved, it will work without issue.
+EVERYONE working on the backend needs to place the exact same credentials in their `.env` file.
+
+## Tech Stack
+
+- [NodeJS](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [KnexJS](http://knexjs.org/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 # Endpoints
 
@@ -42,6 +100,7 @@ To get the server running locally:
   - [POST recipes/](#post-recipes)
   - [PUT recipes/:id](#put-recipes)
   - [DELETE recipes/:id](#delete-recipe-by-id)
+  - [POST /image-upload](#post-image-via-file)
 - [Version History](#version-history-endpoints)
   - [GET recipes/:id/versions](#all-versions-by-recipe-id)
   - [GET recipes/:id/version/:rev_id](#version-by-recipe-and-revision-id)
@@ -126,8 +185,8 @@ Allows a user to login.
 ## GET recipes/
 
 ```js
-URL: "baseURL/recipes?title=c"
-method: GET
+URL: "baseURL/recipes?title=c";
+method: GET;
 ```
 
 Gets all Recipes from the database.
@@ -174,8 +233,8 @@ res.data:
 ## Recipe By ID
 
 ```js
-URL: "baseURL/recipes/1"
-method: GET
+URL: "baseURL/recipes/1";
+method: GET;
 ```
 
 Gets one Recipe from the database, with ingredients, instructions, tags, and notes.
@@ -259,8 +318,8 @@ res.data:
 ## GET /cookbook
 
 ```js
-URL: "baseURL/cookbook?course=breakfast"
-method: GET
+URL: "baseURL/cookbook?course=breakfast";
+method: GET;
 ```
 
 Gets all Recipes linked to the logged user.
@@ -320,8 +379,8 @@ res.data:
 ## POST recipes/
 
 ```js
-URL: "baseURL/recipes/"
-method: POST
+URL: "baseURL/recipes/";
+method: POST;
 ```
 
 Adds a new recipe to the database.
@@ -466,8 +525,8 @@ res.data:
 ## PUT recipes/
 
 ```js
-URL: "baseURL/recipes/1"
-method: PUT
+URL: "baseURL/recipes/1";
+method: PUT;
 ```
 
 Updates an existing recipe in the database.
@@ -567,11 +626,41 @@ req.body:
 
 ---
 
+## POST image via file
+
+```js
+URL: "baseURL/image_upload"
+method: POST
+body: form-data {
+  image: "Path to image on the local machine"
+}
+```
+
+Allows a user to add an image to the recipe, or overwrite an existing one.
+Image path MUST be sent in the body as `form-data`.
+
+<details>
+<summary>
+Example Response:
+</summary>
+
+```js
+//Response body will be an object:
+{
+    "message": "Success!",
+    "url": "your-hosted-image-location-here"
+}
+```
+
+</details>
+
+---
+
 ## DELETE Recipe By ID
 
 ```js
-URL: "baseURL/recipes/1"
-method: DELETE
+URL: "baseURL/recipes/1";
+method: DELETE;
 ```
 
 Allows a logged in user that owns the recipe to delete it from the database.
@@ -582,8 +671,8 @@ Example Response:
 </summary>
 
 ```js
-res.data
-;("Recipe Name has been terminated.")
+res.data;
+("Recipe Name has been terminated.");
 ```
 
 </details>
@@ -595,8 +684,8 @@ res.data
 ## All Versions By Recipe ID
 
 ```js
-URL: "baseURL/recipes/1/versions/"
-method: GET
+URL: "baseURL/recipes/1/versions/";
+method: GET;
 ```
 
 Gets all versions of a recipe by the recipe's id.
@@ -609,7 +698,7 @@ Example Response:
 `res.data`:
 
 ```js
-;[
+[
   // First one in the array is the most current version of the recipe.
   {
     revision_number: 14,
@@ -1287,7 +1376,7 @@ Example Response:
       username: "Testing123"
     }
   }
-]
+];
 ```
 
 </details>
@@ -1297,8 +1386,8 @@ Example Response:
 ## Version By Recipe and Revision ID
 
 ```js
-URL: "baseURL/recipes/1/version/1"
-method: GET
+URL: "baseURL/recipes/1/version/1";
+method: GET;
 ```
 
 Gets a single revision based on the revision id.
@@ -1368,8 +1457,8 @@ Gets a single revision based on the revision id.
 ## Version By Recipe ID and Revision Number
 
 ```js
-URL: "baseURL/recipes/1/versions/2"
-method: GET
+URL: "baseURL/recipes/1/versions/2";
+method: GET;
 ```
 
 Gets a single revision based on the revision number.
