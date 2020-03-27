@@ -3,9 +3,9 @@ const model = require("../models/units");
 
 //add a unit
 router.post(`/units`, async (req, res) => {
-  const { name, abbreviation, type } = req.body;
+  const {name, abbreviation, type} = req.body;
   try {
-    const new_unit = await model.add_one({ name, abbreviation, type });
+    const new_unit = await model.add_one({name, abbreviation, type});
     res.status(200).json(new_unit);
   } catch (err) {
     console.log("err", err);
@@ -15,9 +15,9 @@ router.post(`/units`, async (req, res) => {
 
 //get one unit
 router.get(`/units/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const unit = await model.get_one({ id });
+    const unit = await model.get_one({id});
     unit ? res.status(200).json(unit) : res.status(404).json("No unit found.");
   } catch (err) {
     res.status(500).json(err.detail);
@@ -38,7 +38,7 @@ router.get(`/units`, async (req, res) => {
 
 //update a unit
 router.put(`/units/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updates = req.body;
   try {
     const unit = await model.update_one(id, updates);
@@ -52,7 +52,7 @@ router.put(`/units/:id`, async (req, res) => {
 
 //terminate a unit
 router.delete(`/units/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const unit = await model.remove_one(id);
     unit

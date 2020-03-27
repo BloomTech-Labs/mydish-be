@@ -20,13 +20,13 @@ const generate_token = user => {
   const payload = {
     username: user.username,
     id: user.id,
-    roles: user.roles
+    roles: user.roles,
   };
   //create user token
   const token = jwt.sign(payload, settings.token_secret);
 
   //return token
-  return { token };
+  return {token};
 };
 
 /**
@@ -47,9 +47,9 @@ const generate_token = user => {
  * @param {Function}            next - Express Next function.
  */
 const user = async (req, res, next) => {
-  const { username, password } = req.body;
+  const {username, password} = req.body;
   //get user from database
-  const user = await user_model.get_one({ username });
+  const user = await user_model.get_one({username});
   if (user && crypt.compareSync(password, user.password)) {
     //remove password from response
     delete user.password;
@@ -83,7 +83,7 @@ const token = async (req, res, next) => {
         if (err) {
           //if not, send an error
           res.status(401).json({
-            message: `Nice try. This token hasn't been validated by the Citadel of Ricks.`
+            message: `Nice try. This token hasn't been validated by the Citadel of Ricks.`,
           });
         } else {
           //otherwise move on
@@ -92,7 +92,7 @@ const token = async (req, res, next) => {
         }
       })
     : //send error if no token is provided
-      res.status(404).json({ message: `What's the password?` });
+      res.status(404).json({message: `What's the password?`});
 };
 
 /**
@@ -111,7 +111,7 @@ const admin = (req, res, next) => {
   if (!req.user.roles.includes("admin")) {
     res
       .status(403)
-      .json({ message: "You do not have permission to view this page." });
+      .json({message: "You do not have permission to view this page."});
   } else next();
 };
 
@@ -142,7 +142,7 @@ const recipe = (req, res, next) => {
     prep_time,
     cook_time,
     img,
-    author_comment
+    author_comment,
   } = req.body;
 
   // Sometimes when we GET, we'll receive objects with null properties like
@@ -154,7 +154,7 @@ const recipe = (req, res, next) => {
   const sanitized_ingredients = ingredients
     ? ingredients
         .filter(ing => ing.name && ing.units)
-        .map(val => ({ ...val, name: val.name.trim() })) // Remove whitespace
+        .map(val => ({...val, name: val.name.trim()})) // Remove whitespace
     : [];
 
   const sanitized_instructions = instructions
@@ -163,7 +163,7 @@ const recipe = (req, res, next) => {
         .map((val, i) => ({
           ...val,
           description: val.description.trim(), // Remove whitespace
-          step_number: i + 1 // Re-number instructions
+          step_number: i + 1, // Re-number instructions
         }))
     : [];
 
@@ -186,7 +186,7 @@ const recipe = (req, res, next) => {
         })
         .map(note => {
           if (typeof note == "string") return note.trim();
-          else return { ...note, description: note.description.trim() };
+          else return {...note, description: note.description.trim()};
         })
     : [];
 
@@ -202,7 +202,7 @@ const recipe = (req, res, next) => {
 
   // If the array has stuff, respond saying "Yo, we need the stuff"
   if (missing.length) {
-    res.status(400).json({ message: "You are missing these fields:", missing });
+    res.status(400).json({message: "You are missing these fields:", missing});
   } else {
     // Otherwise, save our good ol recipe and go to the next() thing
     res.locals.recipe = {
@@ -215,7 +215,7 @@ const recipe = (req, res, next) => {
       prep_time: prep_time || null,
       cook_time: cook_time || null,
       img: img || null,
-      author_comment: author_comment
+      author_comment: author_comment,
     };
     next();
   }
@@ -225,13 +225,13 @@ const user_recipe = (req, res, next) => {
   recipe_id = req.params.id;
   user_id = req.user.id;
   if (!recipe_id)
-    res.status(400).json({ message: "You need a recipe id for this action!" });
+    res.status(400).json({message: "You need a recipe id for this action!"});
   if (!user_id)
-    res.status(400).json({ message: "You need a user id for this action!" });
-  return recipe_model.get_one({ id: recipe_id }).then(recipe => {
+    res.status(400).json({message: "You need a user id for this action!"});
+  return recipe_model.get_one({id: recipe_id}).then(recipe => {
     // Recipe doesn't exist? Error!
     if (!recipe)
-      return res.status(404).json({ message: "No recipe found with this id." });
+      return res.status(404).json({message: "No recipe found with this id."});
     // User owns to recipe OR user is the admin? Continue.
     if (recipe.owner.user_id === user_id || req.user.roles.includes("admin")) {
       next();
@@ -239,7 +239,7 @@ const user_recipe = (req, res, next) => {
       // Otherwise - 403
       return res
         .status(403)
-        .json({ message: "You must be the owner of this recipe. Shoo." });
+        .json({message: "You must be the owner of this recipe. Shoo."});
     }
   });
 };
@@ -250,5 +250,5 @@ module.exports = {
   token,
   admin,
   recipe,
-  user_recipe
+  user_recipe,
 };

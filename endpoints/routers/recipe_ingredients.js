@@ -3,13 +3,13 @@ const model = require("../models/recipe_ingredients");
 
 //add a ingredient
 router.post(`/recipe_ingredients`, async (req, res) => {
-  const { recipe_id, ingredient_id, unit_id, quantity } = req.body;
+  const {recipe_id, ingredient_id, unit_id, quantity} = req.body;
   try {
     const new_ingredient = await model.add_one({
       recipe_id,
       ingredient_id,
       unit_id,
-      quantity
+      quantity,
     });
     res.status(200).json(new_ingredient);
   } catch (err) {
@@ -19,9 +19,9 @@ router.post(`/recipe_ingredients`, async (req, res) => {
 
 //get one ingredient
 router.get(`/recipe_ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const ingredient = await model.get_one({ id });
+    const ingredient = await model.get_one({id});
     ingredient
       ? res.status(200).json(ingredient)
       : res.status(404).json("No recipe_ingredients entry found.");
@@ -44,7 +44,7 @@ router.get(`/recipe_ingredients`, async (req, res) => {
 
 //update a ingredient
 router.put(`/recipe_ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updates = req.body;
   try {
     const ingredient = await model.update_one(id, updates);
@@ -58,7 +58,7 @@ router.put(`/recipe_ingredients/:id`, async (req, res) => {
 
 //terminate a recipe_ingredients entry
 router.delete(`/recipe_ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const ingredient = await model.remove_one(id);
     ingredient

@@ -5,7 +5,7 @@ const seed_data = [
     cook_time: 15,
     img:
       "https://images.pexels.com/photos/772513/pexels-photo-772513.png?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-    author_comment: "Original Recipe"
+    author_comment: "Original Recipe",
   },
   {
     title: "Cereal",
@@ -13,7 +13,7 @@ const seed_data = [
     prep_time: 45,
     img:
       "https://images.pexels.com/photos/135525/pexels-photo-135525.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    author_comment: "Original Recipe"
+    author_comment: "Original Recipe",
   },
   {
     title: "Hard Boiled Egg",
@@ -22,7 +22,7 @@ const seed_data = [
     prep_time: 5,
     img:
       "https://images.pexels.com/photos/806457/pexels-photo-806457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    author_comment: "Original Recipe"
+    author_comment: "Original Recipe",
   },
   {
     title: "Home Fries",
@@ -30,8 +30,8 @@ const seed_data = [
     cook_time: 20,
     img:
       "https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    author_comment: "Original Recipe"
-  }
+    author_comment: "Original Recipe",
+  },
 ];
 exports.recipes_data = seed_data;
 

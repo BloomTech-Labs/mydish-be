@@ -7,11 +7,10 @@ router.post(`/recipes`, validate.token, validate.recipe, async (req, res) => {
   try {
     const new_recipe_id = await model.add_one({
       ...res.locals.recipe,
-      owner_id: req.user.id
+      owner_id: req.user.id,
     });
-    const new_recipe = await model.get_one({ id: new_recipe_id });
-    if (!new_recipe)
-      throw { message: "There was an error adding a new recipe." };
+    const new_recipe = await model.get_one({id: new_recipe_id});
+    if (!new_recipe) throw {message: "There was an error adding a new recipe."};
     else {
       res.status(200).json(new_recipe);
     }
@@ -24,9 +23,9 @@ router.post(`/recipes`, validate.token, validate.recipe, async (req, res) => {
 
 //get one recipe
 router.get(`/recipes/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const recipe = await model.get_one({ id });
+    const recipe = await model.get_one({id});
     recipe
       ? res.status(200).json(recipe)
       : res.status(404).json("No recipe found.");
@@ -82,17 +81,17 @@ router.put(
     try {
       const success = await model.update_one(req.params.id, {
         ...res.locals.recipe,
-        owner_id: req.user.id
+        owner_id: req.user.id,
       });
       if (success) {
-        const recipe = await model.get_one({ id: req.params.id });
+        const recipe = await model.get_one({id: req.params.id});
         return res.status(200).json(recipe);
       } else res.status(404).json(`Couldn't update recipe`);
     } catch (err) {
       if (err && err.userError) res.status(400).json(err);
       else res.status(500).json(err);
     }
-  }
+  },
 );
 
 //terminate a recipe
@@ -101,7 +100,7 @@ router.delete(
   validate.token,
   validate.user_recipe,
   async (req, res) => {
-    const { id } = req.params;
+    const {id} = req.params;
     try {
       const recipe = await model.remove_one(id);
       // ↑ Returns an array of the recipe, ↓ so we use the [0]th index.
@@ -109,7 +108,7 @@ router.delete(
     } catch (err) {
       res.status(500).json(err);
     }
-  }
+  },
 );
 
 //terminate all recipes

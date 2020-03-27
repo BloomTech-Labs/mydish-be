@@ -1,23 +1,25 @@
 module.exports = tbl => {
-    tbl.increments('id')
-    tbl.integer('recipe_id')
-        .references('id')
-        .inTable('recipes')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
-        .notNullable()
-    tbl.integer('ingredient_id')
-        .references('id')
-        .inTable('ingredients')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
-        .notNullable()
-    tbl.integer('unit_id')
-        .references('id')
-        .inTable('units')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
-        .notNullable()
-    tbl.float('quantity')
-        .notNullable()
-}
+  tbl.increments("id");
+  tbl
+    .integer("recipe_id")
+    .references("id")
+    .inTable("recipes")
+    .onUpdate("CASCADE")
+    .onDelete("CASCADE")
+    .notNullable();
+  tbl
+    .integer("ingredient_id")
+    .references("id")
+    .inTable("ingredients")
+    .onUpdate("CASCADE")
+    .onDelete("CASCADE")
+    .notNullable();
+  tbl
+    .integer("unit_id")
+    .references("id")
+    .inTable("units")
+    .onUpdate("CASCADE")
+    .onDelete("CASCADE")
+    .notNullable();
+  tbl.float("quantity").notNullable();
+};
