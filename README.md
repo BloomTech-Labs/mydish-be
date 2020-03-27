@@ -35,7 +35,7 @@ To get the server running locally:
 - **npm run server** to start the local server
 - **npm run test** to start server using testing environment
 
-# Setting up a local PostgreSQL database
+## Setting up a local PostgreSQL database
 
 ### Install PSQL
 
@@ -60,7 +60,7 @@ For Mac follow the steps in [this link](https://www.robinwieruch.de/postgres-sql
 
 Now you should be set up with a development database
 
-# Setting up AWS S3:
+## Setting up AWS S3:
 
 Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
 
@@ -78,6 +78,10 @@ S3_IAM_USER_SECRET=yOUr+sUPER+s3cr3t+k3y+HER3+alkjLEKJRhsrh
 
 As long as those values are set to the right keys and everything is saved, it will work without issue.
 EVERYONE working on the backend needs to place the exact same credentials in their `.env` file.
+
+## Deployed API
+
+This API is deployed on Heroku. There are two deployed versions; one is for staging, the other for production. Staging automatically deploys from the `development-api` branch, whereas production deploys from `master`.
 
 ## Tech Stack
 
