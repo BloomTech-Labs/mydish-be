@@ -3,9 +3,9 @@ const model = require("../models/tags");
 
 //add a tag
 router.post(`/tags`, async (req, res) => {
-  const { name } = req.body;
+  const {name} = req.body;
   try {
-    const new_tag = await model.add_one({ name });
+    const new_tag = await model.add_one({name});
     res.status(200).json(new_tag);
   } catch (err) {
     console.log("whoops", err);
@@ -15,9 +15,9 @@ router.post(`/tags`, async (req, res) => {
 
 //get one tag
 router.get(`/tags/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const tag = await model.get_one({ id });
+    const tag = await model.get_one({id});
     tag ? res.status(200).json(tag) : res.status(404).json("No tag found.");
   } catch (err) {
     res.status(500).json(err.detail);
@@ -38,7 +38,7 @@ router.get(`/tags`, async (req, res) => {
 
 //update a tag
 router.put(`/tags/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updates = req.body;
   try {
     const tag = await model.update_one(id, updates);
@@ -52,7 +52,7 @@ router.put(`/tags/:id`, async (req, res) => {
 
 //terminate a tag
 router.delete(`/tags/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const tag = await model.remove_one(id);
     tag

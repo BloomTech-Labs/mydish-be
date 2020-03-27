@@ -8,7 +8,7 @@ add_one = async obj => {
         .returning("*");
       const user_roles_entry = {
         user_id: return_user[0].id,
-        role_id: 1
+        role_id: 1,
       };
       await trx("user_roles").insert(user_roles_entry);
       return return_user[0];
@@ -27,7 +27,7 @@ get_by_id = id =>
       "users.id",
       "users.username",
       "users.password",
-      db.raw(`json_agg(roles.name) as roles`)
+      db.raw(`json_agg(roles.name) as roles`),
     )
     .groupBy("users.id", "users.username", "users.password")
     .first();
@@ -41,7 +41,7 @@ get_one = async search_params =>
       "users.id",
       "users.username",
       "users.password",
-      db.raw(`json_agg(roles.name) as roles`)
+      db.raw(`json_agg(roles.name) as roles`),
     )
     .groupBy("users.id", "users.username", "users.password")
     .first();
@@ -51,7 +51,7 @@ get_all = async (search_params = {}) => await db("users").where(search_params);
 update_one = async (id, obj) =>
   (
     await db("users")
-      .where({ id })
+      .where({id})
       .update(obj)
       .returning("*")
   )[0];
@@ -59,7 +59,7 @@ update_one = async (id, obj) =>
 remove_one = async id =>
   (
     await db("users")
-      .where({ id })
+      .where({id})
       .delete()
       .returning("*")
   )[0];
@@ -73,5 +73,5 @@ module.exports = {
   get_all,
   update_one,
   remove_one,
-  remove_all
+  remove_all,
 };

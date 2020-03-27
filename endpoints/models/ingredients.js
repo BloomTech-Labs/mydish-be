@@ -19,13 +19,13 @@ get_all = (search_params = {}) => db("ingredients").where(search_params);
 
 update_one = (id, obj) =>
   db("ingredients")
-    .where({ id })
+    .where({id})
     .update(obj)
     .returning("*")[0];
 
 remove_one = id =>
   db("ingredients")
-    .where({ id })
+    .where({id})
     .delete()
     .returning("*")[0];
 
@@ -38,5 +38,5 @@ module.exports = {
   get_all,
   update_one,
   remove_one,
-  remove_all
+  remove_all,
 };

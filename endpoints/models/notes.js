@@ -17,7 +17,7 @@ get_all = async (search_params = {}) => await db("notes").where(search_params);
 update_one = async (id, obj) =>
   (
     await db("notes")
-      .where({ id })
+      .where({id})
       .update(obj)
       .returning("*")
   )[0];
@@ -25,7 +25,7 @@ update_one = async (id, obj) =>
 remove_one = async id =>
   (
     await db("notes")
-      .where({ id })
+      .where({id})
       .delete()
       .returning("*")
   )[0];
@@ -38,5 +38,5 @@ module.exports = {
   get_all,
   update_one,
   remove_one,
-  remove_all
+  remove_all,
 };
