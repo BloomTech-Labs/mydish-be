@@ -9,7 +9,7 @@ const seed_data = [
   { recipe_id: 3, tag_id: 1 }, // id: 6,
   { recipe_id: 3, tag_id: 5 }, // id: 7,
   { recipe_id: 3, tag_id: 6 }, // id: 8,
-  
+
   { recipe_id: 4, tag_id: 6 }, // id: 9,
   { recipe_id: 4, tag_id: 5 }, // id: 10,
   { recipe_id: 4, tag_id: 4 } // id: 11,

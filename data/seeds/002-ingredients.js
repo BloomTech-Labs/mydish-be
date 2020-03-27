@@ -117,7 +117,7 @@ const seed_data = [
   { name: "oil", category: "fats" }, // id: 110
   { name: "italian seasoning", category: "seasoning" }, // id: 111
   { name: "butter", category: "fats" }, // id: 112
-  { name: "cheddar", category: "dairy" }, // id: 113
+  { name: "cheddar", category: "dairy" } // id: 113
 ];
 
 // So we can import seed_data for testing
