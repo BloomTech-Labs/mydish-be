@@ -367,10 +367,16 @@ const update_one = async (recipe_id, updated_recipe) => {
             .where("name", ingredient.name)
             .select("id")
             .first();
-          const unit_id = await trx("units")
+          let unit_id = await trx("units")
             .where("name", ingredient.units)
             .select("id")
             .first();
+          if (!unit_id) {
+            const [new_unit] = await db("units")
+              .insert({name: ingredient.units})
+              .returning("id");
+            unit_id = {id: new_unit};
+          }
           return {
             id: ingredient.id,
             recipe_id, // recipe_id from function parameters
