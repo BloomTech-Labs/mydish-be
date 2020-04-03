@@ -7,7 +7,7 @@ jest.mock("../../endpoints/middleware/validate", () => {
   return {
     user: (req, res, next) => next(),
     token: (req, res, next) => {
-      req.user = { id: 1 };
+      req.user = {id: 1};
       next();
     },
     admin: (req, res, next) => next(),
@@ -15,7 +15,7 @@ jest.mock("../../endpoints/middleware/validate", () => {
       res.locals.recipe = req.body;
       next();
     },
-    user_recipe: (req, res, next) => next()
+    user_recipe: (req, res, next) => next(),
   };
 });
 
@@ -35,64 +35,64 @@ describe("GET /recipes/:id/versions", () => {
   const fake_db = [
     {
       id: 1,
-      changes: { a: "b", c: "d" },
+      changes: {a: "b", c: "d"},
       recipe_id: 1,
       revision_number: 1,
-      test: true
+      test: true,
     },
     {
       id: 2,
-      changes: { a: "b", c: "d" },
+      changes: {a: "b", c: "d"},
       recipe_id: 1,
       revision_number: 2,
-      test: true
+      test: true,
     },
     {
       id: 3,
-      changes: { a: "b", c: "f" },
+      changes: {a: "b", c: "f"},
       recipe_id: 1,
       revision_number: 3,
-      test: true
+      test: true,
     },
     {
       id: 4,
-      changes: { a: "b", c: "e" },
+      changes: {a: "b", c: "e"},
       recipe_id: 1,
       revision_number: 4,
-      test: true
+      test: true,
     },
     {
       id: 5,
-      changes: { a: "b", c: "g" },
+      changes: {a: "b", c: "g"},
       recipe_id: 1,
       revision_number: 5,
-      test: true
+      test: true,
     },
     {
       id: 6,
-      changes: { a: "b", c: "h" },
+      changes: {a: "b", c: "h"},
       recipe_id: 1,
       revision_number: 6,
-      test: true
+      test: true,
     },
     {
       id: 7,
-      changes: { a: "b", c: "i" },
+      changes: {a: "b", c: "i"},
       recipe_id: 1,
       revision_number: 7,
-      test: true
+      test: true,
     },
     {
       id: 8,
-      changes: { a: "b", c: "l" },
+      changes: {a: "b", c: "l"},
       recipe_id: 1,
       revision_number: 8,
-      test: true
+      test: true,
     },
     {
       recipe_id: 2,
-      changes: []
-    }
+      changes: [],
+    },
   ];
   test("Responds with 200 if successful", async () => {
     version_model.get_all_versions = jest.fn(() => {
@@ -111,7 +111,7 @@ describe("GET /recipes/:id/versions", () => {
 
   test("Returns message if the model returns an empty array", async () => {
     version_model.get_all_versions = jest.fn(
-      () => new Promise(res => setTimeout(() => res([]), 0))
+      () => new Promise(res => setTimeout(() => res([]), 0)),
     );
 
     const expected_msg = /don't have any/i;
@@ -125,7 +125,7 @@ describe("GET /recipes/:id/versions", () => {
 
   test("returns 500 if unsuccessful", async () => {
     version_model.get_all_versions = jest.fn(() => {
-      throw { detail: "error" };
+      throw {detail: "error"};
     });
     const expected_error = "error";
 
@@ -143,8 +143,8 @@ describe("GET /recipes/:id/version/:rev_id", () => {
     version_model.get_version_by_id = jest.fn((id, rev_id) => {
       return new Promise(res => {
         setTimeout(
-          () => res({ recipe_id: Number(id), id: Number(rev_id), test: true }),
-          0
+          () => res({recipe_id: Number(id), id: Number(rev_id), test: true}),
+          0,
         );
       });
     });
@@ -152,7 +152,7 @@ describe("GET /recipes/:id/version/:rev_id", () => {
     const expected_version = {
       id: 2,
       recipe_id: 1,
-      test: true
+      test: true,
     };
 
     const response = await request(server).get("/recipes/1/version/2");
@@ -177,7 +177,7 @@ describe("GET /recipes/:id/version/:rev_id", () => {
 
   test("Responds with 500 if unsuccessful", async () => {
     version_model.get_version_by_id = jest.fn(() => {
-      throw { detail: "error" };
+      throw {detail: "error"};
     });
     const expected_error = "error";
 
@@ -199,9 +199,9 @@ describe("GET /recipes/:id/versions/:rev_num", () => {
             res({
               recipe_id: Number(id),
               revision_number: Number(rev_num),
-              test: true
+              test: true,
             }),
-          0
+          0,
         );
       });
     });
@@ -209,7 +209,7 @@ describe("GET /recipes/:id/versions/:rev_num", () => {
     const expected_version = {
       revision_number: 2,
       recipe_id: 1,
-      test: true
+      test: true,
     };
 
     const response = await request(server).get("/recipes/1/versions/2");
@@ -234,7 +234,7 @@ describe("GET /recipes/:id/versions/:rev_num", () => {
 
   test("Responds with 500 if unsuccessful", async () => {
     version_model.get_version_by_num = jest.fn(() => {
-      throw { detail: "error" };
+      throw {detail: "error"};
     });
     const expected_error = "error";
 

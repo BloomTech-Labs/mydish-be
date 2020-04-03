@@ -3,12 +3,12 @@ const model = require("../models/instructions");
 
 //add a instruction
 router.post(`/instructions`, async (req, res) => {
-  const { recipe_id, step_number, description } = req.body;
+  const {recipe_id, step_number, description} = req.body;
   try {
     const new_instruction = await model.add_one({
       recipe_id,
       step_number,
-      description
+      description,
     });
     res.status(200).json(new_instruction);
   } catch (err) {
@@ -19,9 +19,9 @@ router.post(`/instructions`, async (req, res) => {
 
 //get one instruction
 router.get(`/instructions/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const instruction = await model.get_one({ id });
+    const instruction = await model.get_one({id});
     instruction
       ? res.status(200).json(instruction)
       : res.status(404).json("No instruction found.");
@@ -44,7 +44,7 @@ router.get(`/instructions`, async (req, res) => {
 
 //update a instruction
 router.put(`/instructions/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updates = req.body;
   try {
     const instruction = await model.update_one(id, updates);
@@ -58,7 +58,7 @@ router.put(`/instructions/:id`, async (req, res) => {
 
 //terminate a instruction
 router.delete(`/instructions/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const instruction = await model.remove_one(id);
     instruction

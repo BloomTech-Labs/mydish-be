@@ -3,9 +3,9 @@ const model = require("../models/ingredients");
 
 //add a ingredient
 router.post(`/ingredients`, async (req, res) => {
-  const { name, category } = req.body;
+  const {name, category} = req.body;
   try {
-    const new_ingredient = await model.add_one({ name, category });
+    const new_ingredient = await model.add_one({name, category});
     res.status(200).json(new_ingredient);
   } catch (err) {
     console.log(err);
@@ -15,9 +15,9 @@ router.post(`/ingredients`, async (req, res) => {
 
 //get one ingredient
 router.get(`/ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
-    const ingredient = await model.get_one({ id });
+    const ingredient = await model.get_one({id});
     ingredient
       ? res.status(200).json(ingredient)
       : res.status(404).json("No ingredient found.");
@@ -40,7 +40,7 @@ router.get(`/ingredients`, async (req, res) => {
 
 //update a ingredient
 router.put(`/ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const updates = req.body;
   try {
     const ingredient = await model.update_one(id, updates);
@@ -54,7 +54,7 @@ router.put(`/ingredients/:id`, async (req, res) => {
 
 //terminate a ingredient
 router.delete(`/ingredients/:id`, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const ingredient = await model.remove_one(id);
     ingredient

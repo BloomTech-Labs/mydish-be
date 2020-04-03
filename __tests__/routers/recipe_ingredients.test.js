@@ -7,7 +7,7 @@ jest.mock("../../endpoints/middleware/validate", () => {
   return {
     user: (req, res, next) => next(),
     token: (req, res, next) => {
-      req.user = { id: 1 };
+      req.user = {id: 1};
       next();
     },
     admin: (req, res, next) => next(),
@@ -15,7 +15,7 @@ jest.mock("../../endpoints/middleware/validate", () => {
       res.locals.recipe = req.body;
       next();
     },
-    user_recipe: (req, res, next) => next()
+    user_recipe: (req, res, next) => next(),
   };
 });
 
@@ -36,8 +36,8 @@ describe('POST "/recipe_ingredients"', () => {
     recipe_ingredients_model.add_one = jest.fn(
       req_obj =>
         new Promise(res => {
-          setTimeout(() => res({ ...req_obj, test: true }), 0);
-        })
+          setTimeout(() => res({...req_obj, test: true}), 0);
+        }),
     );
     const new_recipe_ingredient = {
       recipe_id: 1,
@@ -47,7 +47,7 @@ describe('POST "/recipe_ingredients"', () => {
     };
     const expected_recipe_ingredient = {
       ...new_recipe_ingredient,
-      test: true
+      test: true,
     };
 
     const response = await request(server)
@@ -63,9 +63,9 @@ describe('POST "/recipe_ingredients"', () => {
 
   test("Returns 500 if unsuccessful", async () => {
     recipe_ingredients_model.add_one = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
     const new_recipe_ingredient = {
       recipe_id: 1,
       ingredient_id: 2,
@@ -90,12 +90,12 @@ describe('GET "/recipe_ingredients/:id"', () => {
     recipe_ingredients_model.get_one = jest.fn(
       id_obj =>
         new Promise(res => {
-          setTimeout(() => res({ id: Number(id_obj.id), test: true }), 0);
-        })
+          setTimeout(() => res({id: Number(id_obj.id), test: true}), 0);
+        }),
     );
     const expected_recipe = {
       id: 1, // We will test for recipe_ingredient id 1
-      test: true
+      test: true,
     };
 
     const response = await request(server).get("/recipe_ingredients/1");
@@ -120,9 +120,9 @@ describe('GET "/recipe_ingredients/:id"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipe_ingredients_model.get_one = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
 
     const response = await request(server).get("/recipe_ingredients/1");
 
@@ -136,10 +136,10 @@ describe('GET "/recipe_ingredients/:id"', () => {
 describe('GET "/recipe_ingredients"', () => {
   // We will use this fake_db in our tests
   const fake_db = [
-    { test_id: 1, test: true },
-    { test_id: 2, test: true },
-    { test_id: 22, test: true },
-    { test_id: 3, test: true }
+    {test_id: 1, test: true},
+    {test_id: 2, test: true},
+    {test_id: 22, test: true},
+    {test_id: 3, test: true},
   ];
   test("returns 200 if no search is given", async () => {
     recipe_ingredients_model.get_all = jest.fn(
@@ -148,9 +148,9 @@ describe('GET "/recipe_ingredients"', () => {
           setTimeout(
             // Resolve with the fake_db to emulate a call
             () => res(fake_db),
-            0
+            0,
           );
-        })
+        }),
     );
     // We should return all of our database on a get_all
     const expected_recipes = fake_db;
@@ -177,9 +177,9 @@ describe('GET "/recipe_ingredients"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipe_ingredients_model.get_all = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
 
     const response = await request(server).get("/recipe_ingredients");
 
@@ -193,14 +193,14 @@ describe('GET "/recipe_ingredients"', () => {
 describe("PUT /recipe_ingredients/:id", () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(1)), 0)
+      () => new Promise(res => setTimeout(() => res(1)), 0),
     );
 
     const expected_response = 1; // success = 1
 
     const response = await request(server)
       .put("/recipe_ingredients/2")
-      .send({ body: "updates", test: true })
+      .send({body: "updates", test: true})
       .set("Accept", "application/json");
 
     expect(response.status).toBe(200);
@@ -211,14 +211,14 @@ describe("PUT /recipe_ingredients/:id", () => {
 
   test("Returns 404 with a falsey return value", async () => {
     recipe_ingredients_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(false)), 0)
+      () => new Promise(res => setTimeout(() => res(false)), 0),
     );
 
     const expected_error = /couldn't update/i; // success = 1
 
     const response = await request(server)
       .put("/recipe_ingredients/25")
-      .send({ body: "updates", test: true })
+      .send({body: "updates", test: true})
       .set("Accept", "application/json");
 
     expect(response.status).toBe(404);
@@ -229,13 +229,13 @@ describe("PUT /recipe_ingredients/:id", () => {
 
   test("Returns 500 if an error is thrown", async () => {
     recipe_ingredients_model.update_one = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
 
     const response = await request(server)
       .put("/recipe_ingredients/2")
-      .send({ body: "updates", test: true })
+      .send({body: "updates", test: true})
       .set("Accept", "application/json");
 
     expect(response.status).toEqual(500);
@@ -250,8 +250,8 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
     recipe_ingredients_model.remove_one = jest.fn(
       () =>
         new Promise(res => {
-          setTimeout(() => res([{ title: "test_title" }]), 0);
-        })
+          setTimeout(() => res([{title: "test_title"}]), 0);
+        }),
     );
     const expected_response = /id 1.*terminated/i;
 
@@ -267,7 +267,7 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
       () =>
         new Promise(res => {
           setTimeout(() => res(false), 0);
-        })
+        }),
     );
     const expected_response = /couldn't find.*id 1/i;
 
@@ -281,9 +281,9 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
 
   test("returns 500 if unsuccessful", async () => {
     recipe_ingredients_model.remove_one = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
 
     const response = await request(server).delete("/recipe_ingredients/1");
 
@@ -300,7 +300,7 @@ describe('DELETE "/recipe_ingredients/"', () => {
       () =>
         new Promise(res => {
           setTimeout(() => res(true), 0);
-        })
+        }),
     );
     const expected_response = /all recipe_ingredients/i;
 
@@ -314,9 +314,9 @@ describe('DELETE "/recipe_ingredients/"', () => {
 
   test("returns 500 if an error is thrown", async () => {
     recipe_ingredients_model.remove_all = jest.fn(() => {
-      throw { message: "error" };
+      throw {message: "error"};
     });
-    const expected_error = { message: "error" };
+    const expected_error = {message: "error"};
 
     const response = await request(server).delete("/recipe_ingredients");
 

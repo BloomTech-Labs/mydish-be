@@ -2,11 +2,11 @@ const db = require("../../data/dbConfig");
 const models = {
   ingredients: require("./ingredients"),
   units: require("./units"),
-  tags: require("./tags")
+  tags: require("./tags"),
 };
 const helper = {
   find_matching: require("../helpers/find_matches"),
-  can_post: require("../helpers/can_post")
+  can_post: require("../helpers/can_post"),
 };
 // const models = {
 //     ingredients: require('./ingredients')
@@ -39,16 +39,16 @@ const helper = {
 
 const get_one = search_params => {
   return db(`recipes as r`)
-    .where({ "r.id": search_params.id })
-    .join("users", { "r.owner_id": "users.id" })
-    .leftJoin("recipe_ingredients as list", { "list.recipe_id": "r.id" })
-    .leftJoin("ingredients", { "list.ingredient_id": "ingredients.id" })
-    .leftJoin("units", { "list.unit_id": "units.id" })
-    .leftJoin("instructions", { "instructions.recipe_id": "r.id" })
-    .leftJoin("recipe_tags as rt", { "rt.recipe_id": "r.id" })
-    .leftJoin("tags", { "rt.tag_id": "tags.id" })
-    .leftJoin("notes", { "notes.recipe_id": "r.id" })
-    .leftJoin("previous_versions as pv", { "pv.recipe_id": "r.id" })
+    .where({"r.id": search_params.id})
+    .join("users", {"r.owner_id": "users.id"})
+    .leftJoin("recipe_ingredients as list", {"list.recipe_id": "r.id"})
+    .leftJoin("ingredients", {"list.ingredient_id": "ingredients.id"})
+    .leftJoin("units", {"list.unit_id": "units.id"})
+    .leftJoin("instructions", {"instructions.recipe_id": "r.id"})
+    .leftJoin("recipe_tags as rt", {"rt.recipe_id": "r.id"})
+    .leftJoin("tags", {"rt.tag_id": "tags.id"})
+    .leftJoin("notes", {"notes.recipe_id": "r.id"})
+    .leftJoin("previous_versions as pv", {"pv.recipe_id": "r.id"})
     .countDistinct("pv.id as previous_versions_count")
     .select(
       "r.id",
@@ -82,7 +82,7 @@ const get_one = search_params => {
       db.raw(`json_agg(distinct jsonb_build_object(
                 'id', notes.id,
                 'description', notes.description
-                )) as notes`)
+                )) as notes`),
     )
     .groupBy("r.id", "users.id", "r.author_comment", "date_modified")
     .first();
@@ -94,7 +94,7 @@ const get_all = title => {
       // ilike = fuzzy search, ignore case
       // WHERE r.title LIKE %cerea%
       .where("r.title", "ilike", `%${title}%`)
-      .join("users", { "r.owner_id": "users.id" })
+      .join("users", {"r.owner_id": "users.id"})
       .select(
         "r.prep_time",
         "r.cook_time",
@@ -106,7 +106,7 @@ const get_all = title => {
         db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
-                ) as owner`)
+                ) as owner`),
       )
       .groupBy("r.id", "r.img", "r.prep_time", "r.cook_time", "users.id")
   );
@@ -128,23 +128,23 @@ const add_one = async new_recipe => {
     //======================PREPPING INGREDIENTS AND UNITS=============================//
 
     //creates a query that finds ingredients not already existing in our database
-    const { non_ingredients } = await helper.find_matching(
+    const {non_ingredients} = await helper.find_matching(
       "ingredients",
       new_recipe.ingredients,
-      ["id", "name"]
+      ["id", "name"],
     );
 
     let ingredients_to_be_added = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
       // Do they have the props necessary to add to the db? If not, throw an error!
-      const { errors } = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw { userError: true, ingredient_errors: errors };
+      const {errors} = await helper.can_post("ingredients", non_ingredients);
+      if (errors.length) throw {userError: true, ingredient_errors: errors};
 
       // If yes, prep them to be added to the db by giving them
       //     the valid schema { name, category }
       ingredients_to_be_added = non_ingredients.map(ing => {
-        return { name: ing.name, category: ing.category || null };
+        return {name: ing.name, category: ing.category || null};
       });
     }
 
@@ -166,7 +166,7 @@ const add_one = async new_recipe => {
         prep_time: new_recipe.prep_time || null,
         cook_time: new_recipe.cook_time || null,
         description: new_recipe.description || null,
-        author_comment: new_recipe.author_comment
+        author_comment: new_recipe.author_comment,
       };
       const added_recipe_id = await trx("recipes")
         .insert(recipe_info)
@@ -183,7 +183,7 @@ const add_one = async new_recipe => {
         .select("id");
       const recipe_tags_to_be_added = tag_ids.map(tag => ({
         recipe_id: added_recipe_id[0],
-        tag_id: tag.id
+        tag_id: tag.id,
       }));
       await trx("recipe_tags").insert(recipe_tags_to_be_added);
 
@@ -207,9 +207,9 @@ const add_one = async new_recipe => {
             recipe_id: added_recipe_id[0],
             ingredient_id: ingredient_id.id,
             unit_id: unit_id.id,
-            quantity: ingredient.quantity
+            quantity: ingredient.quantity,
           };
-        })
+        }),
       );
       await trx("recipe_ingredients").insert(recipe_ingredients_to_be_added);
 
@@ -218,7 +218,7 @@ const add_one = async new_recipe => {
       // Assuming we have an array of objects like { step_number, description },
       //     we add the recipe_id to each object and add the full array to the database.
       const instructions_to_be_added = new_recipe.instructions.map(
-        instruction => ({ ...instruction, recipe_id: added_recipe_id[0] })
+        instruction => ({...instruction, recipe_id: added_recipe_id[0]}),
       );
       await trx("instructions").insert(instructions_to_be_added);
 
@@ -230,7 +230,7 @@ const add_one = async new_recipe => {
       if (new_recipe.notes && new_recipe.notes.length) {
         const notes_to_be_added = new_recipe.notes.map(note => ({
           recipe_id: added_recipe_id[0],
-          description: note
+          description: note,
         }));
         await trx("notes").insert(notes_to_be_added);
       }
@@ -264,7 +264,7 @@ const update_one = async (recipe_id, updated_recipe) => {
   // If unsuccessful, will hold our error.
   let success;
   try {
-    const existing_recipe = await get_one({ id: recipe_id });
+    const existing_recipe = await get_one({id: recipe_id});
 
     if (!existing_recipe) {
       return false;
@@ -273,23 +273,23 @@ const update_one = async (recipe_id, updated_recipe) => {
     //======================PREPPING INGREDIENTS AND UNITS=============================//
 
     //creates a query that finds ingredients not already existing in our database
-    const { non_ingredients } = await helper.find_matching(
+    const {non_ingredients} = await helper.find_matching(
       "ingredients",
       updated_recipe.ingredients,
-      ["id", "name"]
+      ["id", "name"],
     );
 
     let new_ingredient_entries = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
       // Do they have the props necessary to add to the db? If not, throw an error!
-      const { errors } = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw { userError: true, ingredient_errors: errors };
+      const {errors} = await helper.can_post("ingredients", non_ingredients);
+      if (errors.length) throw {userError: true, ingredient_errors: errors};
 
       // If yes, prep them to be added to the db by giving them
       //     the valid schema { name, category }
       new_ingredient_entries = non_ingredients.map(ing => {
-        return { name: ing.name, category: ing.category || null };
+        return {name: ing.name, category: ing.category || null};
       });
     }
     await db.transaction(async trx => {
@@ -307,7 +307,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         .select("id");
       const recipe_tags_to_be_updated = tag_ids.map(tag => ({
         recipe_id: recipe_id,
-        tag_id: tag.id
+        tag_id: tag.id,
       }));
       await trx("recipe_tags")
         .delete("recipe_tags")
@@ -317,16 +317,16 @@ const update_one = async (recipe_id, updated_recipe) => {
       //=======================UPDATING RECIPE_INSTRUCTIONS===========================//
 
       const existing_instructions = await trx("instructions").where({
-        recipe_id
+        recipe_id,
       });
 
       // If we have any ids from our request, remove them. We will only be comparing step_number.
       const updated_instructions = updated_recipe.instructions.map(
-        ({ step_number, description }) => ({
+        ({step_number, description}) => ({
           recipe_id,
           step_number,
-          description
-        })
+          description,
+        }),
       );
       const instructions_to_be_deleted = [];
       const instructions_to_be_updated = [];
@@ -337,13 +337,13 @@ const update_one = async (recipe_id, updated_recipe) => {
       //     updated_instructions, those instructions will be deleted.
       existing_instructions.forEach(instruction => {
         const index = updated_instructions.findIndex(
-          check => check.step_number === instruction.step_number
+          check => check.step_number === instruction.step_number,
         );
         if (index === -1)
           instructions_to_be_deleted.push(instruction.step_number);
         else {
           instructions_to_be_updated.push(
-            updated_instructions.splice(index, 1)[0]
+            updated_instructions.splice(index, 1)[0],
           );
         }
       });
@@ -360,16 +360,16 @@ const update_one = async (recipe_id, updated_recipe) => {
         await Promise.all(
           instructions_to_be_updated.map(async instruct => {
             await trx("instructions")
-              .where({ recipe_id })
-              .andWhere({ step_number: instruct.step_number })
+              .where({recipe_id})
+              .andWhere({step_number: instruct.step_number})
               .update(instruct);
-          })
+          }),
         );
       }
       if (instructions_to_be_deleted.length) {
         await trx("instructions")
           .whereIn("step_number", instructions_to_be_deleted)
-          .andWhere({ recipe_id })
+          .andWhere({recipe_id})
           .del();
       }
       if (instructions_to_be_added.length) {
@@ -398,13 +398,13 @@ const update_one = async (recipe_id, updated_recipe) => {
             recipe_id, // recipe_id from function parameters
             ingredient_id: ingredient_id.id,
             unit_id: unit_id.id,
-            quantity: ingredient.quantity
+            quantity: ingredient.quantity,
           };
-        })
+        }),
       );
 
       const existing_ingredients = await trx("recipe_ingredients").where({
-        recipe_id
+        recipe_id,
       });
       const ingredients_to_be_deleted = [];
       const ingredients_to_be_updated = [];
@@ -415,12 +415,12 @@ const update_one = async (recipe_id, updated_recipe) => {
       //     updated_ingredients, they will be deleted.
       existing_ingredients.forEach(ingredient => {
         const index = updated_ingredients.findIndex(
-          check => check.id === ingredient.id
+          check => check.id === ingredient.id,
         );
         if (index === -1) ingredients_to_be_deleted.push(ingredient.id);
         else {
           ingredients_to_be_updated.push(
-            updated_ingredients.splice(index, 1)[0]
+            updated_ingredients.splice(index, 1)[0],
           );
         }
       });
@@ -435,9 +435,9 @@ const update_one = async (recipe_id, updated_recipe) => {
         await Promise.all(
           ingredients_to_be_updated.map(async ing => {
             await trx("recipe_ingredients")
-              .where({ id: ing.id })
+              .where({id: ing.id})
               .update(ing);
-          })
+          }),
         );
       }
       if (ingredients_to_be_deleted.length) {
@@ -452,10 +452,10 @@ const update_one = async (recipe_id, updated_recipe) => {
       //======================UPDATING NOTES=========================//
 
       // Get our existing_notes from the database, as well as our updated_notes.
-      const existing_notes = await trx("notes").where({ recipe_id });
+      const existing_notes = await trx("notes").where({recipe_id});
       const updated_notes = updated_recipe.notes.map(note => ({
         ...note,
-        recipe_id
+        recipe_id,
       }));
 
       const notes_to_be_deleted = [];
@@ -480,9 +480,9 @@ const update_one = async (recipe_id, updated_recipe) => {
         await Promise.all(
           notes_to_be_updated.map(async note => {
             await trx("notes")
-              .where({ id: note.id })
+              .where({id: note.id})
               .update(note);
-          })
+          }),
         );
       }
       if (notes_to_be_deleted.length) {
@@ -497,7 +497,7 @@ const update_one = async (recipe_id, updated_recipe) => {
       //=========================SAVE PREVIOUS VERSION ENTRY=======================//
 
       const total_revisions = await trx("previous_versions")
-        .where({ recipe_id })
+        .where({recipe_id})
         .count("id")
         .first();
 
@@ -507,7 +507,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         recipe_id,
         changes: existing_recipe,
         revision_number: Number(total_revisions.count) + 1,
-        created_at: existing_recipe.date_modified
+        created_at: existing_recipe.date_modified,
       };
       // ↑ This "existing_recipe.date_modified" property is the last time the recipe was edited.
       // We set this to the "created_at" time because this is the time when this version of the
@@ -535,10 +535,10 @@ const update_one = async (recipe_id, updated_recipe) => {
         cook_time: updated_recipe.cook_time || 0,
         description: updated_recipe.description || undefined,
         author_comment: updated_recipe.author_comment,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       };
       await trx("recipes")
-        .where({ id: recipe_id })
+        .where({id: recipe_id})
         .update(recipe_info);
 
       //=========================YOU DID IT, YOU'RE DONE=======================//
@@ -558,7 +558,7 @@ const update_one = async (recipe_id, updated_recipe) => {
 
 const remove_one = id =>
   db("recipes")
-    .where({ id })
+    .where({id})
     .delete()
     .returning("*");
 
@@ -569,9 +569,9 @@ const get_by_course = (id, course) => {
     db(`recipes as r`)
       // ilike = fuzzy search, ignore case
       // WHERE r.title LIKE %cerea%
-      .join("users", { "r.owner_id": "users.id" })
-      .join("recipe_tags as rt", { "r.id": "rt.recipe_id" })
-      .join("tags as t", { "rt.tag_id": "t.id" })
+      .join("users", {"r.owner_id": "users.id"})
+      .join("recipe_tags as rt", {"r.id": "rt.recipe_id"})
+      .join("tags as t", {"rt.tag_id": "t.id"})
       .select(
         "r.prep_time",
         "r.cook_time",
@@ -583,7 +583,7 @@ const get_by_course = (id, course) => {
         db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
-                ) as owner`)
+                ) as owner`),
       )
       .groupBy(
         "r.id",
@@ -591,18 +591,18 @@ const get_by_course = (id, course) => {
         "r.prep_time",
         "r.cook_time",
         "r.img",
-        "t.id"
+        "t.id",
       )
-      .where({ "users.id": `${id}` })
-      .andWhere({ "t.name": `${course}` })
+      .where({"users.id": `${id}`})
+      .andWhere({"t.name": `${course}`})
   );
 };
 
 const get_user_cookbook = user => {
   return db(`recipes as r`)
-    .join("users", { "r.owner_id": "users.id" })
-    .join("recipe_tags as rt", { "r.id": "rt.recipe_id" })
-    .join("tags as t", { "rt.tag_id": "t.id" })
+    .join("users", {"r.owner_id": "users.id"})
+    .join("recipe_tags as rt", {"r.id": "rt.recipe_id"})
+    .join("tags as t", {"rt.tag_id": "t.id"})
     .select(
       "r.prep_time",
       "r.cook_time",
@@ -617,10 +617,10 @@ const get_user_cookbook = user => {
       db.raw(`json_build_object(
                 'user_id', users.id,
                 'username', users.username
-                ) as owner`)
+                ) as owner`),
     )
     .groupBy("r.id", "users.id", "r.prep_time", "r.cook_time", "r.img", "rt.id")
-    .where({ "users.id": `${user}` });
+    .where({"users.id": `${user}`});
 };
 
 module.exports = {
@@ -631,5 +631,5 @@ module.exports = {
   get_all,
   update_one,
   remove_one,
-  remove_all
+  remove_all,
 };

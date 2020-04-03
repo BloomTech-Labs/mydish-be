@@ -15,12 +15,12 @@ aws.config.credentials = {
   disableAssumeRole: false,
   preferStaticCredentials: false,
   tokenCodeFn: null,
-  httpOptions: null
+  httpOptions: null,
 };
 
 const s3 = new aws.S3({
   accessKeyId: process.env.S3_IAM_USER_KEY,
-  secretAccessKey: process.env.S3_IAM_USER_SECRET
+  secretAccessKey: process.env.S3_IAM_USER_SECRET,
 });
 
 const fileFilter = (request, file, cb) => {
@@ -43,12 +43,12 @@ const uploadImage = multer({
     s3,
     bucket: bucketName,
     metadata: (request, file, cb) => {
-      cb(null, { fieldName: "testy test test metadata wow" });
+      cb(null, {fieldName: "testy test test metadata wow"});
     },
     key: (request, file, cb) => {
       cb(null, Date.now().toString());
-    }
-  })
+    },
+  }),
 }).single("image");
 
-module.exports = { uploadImage };
+module.exports = {uploadImage};

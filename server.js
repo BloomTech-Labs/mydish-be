@@ -12,8 +12,8 @@ server.use(require("helmet")());
 server.use(express.json());
 
 //catchall endpoint
-server.get("/", (req, res) => {
-  res.status(200).json("Yup, it working.");
+server.get("/", (_, res) => {
+  res.status(200).json("Yup, it working..");
 });
 
 //routers

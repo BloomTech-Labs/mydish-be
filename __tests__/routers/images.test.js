@@ -11,7 +11,7 @@ describe("POST /image_upload", () => {
   test("returns 500 error if image is invalid", async () => {
     const response = await request(server)
       .post("/image_upload")
-      .send({ img: "Muahaha, I'm a string!" });
+      .send({img: "Muahaha, I'm a string!"});
 
     expect(response.status).toEqual(500);
   });
