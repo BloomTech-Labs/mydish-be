@@ -108,11 +108,7 @@ const add_one = async new_recipe => {
     let ingredients_to_be_added = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
-      // Do they have the props necessary to add to the db? If not, throw an error!
-      const {errors} = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw {userError: true, ingredient_errors: errors};
-
-      // If yes, prep them to be added to the db by giving them
+      //  prep them to be added to the db by giving them
       //     the valid schema { name, category }
       ingredients_to_be_added = non_ingredients.map(ing => {
         return {name: ing.name, category: ing.category || null};
@@ -261,11 +257,7 @@ const update_one = async (recipe_id, updated_recipe) => {
     let new_ingredient_entries = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
-      // Do they have the props necessary to add to the db? If not, throw an error!
-      const {errors} = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw {userError: true, ingredient_errors: errors};
-
-      // If yes, prep them to be added to the db by giving them
+      // prep them to be added to the db by giving them
       //     the valid schema { name, category }
       new_ingredient_entries = non_ingredients.map(ing => {
         return {name: ing.name, category: ing.category || null};
