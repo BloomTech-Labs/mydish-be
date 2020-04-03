@@ -648,14 +648,13 @@ req.body:
     {
       "name": "eggplant",
       "units": "whole",
-      "quantity": 1,
-      "units_short": null,
+      "quantity": "1",
       "recipe_ingredients_id": 1
     },
     {
         "name": "parmesan",
         "units": "cup",
-        "quantity": 0.5
+        "quantity": "0.5"
     }
   ],
   "instructions": [
