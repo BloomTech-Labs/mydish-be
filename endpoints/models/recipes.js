@@ -8,34 +8,6 @@ const helper = {
   find_matching: require("../helpers/find_matches"),
   can_post: require("../helpers/can_post"),
 };
-// const models = {
-//     ingredients: require('./ingredients')
-// }
-// body = {
-//     title,
-//     minutes: "(optional number) time to make, adding more types of minutes in the works",
-//     img: "(optional string) URL of an image of the food"
-//     notes: "(optional string) free-form notes about the recipe",
-//     categories: [
-//       "(string) category/tag name"
-//     ],
-//     ingredients: [
-//       {
-//         name,
-//         quantity: "(number)",
-//         unit: "(string) example- ml or g or cups"
-//       }
-//     ],
-//     steps: [
-//       body: "(string) step 1 blah blah blah"
-//     ],
-//     ancestor: "(optional number) the ID of the previous version of this recipe"
-//   };
-
-//   res = {
-//     message: 'Recipe created',
-//     recipe_id
-//   };
 
 const get_one = search_params => {
   return db(`recipes as r`)
@@ -68,8 +40,7 @@ const get_one = search_params => {
                 'recipe_ingredients_id', list.id,
                 'name', ingredients.name,
                 'quantity', list.quantity,
-                'units', units.name,
-                'units_short', units.abbreviation
+                'units', units.name
                 )) as ingredients`),
       db.raw(`json_agg(distinct jsonb_build_object(
                 'id', instructions.id,
@@ -137,11 +108,7 @@ const add_one = async new_recipe => {
     let ingredients_to_be_added = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
-      // Do they have the props necessary to add to the db? If not, throw an error!
-      const {errors} = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw {userError: true, ingredient_errors: errors};
-
-      // If yes, prep them to be added to the db by giving them
+      //  prep them to be added to the db by giving them
       //     the valid schema { name, category }
       ingredients_to_be_added = non_ingredients.map(ing => {
         return {name: ing.name, category: ing.category || null};
@@ -192,17 +159,25 @@ const add_one = async new_recipe => {
       // Map through the array of ingredients we have, changing each ingredient object
       //     to match the schema { recipe_id, ingredient_id, unit_id, quantity },
       //     and then add to the database.
+
       const recipe_ingredients_to_be_added = await Promise.all(
         new_recipe.ingredients.map(async ingredient => {
           const ingredient_id = await trx("ingredients")
             .where("name", ingredient.name)
             .select("id")
             .first();
-          const unit_id = await trx("units")
+
+          let unit_id = await trx("units")
             .where("name", ingredient.units)
-            .orWhere("abbreviation", ingredient.units)
             .select("id")
             .first();
+          if (!unit_id) {
+            const [new_unit] = await db("units")
+              .insert({name: ingredient.units})
+              .returning("id");
+            unit_id = {id: new_unit};
+          }
+
           return {
             recipe_id: added_recipe_id[0],
             ingredient_id: ingredient_id.id,
@@ -282,11 +257,7 @@ const update_one = async (recipe_id, updated_recipe) => {
     let new_ingredient_entries = [];
     // Any ingredients that aren't already in our db?
     if (non_ingredients.length) {
-      // Do they have the props necessary to add to the db? If not, throw an error!
-      const {errors} = await helper.can_post("ingredients", non_ingredients);
-      if (errors.length) throw {userError: true, ingredient_errors: errors};
-
-      // If yes, prep them to be added to the db by giving them
+      // prep them to be added to the db by giving them
       //     the valid schema { name, category }
       new_ingredient_entries = non_ingredients.map(ing => {
         return {name: ing.name, category: ing.category || null};
@@ -388,11 +359,16 @@ const update_one = async (recipe_id, updated_recipe) => {
             .where("name", ingredient.name)
             .select("id")
             .first();
-          const unit_id = await trx("units")
+          let unit_id = await trx("units")
             .where("name", ingredient.units)
-            .orWhere("abbreviation", ingredient.units)
             .select("id")
             .first();
+          if (!unit_id) {
+            const [new_unit] = await db("units")
+              .insert({name: ingredient.units})
+              .returning("id");
+            unit_id = {id: new_unit};
+          }
           return {
             id: ingredient.id,
             recipe_id, // recipe_id from function parameters

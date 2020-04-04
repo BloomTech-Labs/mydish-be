@@ -23,9 +23,7 @@ const s3 = new aws.S3({
   secretAccessKey: process.env.S3_IAM_USER_SECRET,
 });
 
-const fileFilter = (request, file, cb) => {
-  console.log("fileFilter executing");
-  console.log("file:", file);
+const fileFilter = (_, file, cb) => {
   if (
     file &&
     (file.mimetype === "image/jpeg" || file.mimetype === "image/png")
@@ -42,10 +40,10 @@ const uploadImage = multer({
     acl: "public-read",
     s3,
     bucket: bucketName,
-    metadata: (request, file, cb) => {
+    metadata: (_, file, cb) => {
       cb(null, {fieldName: "testy test test metadata wow"});
     },
-    key: (request, file, cb) => {
+    key: (_, file, cb) => {
       cb(null, Date.now().toString());
     },
   }),

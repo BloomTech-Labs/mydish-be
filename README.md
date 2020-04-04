@@ -269,7 +269,7 @@ res.data:
     {
       "name": "eggplant",
       "units": "whole",
-      "quantity": 1,
+      "quantity": "1",
       "units_short": null,
       "recipe_ingredients_id": 1
     }
@@ -498,7 +498,7 @@ req.body:
     {
       "name": "eggplant",
       "units": "whole",
-      "quantity": 1
+      "quantity": "1"
     }
   ],
   "instructions": [
@@ -648,14 +648,13 @@ req.body:
     {
       "name": "eggplant",
       "units": "whole",
-      "quantity": 1,
-      "units_short": null,
+      "quantity": "1",
       "recipe_ingredients_id": 1
     },
     {
         "name": "parmesan",
         "units": "cup",
-        "quantity": 0.5
+        "quantity": "0.5"
     }
   ],
   "instructions": [
@@ -793,7 +792,7 @@ Example Response:
       date_modified: "2020-01-27T22:35:20.845Z",
       owner: {
         user_id: 5,
-        username: "Testing123"
+        username: "Testing123",
       },
       ingredients: [
         {
@@ -801,30 +800,30 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 66
-        }
+          recipe_ingredients_id: 66,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test!!!!",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
-    date_modified: "2020-01-27T22:35:20.845Z"
+    date_modified: "2020-01-27T22:35:20.845Z",
   },
   {
     id: 3,
@@ -844,35 +843,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 17
-        }
+          recipe_ingredients_id: 17,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 1,
     date_modified: "2020-01-27T22:35:35.125Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 4,
@@ -892,35 +891,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 18
-        }
+          recipe_ingredients_id: 18,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 2,
     date_modified: "2020-01-27T22:37:39.146Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 5,
@@ -940,35 +939,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 19
-        }
+          recipe_ingredients_id: 19,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 3,
     date_modified: "2020-01-27T22:38:13.029Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 6,
@@ -988,35 +987,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 20
-        }
+          recipe_ingredients_id: 20,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 4,
     date_modified: "2020-01-27T22:42:46.678Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 7,
@@ -1036,35 +1035,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 21
-        }
+          recipe_ingredients_id: 21,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 5,
     date_modified: "2020-01-28T17:47:07.168Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 8,
@@ -1084,35 +1083,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 22
-        }
+          recipe_ingredients_id: 22,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 6,
     date_modified: "2020-01-28T17:48:52.207Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 10,
@@ -1132,35 +1131,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 23
-        }
+          recipe_ingredients_id: 23,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 7,
     date_modified: "2020-01-28T17:49:24.728Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 11,
@@ -1180,35 +1179,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 26
-        }
+          recipe_ingredients_id: 26,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 8,
     date_modified: "2020-01-28T17:49:45.436Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 13,
@@ -1228,35 +1227,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 27
-        }
+          recipe_ingredients_id: 27,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 9,
     date_modified: "2020-01-28T17:51:32.208Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 14,
@@ -1276,35 +1275,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 30
-        }
+          recipe_ingredients_id: 30,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 10,
     date_modified: "2020-01-28T17:51:51.424Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 24,
@@ -1325,35 +1324,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 31
-        }
+          recipe_ingredients_id: 31,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 11,
     date_modified: "2020-01-28T21:12:23.002Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 25,
@@ -1374,35 +1373,35 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 54
-        }
+          recipe_ingredients_id: 54,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 12,
     date_modified: "2020-01-28T21:15:33.498Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
+      username: "Testing123",
+    },
   },
   {
     id: 27,
@@ -1424,36 +1423,36 @@ Example Response:
           units: "teaspoon",
           quantity: 1,
           units_short: "tsp",
-          recipe_ingredients_id: 55
-        }
+          recipe_ingredients_id: 55,
+        },
       ],
       instructions: [
         {
           id: 18,
           description: "Test!!!!",
-          step_number: 1
-        }
+          step_number: 1,
+        },
       ],
       tags: [
         {
           id: 1,
-          name: "Breakfast"
-        }
+          name: "Breakfast",
+        },
       ],
       notes: [
         {
           id: 7,
-          description: "Test"
-        }
-      ]
+          description: "Test",
+        },
+      ],
     },
     revision_number: 13,
     date_modified: "2020-01-28T21:55:37.417Z",
     owner: {
       user_id: 5,
-      username: "Testing123"
-    }
-  }
+      username: "Testing123",
+    },
+  },
 ];
 ```
 
