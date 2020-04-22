@@ -41,13 +41,13 @@ describe('POST "/recipes"', () => {
     };
     recipes_model.add_one = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res(1), 0);
         }),
     );
     recipes_model.get_one = jest.fn(
-      req_id =>
-        new Promise(res => {
+      (req_id) =>
+        new Promise((res) => {
           setTimeout(
             () => res({...new_recipe, owner_id: 1, id: req_id.id, test: true}),
             0,
@@ -81,13 +81,13 @@ describe('POST "/recipes"', () => {
     };
     recipes_model.add_one = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res(1), 0);
         }),
     );
     recipes_model.get_one = jest.fn(
-      req_id =>
-        new Promise(res => {
+      (req_id) =>
+        new Promise((res) => {
           setTimeout(() => res(null), 0);
         }),
     );
@@ -154,8 +154,8 @@ describe('POST "/recipes"', () => {
 describe('GET "/recipes/:id"', () => {
   test("Returns 200 if successful", async () => {
     recipes_model.get_one = jest.fn(
-      id_obj =>
-        new Promise(res => {
+      (id_obj) =>
+        new Promise((res) => {
           setTimeout(() => res({id: Number(id_obj.id), test: true}), 0);
         }),
     );
@@ -209,11 +209,11 @@ describe('GET "/recipes"', () => {
   ];
   test("returns 200 if no search is given", async () => {
     recipes_model.get_all = jest.fn(
-      title_search =>
-        new Promise(res => {
+      (title_search) =>
+        new Promise((res) => {
           setTimeout(
             // Actually filter the fake_db to emulate a search
-            () => res(fake_db.filter(obj => obj.title.match(title_search))),
+            () => res(fake_db.filter((obj) => obj.title.match(title_search))),
             0,
           );
         }),
@@ -230,11 +230,11 @@ describe('GET "/recipes"', () => {
   });
   test("Returns 200 if search is successful", async () => {
     recipes_model.get_all = jest.fn(
-      title_search =>
-        new Promise(res => {
+      (title_search) =>
+        new Promise((res) => {
           setTimeout(
             // Actually filter the fake_db to emulate a search
-            () => res(fake_db.filter(obj => obj.title.match(title_search))),
+            () => res(fake_db.filter((obj) => obj.title.match(title_search))),
             0,
           );
         }),
@@ -290,9 +290,9 @@ describe('GET "/cookbook"', () => {
   test("Returns 200 if cookbook search is successful", async () => {
     recipes_model.get_by_course = jest.fn(
       (id, course) =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(
-            () => res(fake_db.filter(obj => obj.course.match(course))),
+            () => res(fake_db.filter((obj) => obj.course.match(course))),
             0,
           );
         }),
@@ -323,17 +323,18 @@ describe('GET "/cookbook"', () => {
   });
 
   test("returns 500 if unsuccessful", async () => {
-    recipes_model.get_by_course = jest.fn(() => {
+    recipes_model.get_user_cookbook = jest.fn(() => {
       throw {detail: "error"};
     });
+
     const expected_error = {detail: "error"};
 
     const response = await request(server).get("/cookbook");
 
     expect(response.status).toEqual(500);
     expect(response.body).toEqual(expected_error);
-    expect(recipes_model.get_by_course).toHaveBeenCalledTimes(1);
-    recipes_model.get_by_course.mockReset();
+    expect(recipes_model.get_user_cookbook).toHaveBeenCalledTimes(1);
+    recipes_model.get_user_cookbook.mockReset();
   });
 });
 
@@ -344,11 +345,11 @@ describe("PUT /recipes/:id", () => {
     //     One to "update", and one to "get".
     // Our expected response is the "get" response
     recipes_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(1)), 0),
+      () => new Promise((res) => setTimeout(() => res(1)), 0),
     );
     recipes_model.get_one = jest.fn(
       () =>
-        new Promise(res =>
+        new Promise((res) =>
           setTimeout(() => res({title: "test", test: true}), 0),
         ),
     );
@@ -368,7 +369,7 @@ describe("PUT /recipes/:id", () => {
 
   test("Returns 404 with a falsey return value", async () => {
     recipes_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(false)), 0),
+      () => new Promise((res) => setTimeout(() => res(false)), 0),
     );
 
     const expected_error = /couldn't update/i; // success = 1
@@ -423,7 +424,7 @@ describe('DELETE "/recipes"', () => {
   test("Returns 200 if successful", async () => {
     recipes_model.remove_one = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res([{title: "test_title"}]), 0);
         }),
     );
@@ -456,7 +457,7 @@ describe('DELETE "/recipes/:id"', () => {
   test("Returns 200 if successful", async () => {
     recipes_model.remove_all = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res(true), 0);
         }),
     );

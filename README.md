@@ -60,7 +60,7 @@ For Mac follow the steps in [this link](https://www.robinwieruch.de/postgres-sql
 
 Now you should be set up with a development database
 
-## Setting up AWS S3:
+## Sefting up AWS S3:
 
 Note: It is only necessary for ONE person to create an account and share the key/secret key with trusted group members. This way, everyone's working environment is the same.
 
