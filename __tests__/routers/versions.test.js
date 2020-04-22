@@ -1,5 +1,6 @@
 const version_router = require("../../endpoints/routers/pervious_versions");
 const version_model = require("../../endpoints/models/previous_versions");
+const recipe_model = require("../../endpoints/models/recipes.js");
 const validate = require("../../endpoints/middleware/validate");
 // This test does not care about middleware.
 // Anytime we call a middleware function, just call next()
@@ -96,10 +97,14 @@ describe("GET /recipes/:id/versions", () => {
   ];
   test("Responds with 200 if successful", async () => {
     version_model.get_all_versions = jest.fn(() => {
-      return new Promise(res => setTimeout(() => res(fake_db), 0));
+      return new Promise((res) => setTimeout(() => res(fake_db), 0));
     });
 
-    const expected_versions = fake_db;
+    recipe_model.get_one = jest.fn(() => {
+      return new Promise((res) => setTimeout(() => res({}), 0));
+    });
+
+    const expected_versions = [{changes: {}, revision_number: 10}, ...fake_db];
 
     const response = await request(server).get("/recipes/1/versions/");
 
@@ -111,7 +116,7 @@ describe("GET /recipes/:id/versions", () => {
 
   test("Returns message if the model returns an empty array", async () => {
     version_model.get_all_versions = jest.fn(
-      () => new Promise(res => setTimeout(() => res([]), 0)),
+      () => new Promise((res) => setTimeout(() => res([]), 0)),
     );
 
     const expected_msg = /don't have any/i;
@@ -141,7 +146,7 @@ describe("GET /recipes/:id/versions", () => {
 describe("GET /recipes/:id/version/:rev_id", () => {
   test("Responds with 200 if successful", async () => {
     version_model.get_version_by_id = jest.fn((id, rev_id) => {
-      return new Promise(res => {
+      return new Promise((res) => {
         setTimeout(
           () => res({recipe_id: Number(id), id: Number(rev_id), test: true}),
           0,
@@ -193,7 +198,7 @@ describe("GET /recipes/:id/version/:rev_id", () => {
 describe("GET /recipes/:id/versions/:rev_num", () => {
   test("Responds with 200 if successful", async () => {
     version_model.get_version_by_num = jest.fn((id, rev_num) => {
-      return new Promise(res => {
+      return new Promise((res) => {
         setTimeout(
           () =>
             res({
