@@ -19,6 +19,9 @@
 |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Dournbrood)                  |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/dlhauer)                  |                [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/domesticdingo)                |
 |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     |      [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       | -->
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/0a80f7cf3bd99773bbf4/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/mydish-be/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0a80f7cf3bd99773bbf4/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/mydish-be/test_coverage)
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
