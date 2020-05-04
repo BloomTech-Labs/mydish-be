@@ -101,9 +101,15 @@ router.put(
   /*m.validate.admin,*/
   async (req, res) => {
     const {id} = req.params;
-    const updates = req.body;
+    // const updates = req.body;
+    const newUserInfo = {
+      password: m.encrypt.password(req.body.password),
+      email: req.body.email,
+      display_name: req.body.display_name,
+      avatar_url: req.body.avatar_url,
+    };
     try {
-      const user = await model.update_one(id, updates);
+      const user = await model.update_one(id, newUserInfo);
       user
         ? res.status(200).json(user)
         : res.status(404).json(`Couldn't update user`);
