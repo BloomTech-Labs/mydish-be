@@ -16,6 +16,7 @@ router.post(`/users/register`, async (req, res) => {
   const new_user = {
     username: req.body.username,
     password: m.encrypt.password(req.body.password),
+    email: req.body.email || null,
   };
   try {
     const user = await model.add_one(new_user);
@@ -58,66 +59,49 @@ router.post(`/users/login`, m.validate.user, async (req, res) => {
 });
 
 //get one user
-router.get(
-  `/users/:id`,
-  m.validate.token,
-  /*m.validate.admin,*/
-  async (req, res) => {
-    const {id} = req.params;
-    try {
-      const user = await model.get_by_id(id);
-      user
-        ? res.status(200).json(user)
-        : res.status(404).json("No user found.");
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err.detail);
-    }
-  },
-);
+router.get(`/users/:id`, m.validate.token, async (req, res) => {
+  const {id} = req.params;
+  try {
+    const user = await model.get_by_id(id);
+    user ? res.status(200).json(user) : res.status(404).json("No user found.");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err.detail);
+  }
+});
 
 //get all users
-router.get(
-  `/users`,
-  m.validate.token,
-  /*m.validate.admin,*/ async (req, res) => {
-    console.log(req.user);
+router.get(`/users`, m.validate.token, async (req, res) => {
+  console.log(req.user);
 
-    try {
-      const users = await model.get_all();
-      users.length > 0
-        ? res.status(200).json(users)
-        : res.status(404).json("No users found.");
-    } catch (err) {
-      res.status(500).json(err.detail);
-    }
-  },
-);
+  try {
+    const users = await model.get_all();
+    users.length > 0
+      ? res.status(200).json(users)
+      : res.status(404).json("No users found.");
+  } catch (err) {
+    res.status(500).json(err.detail);
+  }
+});
 
 //update a user
-router.put(
-  `/users/:id`,
-  m.validate.token,
-  /*m.validate.admin,*/
-  async (req, res) => {
-    const {id} = req.params;
-    // const updates = req.body;
-    const newUserInfo = {
-      password: m.encrypt.password(req.body.password),
-      email: req.body.email,
-      display_name: req.body.display_name,
-      avatar_url: req.body.avatar_url,
-    };
-    try {
-      const user = await model.update_one(id, newUserInfo);
-      user
-        ? res.status(200).json(user)
-        : res.status(404).json(`Couldn't update user`);
-    } catch (err) {
-      res.status(500).json(err.detail);
-    }
-  },
-);
+router.put(`/users/:id`, m.validate.token, async (req, res) => {
+  const {id} = req.params;
+  const newUserInfo = {
+    password: m.encrypt.password(req.body.password),
+    email: req.body.email,
+    display_name: req.body.display_name,
+    avatar_url: req.body.avatar_url,
+  };
+  try {
+    const user = await model.update_one(id, newUserInfo);
+    user
+      ? res.status(200).json(user)
+      : res.status(404).json(`Couldn't update user`);
+  } catch (err) {
+    res.status(500).json(err.detail);
+  }
+});
 
 //terminate a user
 router.delete(
