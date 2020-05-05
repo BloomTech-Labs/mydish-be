@@ -61,7 +61,7 @@ router.post(`/users/login`, m.validate.user, async (req, res) => {
 router.get(
   `/users/:id`,
   m.validate.token,
-  m.validate.admin,
+  /*m.validate.admin,*/
   async (req, res) => {
     const {id} = req.params;
     try {
@@ -77,24 +77,28 @@ router.get(
 );
 
 //get all users
-router.get(`/users`, m.validate.token, m.validate.admin, async (req, res) => {
-  console.log(req.user);
+router.get(
+  `/users`,
+  m.validate.token,
+  /*m.validate.admin,*/ async (req, res) => {
+    console.log(req.user);
 
-  try {
-    const users = await model.get_all();
-    users.length > 0
-      ? res.status(200).json(users)
-      : res.status(404).json("No users found.");
-  } catch (err) {
-    res.status(500).json(err.detail);
-  }
-});
+    try {
+      const users = await model.get_all();
+      users.length > 0
+        ? res.status(200).json(users)
+        : res.status(404).json("No users found.");
+    } catch (err) {
+      res.status(500).json(err.detail);
+    }
+  },
+);
 
 //update a user
 router.put(
   `/users/:id`,
   m.validate.token,
-  m.validate.admin,
+  /*m.validate.admin,*/
   async (req, res) => {
     const {id} = req.params;
     const updates = req.body;
