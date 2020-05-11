@@ -31,6 +31,14 @@
     "server": "nodemon server.js",
     "start": "node server.js"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**",
+      "!**/__tests__/**"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lambda-School-Labs/cooking-recipe-source-control-be.git"
