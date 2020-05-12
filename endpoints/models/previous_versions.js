@@ -56,7 +56,7 @@ const get_version_by_id = (recipe_id, revision_id) => {
  * @param {Number} recipe_id
  */
 
-const get_all_versions = recipe_id => {
+const get_all_versions = (recipe_id) => {
   return db("previous_versions as pv")
     .where({"pv.recipe_id": recipe_id})
     .join("recipes as r", {"r.id": "pv.recipe_id"})

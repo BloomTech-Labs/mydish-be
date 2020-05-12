@@ -8,4 +8,4 @@ const seed_data = [
 ];
 exports.tags_data = seed_data;
 
-exports.seed = knex => knex("tags").insert(seed_data);
+exports.seed = (knex) => knex("tags").insert(seed_data);

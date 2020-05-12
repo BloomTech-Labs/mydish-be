@@ -2,9 +2,9 @@ const db = require("../../data/dbConfig");
 
 const create_matcher_query = (array, keys) => {
   let query = "";
-  array.forEach(item => {
+  array.forEach((item) => {
     let temp_query = "";
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (temp_query && item.hasOwnProperty(key)) temp_query += " and ";
       if (item.hasOwnProperty(key)) temp_query += `${key} = '${item[key]}'`;
     });
@@ -29,7 +29,7 @@ module.exports = async (table, array_to_check = [], keys_to_check = []) => {
 
   //compare given array and matches and return items that dont match
   const non_matches = array_to_check.filter(
-    item =>
+    (item) =>
       !matches.reduce(
         (item_is_match, match) =>
           item_is_match ||

@@ -1,7 +1,4 @@
-module.exports = tbl => {
+module.exports = (tbl) => {
   tbl.increments("id");
-  tbl
-    .text("name", 24)
-    .unique()
-    .notNullable();
+  tbl.text("name", 24).unique().notNullable();
 };

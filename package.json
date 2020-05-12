@@ -18,6 +18,7 @@
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "pg": "^7.15.1",
+    "prettier": "^2.0.5",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
@@ -29,7 +30,8 @@
     "test": "cross-env DB_ENVIRONMENT=testing jest --watch",
     "coverage": "cross-env DB_ENVIRONMENT=testing jest --coverage",
     "server": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\""
   },
   "jest": {
     "collectCoverageFrom": [
@@ -48,12 +50,5 @@
   "bugs": {
     "url": "https://github.com/Lambda-School-Labs/cooking-recipe-source-control-be/issues"
   },
-  "homepage": "https://github.com/Lambda-School-Labs/cooking-recipe-source-control-be#readme",
-  "prettier": {
-    "semi": true,
-    "singleQuote": false,
-    "tabWidth": 2,
-    "trailingComma": "all",
-    "bracketSpacing": false
-  }
+  "homepage": "https://github.com/Lambda-School-Labs/cooking-recipe-source-control-be#readme"
 }

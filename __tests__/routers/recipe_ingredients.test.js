@@ -34,8 +34,8 @@ test("We are in the test environment", () => {
 describe('POST "/recipe_ingredients"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.add_one = jest.fn(
-      req_obj =>
-        new Promise(res => {
+      (req_obj) =>
+        new Promise((res) => {
           setTimeout(() => res({...req_obj, test: true}), 0);
         }),
     );
@@ -88,8 +88,8 @@ describe('POST "/recipe_ingredients"', () => {
 describe('GET "/recipe_ingredients/:id"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.get_one = jest.fn(
-      id_obj =>
-        new Promise(res => {
+      (id_obj) =>
+        new Promise((res) => {
           setTimeout(() => res({id: Number(id_obj.id), test: true}), 0);
         }),
     );
@@ -144,7 +144,7 @@ describe('GET "/recipe_ingredients"', () => {
   test("returns 200 if no search is given", async () => {
     recipe_ingredients_model.get_all = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(
             // Resolve with the fake_db to emulate a call
             () => res(fake_db),
@@ -193,7 +193,7 @@ describe('GET "/recipe_ingredients"', () => {
 describe("PUT /recipe_ingredients/:id", () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(1)), 0),
+      () => new Promise((res) => setTimeout(() => res(1)), 0),
     );
 
     const expected_response = 1; // success = 1
@@ -211,7 +211,7 @@ describe("PUT /recipe_ingredients/:id", () => {
 
   test("Returns 404 with a falsey return value", async () => {
     recipe_ingredients_model.update_one = jest.fn(
-      () => new Promise(res => setTimeout(() => res(false)), 0),
+      () => new Promise((res) => setTimeout(() => res(false)), 0),
     );
 
     const expected_error = /couldn't update/i; // success = 1
@@ -249,7 +249,7 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.remove_one = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res([{title: "test_title"}]), 0);
         }),
     );
@@ -265,7 +265,7 @@ describe('DELETE "/recipe_ingredients/:id"', () => {
   test("Returns 404 if not successful", async () => {
     recipe_ingredients_model.remove_one = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res(false), 0);
         }),
     );
@@ -298,7 +298,7 @@ describe('DELETE "/recipe_ingredients/"', () => {
   test("Returns 200 if successful", async () => {
     recipe_ingredients_model.remove_all = jest.fn(
       () =>
-        new Promise(res => {
+        new Promise((res) => {
           setTimeout(() => res(true), 0);
         }),
     );

@@ -5,4 +5,4 @@ const seed_data = [
 // So we can import seed_data for testing
 exports.roles_data = seed_data;
 
-exports.seed = knex => knex("roles").insert(seed_data);
+exports.seed = (knex) => knex("roles").insert(seed_data);

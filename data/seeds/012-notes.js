@@ -25,4 +25,4 @@ const seed_data = [
 ];
 exports.notes_data = seed_data;
 
-exports.seed = knex => knex("notes").insert(seed_data);
+exports.seed = (knex) => knex("notes").insert(seed_data);
