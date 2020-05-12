@@ -1,4 +1,4 @@
-module.exports = tbl => {
+module.exports = (tbl) => {
   tbl.increments("id");
   tbl.text("title").notNullable();
   tbl.text("img");

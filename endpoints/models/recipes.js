@@ -9,7 +9,7 @@ const helper = {
   can_post: require("../helpers/can_post"),
 };
 
-const get_one = search_params => {
+const get_one = (search_params) => {
   return db(`recipes as r`)
     .where({"r.id": search_params.id})
     .join("users", {"r.owner_id": "users.id"})
@@ -59,7 +59,7 @@ const get_one = search_params => {
     .first();
 };
 
-const get_all = title => {
+const get_all = (title) => {
   return (
     db(`recipes as r`)
       // ilike = fuzzy search, ignore case
@@ -90,7 +90,7 @@ const get_all = title => {
  * refactor carefully, if necessary.
  *
  */
-const add_one = async new_recipe => {
+const add_one = async (new_recipe) => {
   // Determines success at the end of this function.
   // If successful, will hold the id of our added recipe.
   // If unsuccessful, will hold our error.
@@ -110,12 +110,12 @@ const add_one = async new_recipe => {
     if (non_ingredients.length) {
       //  prep them to be added to the db by giving them
       //     the valid schema { name, category }
-      ingredients_to_be_added = non_ingredients.map(ing => {
+      ingredients_to_be_added = non_ingredients.map((ing) => {
         return {name: ing.name, category: ing.category || null};
       });
     }
 
-    await db.transaction(async trx => {
+    await db.transaction(async (trx) => {
       //===========================ADDING INGREDIENTS===========================//
 
       // If we have ingredients that need to be added into the database,
@@ -148,7 +148,7 @@ const add_one = async new_recipe => {
       const tag_ids = await db("tags")
         .whereIn("name", new_recipe.tags)
         .select("id");
-      const recipe_tags_to_be_added = tag_ids.map(tag => ({
+      const recipe_tags_to_be_added = tag_ids.map((tag) => ({
         recipe_id: added_recipe_id[0],
         tag_id: tag.id,
       }));
@@ -161,7 +161,7 @@ const add_one = async new_recipe => {
       //     and then add to the database.
 
       const recipe_ingredients_to_be_added = await Promise.all(
-        new_recipe.ingredients.map(async ingredient => {
+        new_recipe.ingredients.map(async (ingredient) => {
           const ingredient_id = await trx("ingredients")
             .where("name", ingredient.name)
             .select("id")
@@ -193,7 +193,7 @@ const add_one = async new_recipe => {
       // Assuming we have an array of objects like { step_number, description },
       //     we add the recipe_id to each object and add the full array to the database.
       const instructions_to_be_added = new_recipe.instructions.map(
-        instruction => ({...instruction, recipe_id: added_recipe_id[0]}),
+        (instruction) => ({...instruction, recipe_id: added_recipe_id[0]}),
       );
       await trx("instructions").insert(instructions_to_be_added);
 
@@ -203,7 +203,7 @@ const add_one = async new_recipe => {
       //     to create an array of objects to match the schema { recipe_id, description },
       //     and then add the new array to the database.
       if (new_recipe.notes && new_recipe.notes.length) {
-        const notes_to_be_added = new_recipe.notes.map(note => ({
+        const notes_to_be_added = new_recipe.notes.map((note) => ({
           recipe_id: added_recipe_id[0],
           description: note,
         }));
@@ -259,11 +259,11 @@ const update_one = async (recipe_id, updated_recipe) => {
     if (non_ingredients.length) {
       // prep them to be added to the db by giving them
       //     the valid schema { name, category }
-      new_ingredient_entries = non_ingredients.map(ing => {
+      new_ingredient_entries = non_ingredients.map((ing) => {
         return {name: ing.name, category: ing.category || null};
       });
     }
-    await db.transaction(async trx => {
+    await db.transaction(async (trx) => {
       //===========================ADDING INGREDIENTS===========================//
 
       // If we have ingredients that need to be added into the database,
@@ -276,7 +276,7 @@ const update_one = async (recipe_id, updated_recipe) => {
       const tag_ids = await db("tags")
         .whereIn("name", updated_recipe.tags)
         .select("id");
-      const recipe_tags_to_be_updated = tag_ids.map(tag => ({
+      const recipe_tags_to_be_updated = tag_ids.map((tag) => ({
         recipe_id: recipe_id,
         tag_id: tag.id,
       }));
@@ -306,9 +306,9 @@ const update_one = async (recipe_id, updated_recipe) => {
       //     we set them to be updated.
       // If we have any instructions from the database that don't match any
       //     updated_instructions, those instructions will be deleted.
-      existing_instructions.forEach(instruction => {
+      existing_instructions.forEach((instruction) => {
         const index = updated_instructions.findIndex(
-          check => check.step_number === instruction.step_number,
+          (check) => check.step_number === instruction.step_number,
         );
         if (index === -1)
           instructions_to_be_deleted.push(instruction.step_number);
@@ -319,7 +319,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         }
       });
       // Any instructions leftover in our updated_recipe will be inserted into the database
-      const instructions_to_be_added = updated_instructions.map(instruct => {
+      const instructions_to_be_added = updated_instructions.map((instruct) => {
         if (instruct.id) delete instruct.id; // ← JUST to make sure. If we're adding
         return instruct; // an instruction, it shouldn't have an id.
       });
@@ -329,7 +329,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         // I think this has to do with the fact that .map() returns an array
         //     and .forEach() returns void '' '
         await Promise.all(
-          instructions_to_be_updated.map(async instruct => {
+          instructions_to_be_updated.map(async (instruct) => {
             await trx("instructions")
               .where({recipe_id})
               .andWhere({step_number: instruct.step_number})
@@ -354,7 +354,7 @@ const update_one = async (recipe_id, updated_recipe) => {
       //     { id, recipe_id, ingredient_id, unit_id, quantity },
       //     including the id, if we have it '' '
       const updated_ingredients = await Promise.all(
-        updated_recipe.ingredients.map(async ingredient => {
+        updated_recipe.ingredients.map(async (ingredient) => {
           const ingredient_id = await trx("ingredients")
             .where("name", ingredient.name)
             .select("id")
@@ -389,9 +389,9 @@ const update_one = async (recipe_id, updated_recipe) => {
       //     we set them to be updated.
       // If we have any ingredients from the database that don't match any
       //     updated_ingredients, they will be deleted.
-      existing_ingredients.forEach(ingredient => {
+      existing_ingredients.forEach((ingredient) => {
         const index = updated_ingredients.findIndex(
-          check => check.id === ingredient.id,
+          (check) => check.id === ingredient.id,
         );
         if (index === -1) ingredients_to_be_deleted.push(ingredient.id);
         else {
@@ -401,7 +401,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         }
       });
       // Any ingredients leftover in our updated_recipe will be inserted into the database
-      const ingredients_to_be_added = updated_ingredients.map(ing => {
+      const ingredients_to_be_added = updated_ingredients.map((ing) => {
         if (ing.id) delete ing.id; // ← JUST to make sure. If we're adding
         return ing; // an ingredient, it shouldn't have an id.
       });
@@ -409,10 +409,8 @@ const update_one = async (recipe_id, updated_recipe) => {
       if (ingredients_to_be_updated.length) {
         // We use .map() here because .forEach() throw a promise error.
         await Promise.all(
-          ingredients_to_be_updated.map(async ing => {
-            await trx("recipe_ingredients")
-              .where({id: ing.id})
-              .update(ing);
+          ingredients_to_be_updated.map(async (ing) => {
+            await trx("recipe_ingredients").where({id: ing.id}).update(ing);
           }),
         );
       }
@@ -429,7 +427,7 @@ const update_one = async (recipe_id, updated_recipe) => {
 
       // Get our existing_notes from the database, as well as our updated_notes.
       const existing_notes = await trx("notes").where({recipe_id});
-      const updated_notes = updated_recipe.notes.map(note => ({
+      const updated_notes = updated_recipe.notes.map((note) => ({
         ...note,
         recipe_id,
       }));
@@ -438,15 +436,15 @@ const update_one = async (recipe_id, updated_recipe) => {
       const notes_to_be_updated = [];
       // We loop fvrough ou ezisting noes from the databae.
       // Iv ani upaded_nos hve yadda yadda you feel me.
-      existing_notes.forEach(note => {
-        const index = updated_notes.findIndex(check => check.id === note.id);
+      existing_notes.forEach((note) => {
+        const index = updated_notes.findIndex((check) => check.id === note.id);
         if (index === -1) notes_to_be_deleted.push(note.id);
         else {
           notes_to_be_updated.push(updated_notes.splice(index, 1)[0]);
         }
       });
       // Any notes leftover in our updated_recipe will be added to the database
-      const notes_to_be_added = updated_notes.map(note => {
+      const notes_to_be_added = updated_notes.map((note) => {
         if (note.id) delete note.id; // ← JUST to make sure. If we're adding
         return note; // a note, it shouldn't have an id.
       });
@@ -454,17 +452,13 @@ const update_one = async (recipe_id, updated_recipe) => {
       if (notes_to_be_updated.length) {
         // Use .map() 'cuz .forEach() throws a promise error '' '
         await Promise.all(
-          notes_to_be_updated.map(async note => {
-            await trx("notes")
-              .where({id: note.id})
-              .update(note);
+          notes_to_be_updated.map(async (note) => {
+            await trx("notes").where({id: note.id}).update(note);
           }),
         );
       }
       if (notes_to_be_deleted.length) {
-        await trx("notes")
-          .whereIn("id", notes_to_be_deleted)
-          .del();
+        await trx("notes").whereIn("id", notes_to_be_deleted).del();
       }
       if (notes_to_be_added.length) {
         await trx("notes").insert(notes_to_be_added);
@@ -513,9 +507,7 @@ const update_one = async (recipe_id, updated_recipe) => {
         author_comment: updated_recipe.author_comment,
         updated_at: new Date().toISOString(),
       };
-      await trx("recipes")
-        .where({id: recipe_id})
-        .update(recipe_info);
+      await trx("recipes").where({id: recipe_id}).update(recipe_info);
 
       //=========================YOU DID IT, YOU'RE DONE=======================//
 
@@ -532,11 +524,7 @@ const update_one = async (recipe_id, updated_recipe) => {
   }
 };
 
-const remove_one = id =>
-  db("recipes")
-    .where({id})
-    .delete()
-    .returning("*");
+const remove_one = (id) => db("recipes").where({id}).delete().returning("*");
 
 const remove_all = () => db("recipes").delete();
 
@@ -574,7 +562,7 @@ const get_by_course = (id, course) => {
   );
 };
 
-const get_user_cookbook = user => {
+const get_user_cookbook = (user) => {
   return db(`recipes as r`)
     .join("users", {"r.owner_id": "users.id"})
     .join("recipe_tags as rt", {"r.id": "rt.recipe_id"})

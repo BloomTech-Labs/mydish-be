@@ -15,7 +15,7 @@ const recipe_model = require("../models/recipes");
  *
  * @returns {Object<string, string>}
  */
-const generate_token = user => {
+const generate_token = (user) => {
   //token settings
   const payload = {
     username: user.username,
@@ -153,13 +153,13 @@ const recipe = (req, res, next) => {
   //     and still returns a proper response below.
   const sanitized_ingredients = ingredients
     ? ingredients
-        .filter(ing => ing.name && ing.units)
-        .map(val => ({...val, name: val.name.trim()})) // Remove whitespace
+        .filter((ing) => ing.name && ing.units)
+        .map((val) => ({...val, name: val.name.trim()})) // Remove whitespace
     : [];
 
   const sanitized_instructions = instructions
     ? instructions
-        .filter(ins => ins.step_number && ins.description.trim()) // Filter
+        .filter((ins) => ins.step_number && ins.description.trim()) // Filter
         .map((val, i) => ({
           ...val,
           description: val.description.trim(), // Remove whitespace
@@ -168,7 +168,7 @@ const recipe = (req, res, next) => {
     : [];
 
   const sanitized_tags = tags
-    ? tags.filter(tag => {
+    ? tags.filter((tag) => {
         // Do we have a String[] ? Do our strings exist?
         if (typeof tag === "string") return tag.length;
         // Do we have an Object[] ? Do our objects have name properties?
@@ -178,13 +178,13 @@ const recipe = (req, res, next) => {
 
   const sanitized_notes = notes
     ? notes
-        .filter(note => {
+        .filter((note) => {
           // Do we have a String[] ? Do our strings exist?
           if (typeof note === "string") return note.trim().length;
           // Do we have an Object[] ? Do our objects have name properties?
           else return note.description && note.description.trim().length;
         })
-        .map(note => {
+        .map((note) => {
           if (typeof note == "string") return note.trim();
           else return {...note, description: note.description.trim()};
         })
@@ -228,7 +228,7 @@ const user_recipe = (req, res, next) => {
     res.status(400).json({message: "You need a recipe id for this action!"});
   if (!user_id)
     res.status(400).json({message: "You need a user id for this action!"});
-  return recipe_model.get_one({id: recipe_id}).then(recipe => {
+  return recipe_model.get_one({id: recipe_id}).then((recipe) => {
     // Recipe doesn't exist? Error!
     if (!recipe)
       return res.status(404).json({message: "No recipe found with this id."});

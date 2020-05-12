@@ -31,4 +31,4 @@ const seed_data = [
 // So we can import seed_data for testing
 exports.units_data = seed_data;
 
-exports.seed = knex => knex("units").insert(seed_data);
+exports.seed = (knex) => knex("units").insert(seed_data);

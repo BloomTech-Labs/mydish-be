@@ -18,15 +18,15 @@ tables = [
 
 //Creates tables in the database from the array of tables above
 //and importing their schema from ./tables
-exports.up = async knex =>
+exports.up = async (knex) =>
   Promise.all(
-    tables.map(table =>
+    tables.map((table) =>
       knex.schema.createTable(table, require(`./tables/${table}`)),
     ),
   );
 
 //Reverses the order the tables were created in, then removes them
-exports.down = knex =>
+exports.down = (knex) =>
   Promise.all(
-    tables.reverse().map(table => knex.schema.dropTableIfExists(table, true)),
+    tables.reverse().map((table) => knex.schema.dropTableIfExists(table, true)),
   );

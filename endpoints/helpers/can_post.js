@@ -3,8 +3,8 @@ const schema = require("./schema");
 
 unique_query_builder = async (table, array, unique_fields) => {
   let query = "";
-  array.forEach(item => {
-    unique_fields.forEach(field => {
+  array.forEach((item) => {
+    unique_fields.forEach((field) => {
       if (query) query += " or ";
       if (item[field]) query += `${field} = '${item[field]}'`;
     });
@@ -34,17 +34,17 @@ module.exports = async (table, array = []) => {
   );
   const unremarkable = await db(table).whereRaw(check_uniques_query);
 
-  array = array.filter(item => {
+  array = array.filter((item) => {
     //checks if all require fields are provided
     //if not adds an array of missing fields to the object
-    required_keys.forEach(key => {
+    required_keys.forEach((key) => {
       if (!item.hasOwnProperty(key) && !item.hasOwnProperty("missing_fields"))
         item["missing_fields"] = [key];
       else if (!item.hasOwnProperty(key)) item.missing_fields.push(key);
     });
     //for each unremarkable item add an array of objects indicating which fields and values are unremarkable
-    unremarkable.forEach(nu_item => {
-      unique_fields.forEach(field => {
+    unremarkable.forEach((nu_item) => {
+      unique_fields.forEach((field) => {
         if (
           nu_item[field] == item[field] &&
           !item.hasOwnProperty("unremarkable_fields")

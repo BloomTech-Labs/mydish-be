@@ -123,4 +123,4 @@ const seed_data = [
 // So we can import seed_data for testing
 exports.ingredients_data = seed_data;
 
-exports.seed = knex => knex("ingredients").insert(seed_data);
+exports.seed = (knex) => knex("ingredients").insert(seed_data);

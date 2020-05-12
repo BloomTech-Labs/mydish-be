@@ -1,11 +1,11 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.raw(
-    "ALTER TABLE recipe_ingredients ALTER COLUMN quantity TYPE text"
+    "ALTER TABLE recipe_ingredients ALTER COLUMN quantity TYPE text",
   );
 };
 
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.raw(
-    "ALTER TABLE recipe_ingredients ALTER COLUMN quantity TYPE real USING quantity::real"
+    "ALTER TABLE recipe_ingredients ALTER COLUMN quantity TYPE real USING quantity::real",
   );
 };
