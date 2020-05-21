@@ -112,13 +112,17 @@ router.delete(
 );
 
 //terminate all recipes
-router.delete(`/recipes`, validate.token, validate.admin, async (req, res) => {
-  try {
-    await model.remove_all();
-    res.status(200).json("All recipes have been eliminated.");
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+router.delete(
+  `/recipes`,
+  validate.token,
+  /*validate.admin,*/ async (req, res) => {
+    try {
+      await model.remove_all();
+      res.status(200).json("All recipes have been eliminated.");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+);
 
 module.exports = router;
