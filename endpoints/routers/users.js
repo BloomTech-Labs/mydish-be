@@ -125,7 +125,7 @@ router.delete(
 router.delete(
   `/users`,
   m.validate.token,
-  m.validate.admin,
+  /*m.validate.admin,*/
   async (req, res) => {
     try {
       await model.remove_all();
